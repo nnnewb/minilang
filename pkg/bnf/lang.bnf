@@ -1,0 +1,107 @@
+!whitespace : ' '
+            | '\t'
+            | '\r'
+            | '\n';
+
+_expression_keyword
+    : 'q' 'u' 'o' 't' 'e'
+    | 'l' 'a' 'm' 'b' 'd' 'a'
+    | 'i' 'f'
+    | 's' 'e' 't' '!'
+    | 'b' 'e' 'g' 'i' 'n'
+    | 'c' 'o' 'n' 'd'
+    | 'a' 'n' 'd'
+    | 'o' 'r'
+    | 'c' 'a' 's' 'e'
+    | 'l' 'e' 't'
+    | 'l' 'e' 't' '*'
+    | 'l' 'e' 't' 'r' 'e' 'c'
+    | 'd' 'o'
+    | 'd' 'e' 'l' 'a' 'y'
+    | 'q' 'u' 'a' 's' 'i' 'q' 'u' 'o' 't' 'e';
+
+_syntactic_keyword   : _expression_keyword
+                    | 'e' 'l' 's' 'e'
+                    | '=' '>'
+                    | 'd' 'e' 'f' 'i' 'n' 'e'
+                    | 'u' 'n' 'q' 'u' 'o' 't' 'e'
+                    | 'u' 'n' 'q' 'u' 'o' 't' 'e' '-' 's' 'p' 'l' 'i' 'c' 'i' 'n' 'g';
+
+_letter
+    : 'a'-'z'
+    | 'A'-'Z';
+
+_special_initial: '!'
+                | '$'
+                | '%'
+                | '&'
+                | '*'
+                | '/'
+                | ':'
+                | '<'
+                | '='
+                | '>'
+                | '?'
+                | '~'
+                | '_'
+                | '^';
+
+_initial: _letter
+        | _special_initial;
+
+_digit: '0'-'9';
+
+_special_subsequent : '.'
+                    | '+'
+                    | '-';
+
+_subsequent: _initial | _digit | _special_subsequent;
+
+_peculiar_identifier : '+'
+                     | '-'
+                     | '.' '.' '.';
+
+_identifier: _initial { _subsequent } | _peculiar_identifier;
+
+_boolean : '#' 't'
+        | '#' 'f';
+
+_character : '#' '\\' .
+          | '#' '\\' 's' 'p' 'a' 'c' 'e'
+          | '#' '\\' 'n' 'e' 'w' 'l' 'i' 'n' 'e';
+
+_string_element: '\\' '"' | . | '\\' '\\';
+
+_string : '"' { _string_element } '"';
+
+
+_sign
+    : '+'
+    | '-';
+
+_uint10: _digit { _digit };
+
+_ureal10
+    : _uint10
+    | '.' _uint10
+    | _uint10 '.' {_digit};
+
+_number
+    : [_sign] _ureal10;
+
+token
+    : _identifier
+    | _boolean
+    | _number
+    | _character
+    | _string
+    | '('
+    | ')'
+    | '#' '('
+    | '\''
+    | '`'
+    | ','
+    | ',' '@'
+    | '.';
+
+_comment: ';' { . };
