@@ -1,14 +1,13 @@
 package builtin
 
 import (
-	"fmt"
-
 	"github.com/nnnewb/minilang/internal/environment"
+	"github.com/nnnewb/minilang/internal/utils"
 )
 
 func RegisterArithmeticBuiltin(ee *environment.ExecutionEnv) {
-	ee.SetValue("+", environment.BuiltinFunc(sum))
-	ee.SetValue("-", environment.BuiltinFunc(sub))
+	ee.SetValue("+", utils.Coverup(environment.BuiltinFunc(sum)))
+	ee.SetValue("-", utils.Coverup(environment.BuiltinFunc(sub)))
 }
 
 func sum(ee *environment.ExecutionEnv, args []environment.Value) (environment.Value, error) {
@@ -17,12 +16,8 @@ func sum(ee *environment.ExecutionEnv, args []environment.Value) (environment.Va
 	}
 
 	var accumulator float64
-	for _, v := range args {
-		if val, ok := v.(environment.Number); ok {
-			accumulator += float64(val)
-		} else {
-			return nil, fmt.Errorf("unexpected argument %v", v)
-		}
+	for _, arg := range args {
+		accumulator += float64(utils.MustToNumber(arg))
 	}
 
 	return environment.Number(accumulator), nil
@@ -33,19 +28,9 @@ func sub(ee *environment.ExecutionEnv, args []environment.Value) (environment.Va
 		return environment.Number(0), nil
 	}
 
-	var accumulator float64
-	if val, ok := args[0].(environment.Number); ok {
-		accumulator += float64(val)
-	} else {
-		return nil, fmt.Errorf("unexpected argument %v", args[0])
-	}
-
-	for _, v := range args[1:] {
-		if val, ok := v.(environment.Number); ok {
-			accumulator -= float64(val)
-		} else {
-			return nil, fmt.Errorf("unexpected argument %v", v)
-		}
+	accumulator := float64(utils.MustToNumber(args[0]))
+	for _, arg := range args[1:] {
+		accumulator -= float64(utils.MustToNumber(arg))
 	}
 
 	return environment.Number(accumulator), nil
