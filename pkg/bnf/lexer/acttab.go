@@ -5,7 +5,7 @@ package lexer
 import (
 	"fmt"
 
-	"github.com/nnnewb/scsh/pkg/bnf/token"
+	"github.com/nnnewb/minilang/pkg/bnf/token"
 )
 
 type ActionTable [NumStates]ActionRow
@@ -29,7 +29,7 @@ var ActTab = ActionTable{
 		Ignore: "!whitespace",
 	},
 	ActionRow{ // S2
-		Accept: 2,
+		Accept: 0,
 		Ignore: "",
 	},
 	ActionRow{ // S3
@@ -37,11 +37,11 @@ var ActTab = ActionTable{
 		Ignore: "",
 	},
 	ActionRow{ // S4
-		Accept: 0,
+		Accept: 7,
 		Ignore: "",
 	},
 	ActionRow{ // S5
-		Accept: 2,
+		Accept: 8,
 		Ignore: "",
 	},
 	ActionRow{ // S6
@@ -49,15 +49,15 @@ var ActTab = ActionTable{
 		Ignore: "",
 	},
 	ActionRow{ // S7
-		Accept: 2,
+		Accept: 0,
 		Ignore: "",
 	},
 	ActionRow{ // S8
-		Accept: 2,
+		Accept: 5,
 		Ignore: "",
 	},
 	ActionRow{ // S9
-		Accept: 2,
+		Accept: 0,
 		Ignore: "",
 	},
 	ActionRow{ // S10
@@ -65,23 +65,23 @@ var ActTab = ActionTable{
 		Ignore: "",
 	},
 	ActionRow{ // S11
-		Accept: 2,
+		Accept: 6,
 		Ignore: "",
 	},
 	ActionRow{ // S12
-		Accept: 2,
+		Accept: 0,
 		Ignore: "",
 	},
 	ActionRow{ // S13
-		Accept: 2,
+		Accept: 0,
 		Ignore: "",
 	},
 	ActionRow{ // S14
-		Accept: 2,
+		Accept: 4,
 		Ignore: "",
 	},
 	ActionRow{ // S15
-		Accept: 2,
+		Accept: 3,
 		Ignore: "",
 	},
 	ActionRow{ // S16
@@ -93,19 +93,19 @@ var ActTab = ActionTable{
 		Ignore: "",
 	},
 	ActionRow{ // S18
-		Accept: 0,
+		Accept: 5,
 		Ignore: "",
 	},
 	ActionRow{ // S19
-		Accept: 2,
+		Accept: 0,
 		Ignore: "",
 	},
 	ActionRow{ // S20
-		Accept: 0,
-		Ignore: "",
+		Accept: -1,
+		Ignore: "!comment",
 	},
 	ActionRow{ // S21
-		Accept: 0,
+		Accept: 2,
 		Ignore: "",
 	},
 	ActionRow{ // S22
@@ -117,55 +117,11 @@ var ActTab = ActionTable{
 		Ignore: "",
 	},
 	ActionRow{ // S24
-		Accept: 0,
+		Accept: 2,
 		Ignore: "",
 	},
 	ActionRow{ // S25
-		Accept: 0,
-		Ignore: "",
-	},
-	ActionRow{ // S26
-		Accept: 2,
-		Ignore: "",
-	},
-	ActionRow{ // S27
-		Accept: 2,
-		Ignore: "",
-	},
-	ActionRow{ // S28
-		Accept: 2,
-		Ignore: "",
-	},
-	ActionRow{ // S29
-		Accept: 0,
-		Ignore: "",
-	},
-	ActionRow{ // S30
-		Accept: 0,
-		Ignore: "",
-	},
-	ActionRow{ // S31
-		Accept: 0,
-		Ignore: "",
-	},
-	ActionRow{ // S32
-		Accept: 0,
-		Ignore: "",
-	},
-	ActionRow{ // S33
-		Accept: 0,
-		Ignore: "",
-	},
-	ActionRow{ // S34
-		Accept: 0,
-		Ignore: "",
-	},
-	ActionRow{ // S35
-		Accept: 0,
-		Ignore: "",
-	},
-	ActionRow{ // S36
-		Accept: 0,
+		Accept: 5,
 		Ignore: "",
 	},
 }

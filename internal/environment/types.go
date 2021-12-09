@@ -4,19 +4,12 @@ import (
 	"fmt"
 )
 
-type ExecutionEnvironment interface {
-	LookupName(name string) Value
-	LookupLocalName(name string) Value
-	// SetValue set new value and return old one
-	SetValue(name string, val Value) Value
-}
-
 type ExecutionEnv struct {
 	symbols map[string]Value
-	parent  ExecutionEnvironment
+	parent  *ExecutionEnv
 }
 
-func NewExecutionEnv(parent ExecutionEnvironment) *ExecutionEnv {
+func NewExecutionEnv(parent *ExecutionEnv) *ExecutionEnv {
 	return &ExecutionEnv{
 		symbols: make(map[string]Value),
 		parent:  parent,
@@ -50,7 +43,7 @@ func (ee *ExecutionEnv) EvaluateListElements(list List) (List, error) {
 	evaluated := make(List, 0, len(list))
 	for _, val := range list {
 		if val.GetType() == VTList {
-			if result, err := ee.EvaluateFunctionCall(val.GetValue().(List)); err != nil {
+			if result, err := ee.EvaluateFunctionCall(*val.(*List)); err != nil {
 				return nil, err
 			} else {
 				evaluated = append(evaluated, result)
@@ -86,8 +79,19 @@ func (ee *ExecutionEnv) EvaluateFunctionCall(list List) (Value, error) {
 		if args, err := ee.EvaluateListElements(list[1:]); err != nil {
 			return nil, err
 		} else {
-			return fn.GetValue().(BuiltinFunc)(args)
+			return fn.GetValue().(BuiltinFunc)(ee, args)
 		}
 	}
 	return nil, nil
+}
+
+func (ee *ExecutionEnv) Evaluate(val Value) (Value, error) {
+	switch v := val.(type) {
+	case *List:
+		return ee.EvaluateFunctionCall(*v)
+	case Identifier:
+		return ee.LookupName(string(v)), nil
+	default:
+		return v, nil
+	}
 }

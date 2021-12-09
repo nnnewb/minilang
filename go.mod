@@ -1,4 +1,4 @@
-module github.com/nnnewb/scsh
+module github.com/nnnewb/minilang
 
 go 1.17
 

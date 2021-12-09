@@ -1,2 +1,2 @@
-//go:generate gocc ./lang.bnf
+//go:generate gocc -v ./lang.bnf
 package bnf

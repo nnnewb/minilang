@@ -1,0 +1,429 @@
+Item sets:
+S0{
+	!whitespace : ' ' | '\t' | '\r' | • '\n'
+	!whitespace : ' ' | '\t' | • '\r' | '\n'
+	!whitespace : ' ' | • '\t' | '\r' | '\n'
+	!whitespace : • ' ' | '\t' | '\r' | '\n'
+	!comment : • ';' {.} '\n'
+	identifier : • _identifier
+	boolean_t : • _boolean_t
+	boolean_f : • _boolean_f
+	string : • _string
+	number : • _number
+	( : • '('
+	) : • ')'
+	_identifier : _initial {_subsequent} | • _peculiar_identifier
+	_identifier : • _initial {_subsequent} | _peculiar_identifier
+	_boolean_t : • '#' 't'
+	_boolean_f : • '#' 'f'
+	_string : • '"' {_string_element} '"'
+	_number : [_sign] • _ureal10
+	_number : [• _sign] _ureal10
+	_peculiar_identifier : '+' | '-' | • '.' '.' '.'
+	_peculiar_identifier : '+' | • '-' | '.' '.' '.'
+	_peculiar_identifier : • '+' | '-' | '.' '.' '.'
+	_initial : • _letter
+	_ureal10 : ['.'] _uint10 | • _uint10 '.' _digit {_digit}
+	_ureal10 : ['.'] • _uint10 | _uint10 '.' _digit {_digit}
+	_ureal10 : [• '.'] _uint10 | _uint10 '.' _digit {_digit}
+	_sign : '+' | • '-'
+	_sign : • '+' | '-'
+	_letter :  'a'-'z' | •  'A'-'Z'
+	_letter : •  'a'-'z' |  'A'-'Z'
+	_uint10 : • _digit {_digit}
+	_digit : •  '0'-'9'
+}
+Transitions:
+	['\t','\t'] -> S1
+	['\n','\n'] -> S1
+	['\r','\r'] -> S1
+	[' ',' '] -> S1
+	['"','"'] -> S2
+	['#','#'] -> S3
+	['(','('] -> S4
+	[')',')'] -> S5
+	['+','+'] -> S6
+	['-','-'] -> S6
+	['.','.'] -> S7
+	['0','9'] -> S8
+	[';',';'] -> S9
+	['A','Z'] -> S10
+	['a','z'] -> S10
+Action: nil
+Symbols classes: {['\t','\t'], ['\n','\n'], ['\r','\r'], [' ',' '], ['"','"'], ['#','#'], ['(','('], [')',')'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], [';',';'], ['A','Z'], ['a','z']}
+
+S1{
+	!whitespace : (' ' | '\t' | '\r' | '\n') •
+}
+Transitions:
+Action: Ignore("!whitespace")
+Symbols classes: {}
+
+S2{
+	_string : '"' {_string_element} • '"'
+	_string : '"' {• _string_element} '"'
+	string : • _string
+	_string_element : '\' '"' | . | • '\' '\'
+	_string_element : '\' '"' | • . | '\' '\'
+	_string_element : • '\' '"' | . | '\' '\'
+}
+Transitions:
+	['"','"'] -> S11
+	['\','\'] -> S12
+. -> S13
+Action: nil
+Symbols classes: {['"','"'], ['\','\']}
+
+S3{
+	_boolean_t : '#' • 't'
+	_boolean_f : '#' • 'f'
+	boolean_t : • _boolean_t
+	boolean_f : • _boolean_f
+}
+Transitions:
+	['f','f'] -> S14
+	['t','t'] -> S15
+Action: nil
+Symbols classes: {['f','f'], ['t','t']}
+
+S4{
+	( : '(' •
+}
+Transitions:
+Action: Accept("(")
+Symbols classes: {}
+
+S5{
+	) : ')' •
+}
+Transitions:
+Action: Accept(")")
+Symbols classes: {}
+
+S6{
+	_peculiar_identifier : ('+' | '-' | '.' '.' '.') •
+	_sign : ('+' | '-') •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	_number : [_sign] • _ureal10
+	identifier : _identifier •
+	number : • _number
+	_ureal10 : ['.'] _uint10 | • _uint10 '.' _digit {_digit}
+	_ureal10 : ['.'] • _uint10 | _uint10 '.' _digit {_digit}
+	_ureal10 : [• '.'] _uint10 | _uint10 '.' _digit {_digit}
+	_uint10 : • _digit {_digit}
+	_digit : •  '0'-'9'
+}
+Transitions:
+	['.','.'] -> S16
+	['0','9'] -> S8
+Action: Accept("identifier")
+Symbols classes: {['.','.'], ['0','9']}
+
+S7{
+	_peculiar_identifier : '+' | '-' | '.' • '.' '.'
+	_ureal10 : ['.'] • _uint10 | _uint10 '.' _digit {_digit}
+	_identifier : _initial {_subsequent} | • _peculiar_identifier
+	_number : [_sign] • _ureal10
+	identifier : • _identifier
+	number : • _number
+	_uint10 : • _digit {_digit}
+	_digit : •  '0'-'9'
+}
+Transitions:
+	['.','.'] -> S17
+	['0','9'] -> S18
+Action: nil
+Symbols classes: {['.','.'], ['0','9']}
+
+S8{
+	_digit :  '0'-'9' •
+	_uint10 : _digit {_digit} •
+	_uint10 : _digit {• _digit}
+	_ureal10 : ['.'] _uint10 | _uint10 • '.' _digit {_digit}
+	_ureal10 : (['.'] _uint10 | _uint10 '.' _digit {_digit}) •
+	_ureal10 : ['.'] _uint10 | • _uint10 '.' _digit {_digit}
+	_ureal10 : ['.'] • _uint10 | _uint10 '.' _digit {_digit}
+	_number : [_sign] • _ureal10
+	_number : [_sign] _ureal10 •
+	number : • _number
+	number : _number •
+	_digit : •  '0'-'9'
+}
+Transitions:
+	['.','.'] -> S19
+	['0','9'] -> S8
+Action: Accept("number")
+Symbols classes: {['.','.'], ['0','9']}
+
+S9{
+	!comment : ';' {.} • '\n'
+	!comment : ';' {• .} '\n'
+}
+Transitions:
+	['\n','\n'] -> S20
+. -> S9
+Action: nil
+Symbols classes: {['\n','\n']}
+
+S10{
+	_letter : ( 'a'-'z' |  'A'-'Z') •
+	_initial : _letter •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	_identifier : _initial {• _subsequent} | _peculiar_identifier
+	identifier : _identifier •
+	identifier : • _identifier
+	_subsequent : _initial | _digit | • _special_subsequent
+	_subsequent : _initial | • _digit | _special_subsequent
+	_subsequent : • _initial | _digit | _special_subsequent
+	_special_subsequent : '.' | '+' | '-' | '!' | • '?'
+	_special_subsequent : '.' | '+' | '-' | • '!' | '?'
+	_special_subsequent : '.' | '+' | • '-' | '!' | '?'
+	_special_subsequent : '.' | • '+' | '-' | '!' | '?'
+	_special_subsequent : • '.' | '+' | '-' | '!' | '?'
+	_digit : •  '0'-'9'
+	_initial : • _letter
+	_letter :  'a'-'z' | •  'A'-'Z'
+	_letter : •  'a'-'z' |  'A'-'Z'
+}
+Transitions:
+	['!','!'] -> S21
+	['+','+'] -> S21
+	['-','-'] -> S21
+	['.','.'] -> S21
+	['0','9'] -> S22
+	['?','?'] -> S21
+	['A','Z'] -> S23
+	['a','z'] -> S23
+Action: Accept("identifier")
+Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
+
+S11{
+	_string : '"' {_string_element} '"' •
+	string : _string •
+}
+Transitions:
+Action: Accept("string")
+Symbols classes: {}
+
+S12{
+	_string_element : '\' '"' | . | '\' • '\'
+	_string_element : '\' • '"' | . | '\' '\'
+	_string : '"' {• _string_element} '"'
+	string : • _string
+}
+Transitions:
+	['"','"'] -> S13
+	['\','\'] -> S13
+Action: nil
+Symbols classes: {['"','"'], ['\','\']}
+
+S13{
+	_string_element : ('\' '"' | . | '\' '\') •
+	_string : '"' {_string_element} • '"'
+	_string : '"' {• _string_element} '"'
+	string : • _string
+	_string_element : '\' '"' | . | • '\' '\'
+	_string_element : '\' '"' | • . | '\' '\'
+	_string_element : • '\' '"' | . | '\' '\'
+}
+Transitions:
+	['"','"'] -> S11
+	['\','\'] -> S12
+. -> S13
+Action: nil
+Symbols classes: {['"','"'], ['\','\']}
+
+S14{
+	_boolean_f : '#' 'f' •
+	boolean_f : _boolean_f •
+}
+Transitions:
+Action: Accept("boolean_f")
+Symbols classes: {}
+
+S15{
+	_boolean_t : '#' 't' •
+	boolean_t : _boolean_t •
+}
+Transitions:
+Action: Accept("boolean_t")
+Symbols classes: {}
+
+S16{
+	_ureal10 : ['.'] • _uint10 | _uint10 '.' _digit {_digit}
+	_number : [_sign] • _ureal10
+	number : • _number
+	_uint10 : • _digit {_digit}
+	_digit : •  '0'-'9'
+}
+Transitions:
+	['0','9'] -> S18
+Action: nil
+Symbols classes: {['0','9']}
+
+S17{
+	_peculiar_identifier : '+' | '-' | '.' '.' • '.'
+	_identifier : _initial {_subsequent} | • _peculiar_identifier
+	identifier : • _identifier
+}
+Transitions:
+	['.','.'] -> S24
+Action: nil
+Symbols classes: {['.','.']}
+
+S18{
+	_digit :  '0'-'9' •
+	_uint10 : _digit {_digit} •
+	_uint10 : _digit {• _digit}
+	_ureal10 : (['.'] _uint10 | _uint10 '.' _digit {_digit}) •
+	_ureal10 : ['.'] • _uint10 | _uint10 '.' _digit {_digit}
+	_number : [_sign] _ureal10 •
+	_number : [_sign] • _ureal10
+	number : _number •
+	number : • _number
+	_digit : •  '0'-'9'
+}
+Transitions:
+	['0','9'] -> S18
+Action: Accept("number")
+Symbols classes: {['0','9']}
+
+S19{
+	_ureal10 : ['.'] _uint10 | _uint10 '.' • _digit {_digit}
+	_number : [_sign] • _ureal10
+	number : • _number
+	_digit : •  '0'-'9'
+}
+Transitions:
+	['0','9'] -> S25
+Action: nil
+Symbols classes: {['0','9']}
+
+S20{
+	!comment : ';' {.} '\n' •
+}
+Transitions:
+Action: Ignore("!comment")
+Symbols classes: {}
+
+S21{
+	_special_subsequent : ('.' | '+' | '-' | '!' | '?') •
+	_subsequent : (_initial | _digit | _special_subsequent) •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	_identifier : _initial {• _subsequent} | _peculiar_identifier
+	identifier : _identifier •
+	identifier : • _identifier
+	_subsequent : _initial | _digit | • _special_subsequent
+	_subsequent : _initial | • _digit | _special_subsequent
+	_subsequent : • _initial | _digit | _special_subsequent
+	_special_subsequent : '.' | '+' | '-' | '!' | • '?'
+	_special_subsequent : '.' | '+' | '-' | • '!' | '?'
+	_special_subsequent : '.' | '+' | • '-' | '!' | '?'
+	_special_subsequent : '.' | • '+' | '-' | '!' | '?'
+	_special_subsequent : • '.' | '+' | '-' | '!' | '?'
+	_digit : •  '0'-'9'
+	_initial : • _letter
+	_letter :  'a'-'z' | •  'A'-'Z'
+	_letter : •  'a'-'z' |  'A'-'Z'
+}
+Transitions:
+	['!','!'] -> S21
+	['+','+'] -> S21
+	['-','-'] -> S21
+	['.','.'] -> S21
+	['0','9'] -> S22
+	['?','?'] -> S21
+	['A','Z'] -> S23
+	['a','z'] -> S23
+Action: Accept("identifier")
+Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
+
+S22{
+	_digit :  '0'-'9' •
+	_subsequent : (_initial | _digit | _special_subsequent) •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	_identifier : _initial {• _subsequent} | _peculiar_identifier
+	identifier : _identifier •
+	identifier : • _identifier
+	_subsequent : _initial | _digit | • _special_subsequent
+	_subsequent : _initial | • _digit | _special_subsequent
+	_subsequent : • _initial | _digit | _special_subsequent
+	_special_subsequent : '.' | '+' | '-' | '!' | • '?'
+	_special_subsequent : '.' | '+' | '-' | • '!' | '?'
+	_special_subsequent : '.' | '+' | • '-' | '!' | '?'
+	_special_subsequent : '.' | • '+' | '-' | '!' | '?'
+	_special_subsequent : • '.' | '+' | '-' | '!' | '?'
+	_digit : •  '0'-'9'
+	_initial : • _letter
+	_letter :  'a'-'z' | •  'A'-'Z'
+	_letter : •  'a'-'z' |  'A'-'Z'
+}
+Transitions:
+	['!','!'] -> S21
+	['+','+'] -> S21
+	['-','-'] -> S21
+	['.','.'] -> S21
+	['0','9'] -> S22
+	['?','?'] -> S21
+	['A','Z'] -> S23
+	['a','z'] -> S23
+Action: Accept("identifier")
+Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
+
+S23{
+	_letter : ( 'a'-'z' |  'A'-'Z') •
+	_initial : _letter •
+	_subsequent : (_initial | _digit | _special_subsequent) •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	_identifier : _initial {• _subsequent} | _peculiar_identifier
+	identifier : _identifier •
+	identifier : • _identifier
+	_subsequent : _initial | _digit | • _special_subsequent
+	_subsequent : _initial | • _digit | _special_subsequent
+	_subsequent : • _initial | _digit | _special_subsequent
+	_special_subsequent : '.' | '+' | '-' | '!' | • '?'
+	_special_subsequent : '.' | '+' | '-' | • '!' | '?'
+	_special_subsequent : '.' | '+' | • '-' | '!' | '?'
+	_special_subsequent : '.' | • '+' | '-' | '!' | '?'
+	_special_subsequent : • '.' | '+' | '-' | '!' | '?'
+	_digit : •  '0'-'9'
+	_initial : • _letter
+	_letter :  'a'-'z' | •  'A'-'Z'
+	_letter : •  'a'-'z' |  'A'-'Z'
+}
+Transitions:
+	['!','!'] -> S21
+	['+','+'] -> S21
+	['-','-'] -> S21
+	['.','.'] -> S21
+	['0','9'] -> S22
+	['?','?'] -> S21
+	['A','Z'] -> S23
+	['a','z'] -> S23
+Action: Accept("identifier")
+Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
+
+S24{
+	_peculiar_identifier : ('+' | '-' | '.' '.' '.') •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	identifier : _identifier •
+}
+Transitions:
+Action: Accept("identifier")
+Symbols classes: {}
+
+S25{
+	_digit :  '0'-'9' •
+	_ureal10 : (['.'] _uint10 | _uint10 '.' _digit {_digit}) •
+	_ureal10 : ['.'] _uint10 | _uint10 '.' _digit {• _digit}
+	_number : [_sign] _ureal10 •
+	_number : [_sign] • _ureal10
+	number : _number •
+	number : • _number
+	_digit : •  '0'-'9'
+}
+Transitions:
+	['0','9'] -> S25
+Action: Accept("number")
+Symbols classes: {['0','9']}
+

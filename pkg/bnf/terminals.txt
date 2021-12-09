@@ -1,0 +1,9 @@
+INVALID
+$
+identifier
+boolean_t
+boolean_f
+number
+string
+(
+)

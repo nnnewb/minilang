@@ -1,0 +1,17 @@
+1 LR-1 conflicts: 
+	S0
+		symbol: number
+			Reduce(3:ListElements : empty	<< ast.NewList(), nil >>)
+			Shift(6)
+		symbol: string
+			Shift(7)
+			Reduce(3:ListElements : empty	<< ast.NewList(), nil >>)
+		symbol: identifier
+			Shift(3)
+			Reduce(3:ListElements : empty	<< ast.NewList(), nil >>)
+		symbol: boolean_t
+			Shift(4)
+			Reduce(3:ListElements : empty	<< ast.NewList(), nil >>)
+		symbol: boolean_f
+			Shift(5)
+			Reduce(3:ListElements : empty	<< ast.NewList(), nil >>)

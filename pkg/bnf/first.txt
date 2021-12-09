@@ -1,0 +1,27 @@
+S': {
+	(
+	boolean_f
+	boolean_t
+	identifier
+	number
+	string
+}
+Value: {
+	(
+	boolean_f
+	boolean_t
+	identifier
+	number
+	string
+}
+ListElements: {
+	(
+	boolean_f
+	boolean_t
+	identifier
+	number
+	string
+}
+List: {
+	(
+}

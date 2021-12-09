@@ -138,12 +138,24 @@ var TokMap = TokenMap{
 	typeMap: []string{
 		"INVALID",
 		"$",
-		"token",
+		"identifier",
+		"boolean_t",
+		"boolean_f",
+		"number",
+		"string",
+		"(",
+		")",
 	},
 
 	idMap: map[string]Type{
-		"INVALID": 0,
-		"$":       1,
-		"token":   2,
+		"INVALID":    0,
+		"$":          1,
+		"identifier": 2,
+		"boolean_t":  3,
+		"boolean_f":  4,
+		"number":     5,
+		"string":     6,
+		"(":          7,
+		")":          8,
 	},
 }

@@ -1,0 +1,544 @@
+S0{
+	S' : •Value «$»
+	Value : •identifier «$»
+	Value : •boolean_t «$»
+	Value : •boolean_f «$»
+	Value : •number «$»
+	Value : •string «$»
+	Value : •List «$»
+	List : •( ListElements ) «$»
+	List : •( ) «$»
+}
+Transitions:
+	Value -> 1
+	identifier -> 2
+	boolean_t -> 3
+	boolean_f -> 4
+	number -> 5
+	string -> 6
+	List -> 7
+	( -> 8
+
+
+S1{
+	S' : Value• «$»
+}
+Transitions:
+
+
+S2{
+	Value : identifier• «$»
+}
+Transitions:
+
+
+S3{
+	Value : boolean_t• «$»
+}
+Transitions:
+
+
+S4{
+	Value : boolean_f• «$»
+}
+Transitions:
+
+
+S5{
+	Value : number• «$»
+}
+Transitions:
+
+
+S6{
+	Value : string• «$»
+}
+Transitions:
+
+
+S7{
+	Value : List• «$»
+}
+Transitions:
+
+
+S8{
+	List : ( •ListElements ) «$»
+	List : ( •) «$»
+	ListElements : •Value «)»
+	ListElements : •ListElements Value «)»
+	Value : •identifier «)»
+	Value : •boolean_t «)»
+	Value : •boolean_f «)»
+	Value : •number «)»
+	Value : •string «)»
+	Value : •List «)»
+	ListElements : •Value «(»
+	ListElements : •Value «boolean_f»
+	ListElements : •Value «boolean_t»
+	ListElements : •Value «identifier»
+	ListElements : •Value «number»
+	ListElements : •Value «string»
+	ListElements : •ListElements Value «(»
+	ListElements : •ListElements Value «boolean_f»
+	ListElements : •ListElements Value «boolean_t»
+	ListElements : •ListElements Value «identifier»
+	ListElements : •ListElements Value «number»
+	ListElements : •ListElements Value «string»
+	List : •( ListElements ) «)»
+	List : •( ) «)»
+	Value : •identifier «(»
+	Value : •boolean_t «(»
+	Value : •boolean_f «(»
+	Value : •number «(»
+	Value : •string «(»
+	Value : •List «(»
+	Value : •identifier «boolean_f»
+	Value : •boolean_t «boolean_f»
+	Value : •boolean_f «boolean_f»
+	Value : •number «boolean_f»
+	Value : •string «boolean_f»
+	Value : •List «boolean_f»
+	Value : •identifier «boolean_t»
+	Value : •boolean_t «boolean_t»
+	Value : •boolean_f «boolean_t»
+	Value : •number «boolean_t»
+	Value : •string «boolean_t»
+	Value : •List «boolean_t»
+	Value : •identifier «identifier»
+	Value : •boolean_t «identifier»
+	Value : •boolean_f «identifier»
+	Value : •number «identifier»
+	Value : •string «identifier»
+	Value : •List «identifier»
+	Value : •identifier «number»
+	Value : •boolean_t «number»
+	Value : •boolean_f «number»
+	Value : •number «number»
+	Value : •string «number»
+	Value : •List «number»
+	Value : •identifier «string»
+	Value : •boolean_t «string»
+	Value : •boolean_f «string»
+	Value : •number «string»
+	Value : •string «string»
+	Value : •List «string»
+	List : •( ListElements ) «(»
+	List : •( ) «(»
+	List : •( ListElements ) «boolean_f»
+	List : •( ) «boolean_f»
+	List : •( ListElements ) «boolean_t»
+	List : •( ) «boolean_t»
+	List : •( ListElements ) «identifier»
+	List : •( ) «identifier»
+	List : •( ListElements ) «number»
+	List : •( ) «number»
+	List : •( ListElements ) «string»
+	List : •( ) «string»
+}
+Transitions:
+	Value -> 9
+	identifier -> 10
+	boolean_t -> 11
+	boolean_f -> 12
+	number -> 13
+	string -> 14
+	List -> 15
+	ListElements -> 16
+	( -> 17
+	) -> 18
+
+
+S9{
+	ListElements : Value• «)»
+	ListElements : Value• «(»
+	ListElements : Value• «boolean_f»
+	ListElements : Value• «boolean_t»
+	ListElements : Value• «identifier»
+	ListElements : Value• «number»
+	ListElements : Value• «string»
+}
+Transitions:
+
+
+S10{
+	Value : identifier• «)»
+	Value : identifier• «(»
+	Value : identifier• «boolean_f»
+	Value : identifier• «boolean_t»
+	Value : identifier• «identifier»
+	Value : identifier• «number»
+	Value : identifier• «string»
+}
+Transitions:
+
+
+S11{
+	Value : boolean_t• «)»
+	Value : boolean_t• «(»
+	Value : boolean_t• «boolean_f»
+	Value : boolean_t• «boolean_t»
+	Value : boolean_t• «identifier»
+	Value : boolean_t• «number»
+	Value : boolean_t• «string»
+}
+Transitions:
+
+
+S12{
+	Value : boolean_f• «)»
+	Value : boolean_f• «(»
+	Value : boolean_f• «boolean_f»
+	Value : boolean_f• «boolean_t»
+	Value : boolean_f• «identifier»
+	Value : boolean_f• «number»
+	Value : boolean_f• «string»
+}
+Transitions:
+
+
+S13{
+	Value : number• «)»
+	Value : number• «(»
+	Value : number• «boolean_f»
+	Value : number• «boolean_t»
+	Value : number• «identifier»
+	Value : number• «number»
+	Value : number• «string»
+}
+Transitions:
+
+
+S14{
+	Value : string• «)»
+	Value : string• «(»
+	Value : string• «boolean_f»
+	Value : string• «boolean_t»
+	Value : string• «identifier»
+	Value : string• «number»
+	Value : string• «string»
+}
+Transitions:
+
+
+S15{
+	Value : List• «)»
+	Value : List• «(»
+	Value : List• «boolean_f»
+	Value : List• «boolean_t»
+	Value : List• «identifier»
+	Value : List• «number»
+	Value : List• «string»
+}
+Transitions:
+
+
+S16{
+	List : ( ListElements •) «$»
+	ListElements : ListElements •Value «)»
+	ListElements : ListElements •Value «(»
+	ListElements : ListElements •Value «boolean_f»
+	ListElements : ListElements •Value «boolean_t»
+	ListElements : ListElements •Value «identifier»
+	ListElements : ListElements •Value «number»
+	ListElements : ListElements •Value «string»
+	Value : •identifier «)»
+	Value : •boolean_t «)»
+	Value : •boolean_f «)»
+	Value : •number «)»
+	Value : •string «)»
+	Value : •List «)»
+	Value : •identifier «(»
+	Value : •boolean_t «(»
+	Value : •boolean_f «(»
+	Value : •number «(»
+	Value : •string «(»
+	Value : •List «(»
+	Value : •identifier «boolean_f»
+	Value : •boolean_t «boolean_f»
+	Value : •boolean_f «boolean_f»
+	Value : •number «boolean_f»
+	Value : •string «boolean_f»
+	Value : •List «boolean_f»
+	Value : •identifier «boolean_t»
+	Value : •boolean_t «boolean_t»
+	Value : •boolean_f «boolean_t»
+	Value : •number «boolean_t»
+	Value : •string «boolean_t»
+	Value : •List «boolean_t»
+	Value : •identifier «identifier»
+	Value : •boolean_t «identifier»
+	Value : •boolean_f «identifier»
+	Value : •number «identifier»
+	Value : •string «identifier»
+	Value : •List «identifier»
+	Value : •identifier «number»
+	Value : •boolean_t «number»
+	Value : •boolean_f «number»
+	Value : •number «number»
+	Value : •string «number»
+	Value : •List «number»
+	Value : •identifier «string»
+	Value : •boolean_t «string»
+	Value : •boolean_f «string»
+	Value : •number «string»
+	Value : •string «string»
+	Value : •List «string»
+	List : •( ListElements ) «)»
+	List : •( ) «)»
+	List : •( ListElements ) «(»
+	List : •( ) «(»
+	List : •( ListElements ) «boolean_f»
+	List : •( ) «boolean_f»
+	List : •( ListElements ) «boolean_t»
+	List : •( ) «boolean_t»
+	List : •( ListElements ) «identifier»
+	List : •( ) «identifier»
+	List : •( ListElements ) «number»
+	List : •( ) «number»
+	List : •( ListElements ) «string»
+	List : •( ) «string»
+}
+Transitions:
+	identifier -> 10
+	boolean_t -> 11
+	boolean_f -> 12
+	number -> 13
+	string -> 14
+	List -> 15
+	( -> 17
+	Value -> 19
+	) -> 20
+
+
+S17{
+	List : ( •ListElements ) «)»
+	List : ( •) «)»
+	List : ( •ListElements ) «(»
+	List : ( •) «(»
+	List : ( •ListElements ) «boolean_f»
+	List : ( •) «boolean_f»
+	List : ( •ListElements ) «boolean_t»
+	List : ( •) «boolean_t»
+	List : ( •ListElements ) «identifier»
+	List : ( •) «identifier»
+	List : ( •ListElements ) «number»
+	List : ( •) «number»
+	List : ( •ListElements ) «string»
+	List : ( •) «string»
+	ListElements : •Value «)»
+	ListElements : •ListElements Value «)»
+	Value : •identifier «)»
+	Value : •boolean_t «)»
+	Value : •boolean_f «)»
+	Value : •number «)»
+	Value : •string «)»
+	Value : •List «)»
+	ListElements : •Value «(»
+	ListElements : •Value «boolean_f»
+	ListElements : •Value «boolean_t»
+	ListElements : •Value «identifier»
+	ListElements : •Value «number»
+	ListElements : •Value «string»
+	ListElements : •ListElements Value «(»
+	ListElements : •ListElements Value «boolean_f»
+	ListElements : •ListElements Value «boolean_t»
+	ListElements : •ListElements Value «identifier»
+	ListElements : •ListElements Value «number»
+	ListElements : •ListElements Value «string»
+	List : •( ListElements ) «)»
+	List : •( ) «)»
+	Value : •identifier «(»
+	Value : •boolean_t «(»
+	Value : •boolean_f «(»
+	Value : •number «(»
+	Value : •string «(»
+	Value : •List «(»
+	Value : •identifier «boolean_f»
+	Value : •boolean_t «boolean_f»
+	Value : •boolean_f «boolean_f»
+	Value : •number «boolean_f»
+	Value : •string «boolean_f»
+	Value : •List «boolean_f»
+	Value : •identifier «boolean_t»
+	Value : •boolean_t «boolean_t»
+	Value : •boolean_f «boolean_t»
+	Value : •number «boolean_t»
+	Value : •string «boolean_t»
+	Value : •List «boolean_t»
+	Value : •identifier «identifier»
+	Value : •boolean_t «identifier»
+	Value : •boolean_f «identifier»
+	Value : •number «identifier»
+	Value : •string «identifier»
+	Value : •List «identifier»
+	Value : •identifier «number»
+	Value : •boolean_t «number»
+	Value : •boolean_f «number»
+	Value : •number «number»
+	Value : •string «number»
+	Value : •List «number»
+	Value : •identifier «string»
+	Value : •boolean_t «string»
+	Value : •boolean_f «string»
+	Value : •number «string»
+	Value : •string «string»
+	Value : •List «string»
+	List : •( ListElements ) «(»
+	List : •( ) «(»
+	List : •( ListElements ) «boolean_f»
+	List : •( ) «boolean_f»
+	List : •( ListElements ) «boolean_t»
+	List : •( ) «boolean_t»
+	List : •( ListElements ) «identifier»
+	List : •( ) «identifier»
+	List : •( ListElements ) «number»
+	List : •( ) «number»
+	List : •( ListElements ) «string»
+	List : •( ) «string»
+}
+Transitions:
+	Value -> 9
+	identifier -> 10
+	boolean_t -> 11
+	boolean_f -> 12
+	number -> 13
+	string -> 14
+	List -> 15
+	( -> 17
+	ListElements -> 21
+	) -> 22
+
+
+S18{
+	List : ( )• «$»
+}
+Transitions:
+
+
+S19{
+	ListElements : ListElements Value• «)»
+	ListElements : ListElements Value• «(»
+	ListElements : ListElements Value• «boolean_f»
+	ListElements : ListElements Value• «boolean_t»
+	ListElements : ListElements Value• «identifier»
+	ListElements : ListElements Value• «number»
+	ListElements : ListElements Value• «string»
+}
+Transitions:
+
+
+S20{
+	List : ( ListElements )• «$»
+}
+Transitions:
+
+
+S21{
+	List : ( ListElements •) «)»
+	List : ( ListElements •) «(»
+	List : ( ListElements •) «boolean_f»
+	List : ( ListElements •) «boolean_t»
+	List : ( ListElements •) «identifier»
+	List : ( ListElements •) «number»
+	List : ( ListElements •) «string»
+	ListElements : ListElements •Value «)»
+	ListElements : ListElements •Value «(»
+	ListElements : ListElements •Value «boolean_f»
+	ListElements : ListElements •Value «boolean_t»
+	ListElements : ListElements •Value «identifier»
+	ListElements : ListElements •Value «number»
+	ListElements : ListElements •Value «string»
+	Value : •identifier «)»
+	Value : •boolean_t «)»
+	Value : •boolean_f «)»
+	Value : •number «)»
+	Value : •string «)»
+	Value : •List «)»
+	Value : •identifier «(»
+	Value : •boolean_t «(»
+	Value : •boolean_f «(»
+	Value : •number «(»
+	Value : •string «(»
+	Value : •List «(»
+	Value : •identifier «boolean_f»
+	Value : •boolean_t «boolean_f»
+	Value : •boolean_f «boolean_f»
+	Value : •number «boolean_f»
+	Value : •string «boolean_f»
+	Value : •List «boolean_f»
+	Value : •identifier «boolean_t»
+	Value : •boolean_t «boolean_t»
+	Value : •boolean_f «boolean_t»
+	Value : •number «boolean_t»
+	Value : •string «boolean_t»
+	Value : •List «boolean_t»
+	Value : •identifier «identifier»
+	Value : •boolean_t «identifier»
+	Value : •boolean_f «identifier»
+	Value : •number «identifier»
+	Value : •string «identifier»
+	Value : •List «identifier»
+	Value : •identifier «number»
+	Value : •boolean_t «number»
+	Value : •boolean_f «number»
+	Value : •number «number»
+	Value : •string «number»
+	Value : •List «number»
+	Value : •identifier «string»
+	Value : •boolean_t «string»
+	Value : •boolean_f «string»
+	Value : •number «string»
+	Value : •string «string»
+	Value : •List «string»
+	List : •( ListElements ) «)»
+	List : •( ) «)»
+	List : •( ListElements ) «(»
+	List : •( ) «(»
+	List : •( ListElements ) «boolean_f»
+	List : •( ) «boolean_f»
+	List : •( ListElements ) «boolean_t»
+	List : •( ) «boolean_t»
+	List : •( ListElements ) «identifier»
+	List : •( ) «identifier»
+	List : •( ListElements ) «number»
+	List : •( ) «number»
+	List : •( ListElements ) «string»
+	List : •( ) «string»
+}
+Transitions:
+	identifier -> 10
+	boolean_t -> 11
+	boolean_f -> 12
+	number -> 13
+	string -> 14
+	List -> 15
+	( -> 17
+	Value -> 19
+	) -> 23
+
+
+S22{
+	List : ( )• «)»
+	List : ( )• «(»
+	List : ( )• «boolean_f»
+	List : ( )• «boolean_t»
+	List : ( )• «identifier»
+	List : ( )• «number»
+	List : ( )• «string»
+}
+Transitions:
+
+
+S23{
+	List : ( ListElements )• «)»
+	List : ( ListElements )• «(»
+	List : ( ListElements )• «boolean_f»
+	List : ( ListElements )• «boolean_t»
+	List : ( ListElements )• «identifier»
+	List : ( ListElements )• «number»
+	List : ( ListElements )• «string»
+}
+Transitions:
+
+

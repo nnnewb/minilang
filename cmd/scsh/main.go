@@ -1,8 +1,14 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/c-bata/go-prompt"
-	"github.com/nnnewb/scsh/pkg/bnf/lexer"
+	"github.com/nnnewb/minilang/internal/builtin"
+	"github.com/nnnewb/minilang/internal/environment"
+	"github.com/nnnewb/minilang/pkg/ast"
+	"github.com/nnnewb/minilang/pkg/bnf/lexer"
+	"github.com/nnnewb/minilang/pkg/bnf/parser"
 )
 
 func main() {
@@ -15,12 +21,32 @@ func main() {
 			break
 		}
 
-		lexer := lexer.NewLexer([]byte(input))
+		ee := environment.NewExecutionEnv(nil)
+		builtin.RegisterArithmeticBuiltin(ee)
+		ee.SetValue("display", environment.BuiltinFunc(func(ee *environment.ExecutionEnv, args []environment.Value) (environment.Value, error) {
+			for _, v := range args {
+				fmt.Printf("%v", v)
+			}
+			println()
+			return nil, nil
+		}))
 
-		tok := lexer.Scan()
-		for tok != nil && tok.IDValue() != "" {
-			println(tok.IDValue())
-			tok = lexer.Scan()
+		lexer := lexer.NewLexer([]byte(input))
+		parser := parser.NewParser()
+		parseResult, err := parser.Parse(lexer)
+		if err != nil {
+			fmt.Printf("parse error %v\n", err)
+			continue
+		}
+
+		val := environment.NewValueFromASTNode(parseResult.(ast.Node))
+		if val.GetType() == environment.VTList {
+			evaluated, err := ee.EvaluateFunctionCall(*val.(*environment.List))
+			if err != nil {
+				fmt.Printf("evaluation failed, error %v", err)
+				continue
+			}
+			fmt.Printf("#%v\n", evaluated)
 		}
 	}
 }
