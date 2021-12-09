@@ -29,7 +29,10 @@ func (ee *ExecutionEnv) LookupName(name string) Value {
 	if val := ee.LookupLocalName(name); val != nil {
 		return val
 	}
-	return ee.parent.LookupName(name)
+	if ee.parent != nil {
+		return ee.parent.LookupName(name)
+	}
+	return nil
 }
 
 func (ee *ExecutionEnv) LookupLocalName(name string) Value {
@@ -37,22 +40,6 @@ func (ee *ExecutionEnv) LookupLocalName(name string) Value {
 		return val
 	}
 	return nil
-}
-
-func (ee *ExecutionEnv) EvaluateListElements(list List) (List, error) {
-	evaluated := make(List, 0, len(list))
-	for _, val := range list {
-		if val.GetType() == VTList {
-			if result, err := ee.EvaluateList(*val.(*List)); err != nil {
-				return nil, err
-			} else {
-				evaluated = append(evaluated, result)
-			}
-		} else {
-			evaluated = append(evaluated, val)
-		}
-	}
-	return evaluated, nil
 }
 
 func (ee *ExecutionEnv) EvaluateList(list List) (Value, error) {
