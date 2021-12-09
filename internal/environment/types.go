@@ -43,7 +43,7 @@ func (ee *ExecutionEnv) EvaluateListElements(list List) (List, error) {
 	evaluated := make(List, 0, len(list))
 	for _, val := range list {
 		if val.GetType() == VTList {
-			if result, err := ee.EvaluateFunctionCall(*val.(*List)); err != nil {
+			if result, err := ee.EvaluateList(*val.(*List)); err != nil {
 				return nil, err
 			} else {
 				evaluated = append(evaluated, result)
@@ -55,31 +55,26 @@ func (ee *ExecutionEnv) EvaluateListElements(list List) (List, error) {
 	return evaluated, nil
 }
 
-func (ee *ExecutionEnv) EvaluateFunctionCall(list List) (Value, error) {
+func (ee *ExecutionEnv) EvaluateList(list List) (Value, error) {
 	if len(list) > 0 {
-		first := list[0]
-		if first.GetType() != VTIdentifier {
-			return nil, fmt.Errorf("first element in list has type %s, which is not callable", first.GetType())
-		}
-
-		name, ok := first.GetValue().(Identifier)
-		if !ok {
-			return nil, fmt.Errorf("internal error, evaluate identifier failed %v", first.GetValue())
-		}
-
-		fn := ee.LookupName(string(name))
-		if fn == nil {
-			return nil, fmt.Errorf("%s not defined in current scope, evaluation failed", name)
-		}
-
-		if fn.GetType() != VTBuiltinFn {
-			return nil, fmt.Errorf("%s (type: %s) is not callable", name, fn.GetType())
-		}
-
-		if args, err := ee.EvaluateListElements(list[1:]); err != nil {
+		first, err := ee.Evaluate(list[0])
+		if err != nil {
 			return nil, err
+		}
+
+		if fn, ok := first.(BuiltinFunc); !ok {
+			return nil, fmt.Errorf("TypeError: %v(%T) is not callable", first, first)
 		} else {
-			return fn.GetValue().(BuiltinFunc)(ee, args)
+			args := make([]Value, 0, len(list[1:]))
+			for _, v := range list[1:] {
+				arg, err := ee.Evaluate(v)
+				if err != nil {
+					return nil, err
+				}
+
+				args = append(args, arg)
+			}
+			return fn(ee, args)
 		}
 	}
 	return nil, nil
@@ -88,9 +83,11 @@ func (ee *ExecutionEnv) EvaluateFunctionCall(list List) (Value, error) {
 func (ee *ExecutionEnv) Evaluate(val Value) (Value, error) {
 	switch v := val.(type) {
 	case *List:
-		return ee.EvaluateFunctionCall(*v)
+		return ee.EvaluateList(*v)
 	case Identifier:
 		return ee.LookupName(string(v)), nil
+	case *Quoted:
+		return v.GetValue().(Value), nil
 	default:
 		return v, nil
 	}

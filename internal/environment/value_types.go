@@ -15,6 +15,7 @@ const (
 	VTString     ValueType = "string"
 	VTNumber     ValueType = "number"
 	VTBoolean    ValueType = "boolean"
+	VTQuoted     ValueType = "quote"
 )
 
 type Value interface {
@@ -32,6 +33,8 @@ func NewValueFromASTNode(node ast.Node) Value {
 		}
 
 		return &val
+	case *ast.Quoted:
+		return NewQuoted(NewValueFromASTNode(n.GetValue().(ast.Node)))
 	case ast.Boolean:
 		return Boolean(bool(n))
 	case ast.Identifier:
@@ -104,4 +107,22 @@ func (n Boolean) GetValue() interface{} {
 
 func (n Boolean) GetType() ValueType {
 	return VTBoolean
+}
+
+type Quoted struct {
+	value Value
+}
+
+func (q Quoted) GetValue() interface{} {
+	return q.value
+}
+
+func (q Quoted) GetType() ValueType {
+	return VTQuoted
+}
+
+func NewQuoted(val Value) *Quoted {
+	return &Quoted{
+		value: val,
+	}
 }

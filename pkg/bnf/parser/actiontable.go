@@ -14,15 +14,17 @@ var actionTab = actionTable{
 	actionRow{ // S0
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,      // INVALID
-			nil,      // $
-			shift(2), // identifier
-			shift(3), // boolean_t
-			shift(4), // boolean_f
-			shift(5), // number
-			shift(6), // string
-			shift(8), // (
-			nil,      // )
+			nil,       // INVALID
+			nil,       // $
+			shift(2),  // identifier
+			shift(3),  // quoted_identifier
+			shift(4),  // boolean_t
+			shift(5),  // boolean_f
+			shift(6),  // number
+			shift(7),  // string
+			shift(9),  // (
+			nil,       // )
+			shift(10), // #(
 		},
 	},
 	actionRow{ // S1
@@ -31,12 +33,14 @@ var actionTab = actionTable{
 			nil,          // INVALID
 			accept(true), // $
 			nil,          // identifier
+			nil,          // quoted_identifier
 			nil,          // boolean_t
 			nil,          // boolean_f
 			nil,          // number
 			nil,          // string
 			nil,          // (
 			nil,          // )
+			nil,          // #(
 		},
 	},
 	actionRow{ // S2
@@ -45,12 +49,14 @@ var actionTab = actionTable{
 			nil,       // INVALID
 			reduce(1), // $, reduce: Value
 			nil,       // identifier
+			nil,       // quoted_identifier
 			nil,       // boolean_t
 			nil,       // boolean_f
 			nil,       // number
 			nil,       // string
 			nil,       // (
 			nil,       // )
+			nil,       // #(
 		},
 	},
 	actionRow{ // S3
@@ -59,12 +65,14 @@ var actionTab = actionTable{
 			nil,       // INVALID
 			reduce(2), // $, reduce: Value
 			nil,       // identifier
+			nil,       // quoted_identifier
 			nil,       // boolean_t
 			nil,       // boolean_f
 			nil,       // number
 			nil,       // string
 			nil,       // (
 			nil,       // )
+			nil,       // #(
 		},
 	},
 	actionRow{ // S4
@@ -73,12 +81,14 @@ var actionTab = actionTable{
 			nil,       // INVALID
 			reduce(3), // $, reduce: Value
 			nil,       // identifier
+			nil,       // quoted_identifier
 			nil,       // boolean_t
 			nil,       // boolean_f
 			nil,       // number
 			nil,       // string
 			nil,       // (
 			nil,       // )
+			nil,       // #(
 		},
 	},
 	actionRow{ // S5
@@ -87,12 +97,14 @@ var actionTab = actionTable{
 			nil,       // INVALID
 			reduce(4), // $, reduce: Value
 			nil,       // identifier
+			nil,       // quoted_identifier
 			nil,       // boolean_t
 			nil,       // boolean_f
 			nil,       // number
 			nil,       // string
 			nil,       // (
 			nil,       // )
+			nil,       // #(
 		},
 	},
 	actionRow{ // S6
@@ -101,12 +113,14 @@ var actionTab = actionTable{
 			nil,       // INVALID
 			reduce(5), // $, reduce: Value
 			nil,       // identifier
+			nil,       // quoted_identifier
 			nil,       // boolean_t
 			nil,       // boolean_f
 			nil,       // number
 			nil,       // string
 			nil,       // (
 			nil,       // )
+			nil,       // #(
 		},
 	},
 	actionRow{ // S7
@@ -115,26 +129,30 @@ var actionTab = actionTable{
 			nil,       // INVALID
 			reduce(6), // $, reduce: Value
 			nil,       // identifier
+			nil,       // quoted_identifier
 			nil,       // boolean_t
 			nil,       // boolean_f
 			nil,       // number
 			nil,       // string
 			nil,       // (
 			nil,       // )
+			nil,       // #(
 		},
 	},
 	actionRow{ // S8
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			nil,       // $
-			shift(10), // identifier
-			shift(11), // boolean_t
-			shift(12), // boolean_f
-			shift(13), // number
-			shift(14), // string
-			shift(17), // (
-			shift(18), // )
+			reduce(7), // $, reduce: Value
+			nil,       // identifier
+			nil,       // quoted_identifier
+			nil,       // boolean_t
+			nil,       // boolean_f
+			nil,       // number
+			nil,       // string
+			nil,       // (
+			nil,       // )
+			nil,       // #(
 		},
 	},
 	actionRow{ // S9
@@ -142,13 +160,15 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(7), // identifier, reduce: ListElements
-			reduce(7), // boolean_t, reduce: ListElements
-			reduce(7), // boolean_f, reduce: ListElements
-			reduce(7), // number, reduce: ListElements
-			reduce(7), // string, reduce: ListElements
-			reduce(7), // (, reduce: ListElements
-			reduce(7), // ), reduce: ListElements
+			shift(12), // identifier
+			shift(13), // quoted_identifier
+			shift(14), // boolean_t
+			shift(15), // boolean_f
+			shift(16), // number
+			shift(17), // string
+			shift(20), // (
+			shift(21), // )
+			shift(22), // #(
 		},
 	},
 	actionRow{ // S10
@@ -156,13 +176,15 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(1), // identifier, reduce: Value
-			reduce(1), // boolean_t, reduce: Value
-			reduce(1), // boolean_f, reduce: Value
-			reduce(1), // number, reduce: Value
-			reduce(1), // string, reduce: Value
-			reduce(1), // (, reduce: Value
-			reduce(1), // ), reduce: Value
+			shift(12), // identifier
+			shift(13), // quoted_identifier
+			shift(14), // boolean_t
+			shift(15), // boolean_f
+			shift(16), // number
+			shift(17), // string
+			shift(20), // (
+			shift(24), // )
+			shift(22), // #(
 		},
 	},
 	actionRow{ // S11
@@ -170,13 +192,15 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(2), // identifier, reduce: Value
-			reduce(2), // boolean_t, reduce: Value
-			reduce(2), // boolean_f, reduce: Value
-			reduce(2), // number, reduce: Value
-			reduce(2), // string, reduce: Value
-			reduce(2), // (, reduce: Value
-			reduce(2), // ), reduce: Value
+			reduce(8), // identifier, reduce: ListElements
+			reduce(8), // quoted_identifier, reduce: ListElements
+			reduce(8), // boolean_t, reduce: ListElements
+			reduce(8), // boolean_f, reduce: ListElements
+			reduce(8), // number, reduce: ListElements
+			reduce(8), // string, reduce: ListElements
+			reduce(8), // (, reduce: ListElements
+			reduce(8), // ), reduce: ListElements
+			reduce(8), // #(, reduce: ListElements
 		},
 	},
 	actionRow{ // S12
@@ -184,13 +208,15 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(3), // identifier, reduce: Value
-			reduce(3), // boolean_t, reduce: Value
-			reduce(3), // boolean_f, reduce: Value
-			reduce(3), // number, reduce: Value
-			reduce(3), // string, reduce: Value
-			reduce(3), // (, reduce: Value
-			reduce(3), // ), reduce: Value
+			reduce(1), // identifier, reduce: Value
+			reduce(1), // quoted_identifier, reduce: Value
+			reduce(1), // boolean_t, reduce: Value
+			reduce(1), // boolean_f, reduce: Value
+			reduce(1), // number, reduce: Value
+			reduce(1), // string, reduce: Value
+			reduce(1), // (, reduce: Value
+			reduce(1), // ), reduce: Value
+			reduce(1), // #(, reduce: Value
 		},
 	},
 	actionRow{ // S13
@@ -198,13 +224,15 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(4), // identifier, reduce: Value
-			reduce(4), // boolean_t, reduce: Value
-			reduce(4), // boolean_f, reduce: Value
-			reduce(4), // number, reduce: Value
-			reduce(4), // string, reduce: Value
-			reduce(4), // (, reduce: Value
-			reduce(4), // ), reduce: Value
+			reduce(2), // identifier, reduce: Value
+			reduce(2), // quoted_identifier, reduce: Value
+			reduce(2), // boolean_t, reduce: Value
+			reduce(2), // boolean_f, reduce: Value
+			reduce(2), // number, reduce: Value
+			reduce(2), // string, reduce: Value
+			reduce(2), // (, reduce: Value
+			reduce(2), // ), reduce: Value
+			reduce(2), // #(, reduce: Value
 		},
 	},
 	actionRow{ // S14
@@ -212,13 +240,15 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(5), // identifier, reduce: Value
-			reduce(5), // boolean_t, reduce: Value
-			reduce(5), // boolean_f, reduce: Value
-			reduce(5), // number, reduce: Value
-			reduce(5), // string, reduce: Value
-			reduce(5), // (, reduce: Value
-			reduce(5), // ), reduce: Value
+			reduce(3), // identifier, reduce: Value
+			reduce(3), // quoted_identifier, reduce: Value
+			reduce(3), // boolean_t, reduce: Value
+			reduce(3), // boolean_f, reduce: Value
+			reduce(3), // number, reduce: Value
+			reduce(3), // string, reduce: Value
+			reduce(3), // (, reduce: Value
+			reduce(3), // ), reduce: Value
+			reduce(3), // #(, reduce: Value
 		},
 	},
 	actionRow{ // S15
@@ -226,13 +256,15 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(6), // identifier, reduce: Value
-			reduce(6), // boolean_t, reduce: Value
-			reduce(6), // boolean_f, reduce: Value
-			reduce(6), // number, reduce: Value
-			reduce(6), // string, reduce: Value
-			reduce(6), // (, reduce: Value
-			reduce(6), // ), reduce: Value
+			reduce(4), // identifier, reduce: Value
+			reduce(4), // quoted_identifier, reduce: Value
+			reduce(4), // boolean_t, reduce: Value
+			reduce(4), // boolean_f, reduce: Value
+			reduce(4), // number, reduce: Value
+			reduce(4), // string, reduce: Value
+			reduce(4), // (, reduce: Value
+			reduce(4), // ), reduce: Value
+			reduce(4), // #(, reduce: Value
 		},
 	},
 	actionRow{ // S16
@@ -240,13 +272,15 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			shift(10), // identifier
-			shift(11), // boolean_t
-			shift(12), // boolean_f
-			shift(13), // number
-			shift(14), // string
-			shift(17), // (
-			shift(20), // )
+			reduce(5), // identifier, reduce: Value
+			reduce(5), // quoted_identifier, reduce: Value
+			reduce(5), // boolean_t, reduce: Value
+			reduce(5), // boolean_f, reduce: Value
+			reduce(5), // number, reduce: Value
+			reduce(5), // string, reduce: Value
+			reduce(5), // (, reduce: Value
+			reduce(5), // ), reduce: Value
+			reduce(5), // #(, reduce: Value
 		},
 	},
 	actionRow{ // S17
@@ -254,27 +288,31 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			shift(10), // identifier
-			shift(11), // boolean_t
-			shift(12), // boolean_f
-			shift(13), // number
-			shift(14), // string
-			shift(17), // (
-			shift(22), // )
+			reduce(6), // identifier, reduce: Value
+			reduce(6), // quoted_identifier, reduce: Value
+			reduce(6), // boolean_t, reduce: Value
+			reduce(6), // boolean_f, reduce: Value
+			reduce(6), // number, reduce: Value
+			reduce(6), // string, reduce: Value
+			reduce(6), // (, reduce: Value
+			reduce(6), // ), reduce: Value
+			reduce(6), // #(, reduce: Value
 		},
 	},
 	actionRow{ // S18
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			reduce(10), // $, reduce: List
-			nil,        // identifier
-			nil,        // boolean_t
-			nil,        // boolean_f
-			nil,        // number
-			nil,        // string
-			nil,        // (
-			nil,        // )
+			nil,       // INVALID
+			nil,       // $
+			reduce(7), // identifier, reduce: Value
+			reduce(7), // quoted_identifier, reduce: Value
+			reduce(7), // boolean_t, reduce: Value
+			reduce(7), // boolean_f, reduce: Value
+			reduce(7), // number, reduce: Value
+			reduce(7), // string, reduce: Value
+			reduce(7), // (, reduce: Value
+			reduce(7), // ), reduce: Value
+			reduce(7), // #(, reduce: Value
 		},
 	},
 	actionRow{ // S19
@@ -282,55 +320,63 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(8), // identifier, reduce: ListElements
-			reduce(8), // boolean_t, reduce: ListElements
-			reduce(8), // boolean_f, reduce: ListElements
-			reduce(8), // number, reduce: ListElements
-			reduce(8), // string, reduce: ListElements
-			reduce(8), // (, reduce: ListElements
-			reduce(8), // ), reduce: ListElements
+			shift(12), // identifier
+			shift(13), // quoted_identifier
+			shift(14), // boolean_t
+			shift(15), // boolean_f
+			shift(16), // number
+			shift(17), // string
+			shift(20), // (
+			shift(26), // )
+			shift(22), // #(
 		},
 	},
 	actionRow{ // S20
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       // INVALID
-			reduce(9), // $, reduce: List
-			nil,       // identifier
-			nil,       // boolean_t
-			nil,       // boolean_f
-			nil,       // number
-			nil,       // string
-			nil,       // (
-			nil,       // )
+			nil,       // $
+			shift(12), // identifier
+			shift(13), // quoted_identifier
+			shift(14), // boolean_t
+			shift(15), // boolean_f
+			shift(16), // number
+			shift(17), // string
+			shift(20), // (
+			shift(28), // )
+			shift(22), // #(
 		},
 	},
 	actionRow{ // S21
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,       // INVALID
-			nil,       // $
-			shift(10), // identifier
-			shift(11), // boolean_t
-			shift(12), // boolean_f
-			shift(13), // number
-			shift(14), // string
-			shift(17), // (
-			shift(23), // )
+			nil,        // INVALID
+			reduce(11), // $, reduce: List
+			nil,        // identifier
+			nil,        // quoted_identifier
+			nil,        // boolean_t
+			nil,        // boolean_f
+			nil,        // number
+			nil,        // string
+			nil,        // (
+			nil,        // )
+			nil,        // #(
 		},
 	},
 	actionRow{ // S22
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        // INVALID
-			nil,        // $
-			reduce(10), // identifier, reduce: List
-			reduce(10), // boolean_t, reduce: List
-			reduce(10), // boolean_f, reduce: List
-			reduce(10), // number, reduce: List
-			reduce(10), // string, reduce: List
-			reduce(10), // (, reduce: List
-			reduce(10), // ), reduce: List
+			nil,       // INVALID
+			nil,       // $
+			shift(12), // identifier
+			shift(13), // quoted_identifier
+			shift(14), // boolean_t
+			shift(15), // boolean_f
+			shift(16), // number
+			shift(17), // string
+			shift(20), // (
+			shift(30), // )
+			shift(22), // #(
 		},
 	},
 	actionRow{ // S23
@@ -338,13 +384,175 @@ var actionTab = actionTable{
 		actions: [numSymbols]action{
 			nil,       // INVALID
 			nil,       // $
-			reduce(9), // identifier, reduce: List
-			reduce(9), // boolean_t, reduce: List
-			reduce(9), // boolean_f, reduce: List
-			reduce(9), // number, reduce: List
-			reduce(9), // string, reduce: List
-			reduce(9), // (, reduce: List
-			reduce(9), // ), reduce: List
+			shift(12), // identifier
+			shift(13), // quoted_identifier
+			shift(14), // boolean_t
+			shift(15), // boolean_f
+			shift(16), // number
+			shift(17), // string
+			shift(20), // (
+			shift(31), // )
+			shift(22), // #(
+		},
+	},
+	actionRow{ // S24
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(13), // $, reduce: List
+			nil,        // identifier
+			nil,        // quoted_identifier
+			nil,        // boolean_t
+			nil,        // boolean_f
+			nil,        // number
+			nil,        // string
+			nil,        // (
+			nil,        // )
+			nil,        // #(
+		},
+	},
+	actionRow{ // S25
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // $
+			reduce(9), // identifier, reduce: ListElements
+			reduce(9), // quoted_identifier, reduce: ListElements
+			reduce(9), // boolean_t, reduce: ListElements
+			reduce(9), // boolean_f, reduce: ListElements
+			reduce(9), // number, reduce: ListElements
+			reduce(9), // string, reduce: ListElements
+			reduce(9), // (, reduce: ListElements
+			reduce(9), // ), reduce: ListElements
+			reduce(9), // #(, reduce: ListElements
+		},
+	},
+	actionRow{ // S26
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(10), // $, reduce: List
+			nil,        // identifier
+			nil,        // quoted_identifier
+			nil,        // boolean_t
+			nil,        // boolean_f
+			nil,        // number
+			nil,        // string
+			nil,        // (
+			nil,        // )
+			nil,        // #(
+		},
+	},
+	actionRow{ // S27
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // $
+			shift(12), // identifier
+			shift(13), // quoted_identifier
+			shift(14), // boolean_t
+			shift(15), // boolean_f
+			shift(16), // number
+			shift(17), // string
+			shift(20), // (
+			shift(32), // )
+			shift(22), // #(
+		},
+	},
+	actionRow{ // S28
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(11), // identifier, reduce: List
+			reduce(11), // quoted_identifier, reduce: List
+			reduce(11), // boolean_t, reduce: List
+			reduce(11), // boolean_f, reduce: List
+			reduce(11), // number, reduce: List
+			reduce(11), // string, reduce: List
+			reduce(11), // (, reduce: List
+			reduce(11), // ), reduce: List
+			reduce(11), // #(, reduce: List
+		},
+	},
+	actionRow{ // S29
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,       // INVALID
+			nil,       // $
+			shift(12), // identifier
+			shift(13), // quoted_identifier
+			shift(14), // boolean_t
+			shift(15), // boolean_f
+			shift(16), // number
+			shift(17), // string
+			shift(20), // (
+			shift(33), // )
+			shift(22), // #(
+		},
+	},
+	actionRow{ // S30
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(13), // identifier, reduce: List
+			reduce(13), // quoted_identifier, reduce: List
+			reduce(13), // boolean_t, reduce: List
+			reduce(13), // boolean_f, reduce: List
+			reduce(13), // number, reduce: List
+			reduce(13), // string, reduce: List
+			reduce(13), // (, reduce: List
+			reduce(13), // ), reduce: List
+			reduce(13), // #(, reduce: List
+		},
+	},
+	actionRow{ // S31
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			reduce(12), // $, reduce: List
+			nil,        // identifier
+			nil,        // quoted_identifier
+			nil,        // boolean_t
+			nil,        // boolean_f
+			nil,        // number
+			nil,        // string
+			nil,        // (
+			nil,        // )
+			nil,        // #(
+		},
+	},
+	actionRow{ // S32
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(10), // identifier, reduce: List
+			reduce(10), // quoted_identifier, reduce: List
+			reduce(10), // boolean_t, reduce: List
+			reduce(10), // boolean_f, reduce: List
+			reduce(10), // number, reduce: List
+			reduce(10), // string, reduce: List
+			reduce(10), // (, reduce: List
+			reduce(10), // ), reduce: List
+			reduce(10), // #(, reduce: List
+		},
+	},
+	actionRow{ // S33
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        // INVALID
+			nil,        // $
+			reduce(12), // identifier, reduce: List
+			reduce(12), // quoted_identifier, reduce: List
+			reduce(12), // boolean_t, reduce: List
+			reduce(12), // boolean_f, reduce: List
+			reduce(12), // number, reduce: List
+			reduce(12), // string, reduce: List
+			reduce(12), // (, reduce: List
+			reduce(12), // ), reduce: List
+			reduce(12), // #(, reduce: List
 		},
 	},
 }

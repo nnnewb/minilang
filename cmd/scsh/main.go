@@ -40,13 +40,11 @@ func main() {
 		}
 
 		val := environment.NewValueFromASTNode(parseResult.(ast.Node))
-		if val.GetType() == environment.VTList {
-			evaluated, err := ee.EvaluateFunctionCall(*val.(*environment.List))
-			if err != nil {
-				fmt.Printf("evaluation failed, error %v", err)
-				continue
-			}
-			fmt.Printf("#%v\n", evaluated)
+		evaluated, err := ee.Evaluate(val)
+		if err != nil {
+			fmt.Printf("evaluation failed, error %v\n", err)
+			continue
 		}
+		fmt.Printf("# (%T) %v\n", evaluated, evaluated)
 	}
 }

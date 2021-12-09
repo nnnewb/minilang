@@ -6,12 +6,14 @@ S0{
 	!whitespace : • ' ' | '\t' | '\r' | '\n'
 	!comment : • ';' {.} '\n'
 	identifier : • _identifier
+	quoted_identifier : • '#' _identifier
 	boolean_t : • _boolean_t
 	boolean_f : • _boolean_f
 	string : • _string
 	number : • _number
 	( : • '('
 	) : • ')'
+	#( : • '#' '('
 	_identifier : _initial {_subsequent} | • _peculiar_identifier
 	_identifier : • _initial {_subsequent} | _peculiar_identifier
 	_boolean_t : • '#' 't'
@@ -75,16 +77,34 @@ Action: nil
 Symbols classes: {['"','"'], ['\','\']}
 
 S3{
+	quoted_identifier : '#' • _identifier
+	#( : '#' • '('
 	_boolean_t : '#' • 't'
 	_boolean_f : '#' • 'f'
 	boolean_t : • _boolean_t
 	boolean_f : • _boolean_f
+	_identifier : _initial {_subsequent} | • _peculiar_identifier
+	_identifier : • _initial {_subsequent} | _peculiar_identifier
+	_peculiar_identifier : '+' | '-' | • '.' '.' '.'
+	_peculiar_identifier : '+' | • '-' | '.' '.' '.'
+	_peculiar_identifier : • '+' | '-' | '.' '.' '.'
+	_initial : • _letter
+	_letter :  'a'-'z' | •  'A'-'Z'
+	_letter : •  'a'-'z' |  'A'-'Z'
 }
 Transitions:
-	['f','f'] -> S14
-	['t','t'] -> S15
+	['(','('] -> S14
+	['+','+'] -> S15
+	['-','-'] -> S15
+	['.','.'] -> S16
+	['A','Z'] -> S17
+	['a','e'] -> S17
+	['f','f'] -> S18
+	['g','s'] -> S17
+	['t','t'] -> S19
+	['u','z'] -> S17
 Action: nil
-Symbols classes: {['f','f'], ['t','t']}
+Symbols classes: {['(','('], ['+','+'], ['-','-'], ['.','.'], ['A','Z'], ['a','e'], ['f','f'], ['g','s'], ['t','t'], ['u','z']}
 
 S4{
 	( : '(' •
@@ -114,7 +134,7 @@ S6{
 	_digit : •  '0'-'9'
 }
 Transitions:
-	['.','.'] -> S16
+	['.','.'] -> S20
 	['0','9'] -> S8
 Action: Accept("identifier")
 Symbols classes: {['.','.'], ['0','9']}
@@ -130,8 +150,8 @@ S7{
 	_digit : •  '0'-'9'
 }
 Transitions:
-	['.','.'] -> S17
-	['0','9'] -> S18
+	['.','.'] -> S21
+	['0','9'] -> S22
 Action: nil
 Symbols classes: {['.','.'], ['0','9']}
 
@@ -150,7 +170,7 @@ S8{
 	_digit : •  '0'-'9'
 }
 Transitions:
-	['.','.'] -> S19
+	['.','.'] -> S23
 	['0','9'] -> S8
 Action: Accept("number")
 Symbols classes: {['.','.'], ['0','9']}
@@ -160,7 +180,7 @@ S9{
 	!comment : ';' {• .} '\n'
 }
 Transitions:
-	['\n','\n'] -> S20
+	['\n','\n'] -> S24
 . -> S9
 Action: nil
 Symbols classes: {['\n','\n']}
@@ -186,14 +206,14 @@ S10{
 	_letter : •  'a'-'z' |  'A'-'Z'
 }
 Transitions:
-	['!','!'] -> S21
-	['+','+'] -> S21
-	['-','-'] -> S21
-	['.','.'] -> S21
-	['0','9'] -> S22
-	['?','?'] -> S21
-	['A','Z'] -> S23
-	['a','z'] -> S23
+	['!','!'] -> S25
+	['+','+'] -> S25
+	['-','-'] -> S25
+	['.','.'] -> S25
+	['0','9'] -> S26
+	['?','?'] -> S25
+	['A','Z'] -> S27
+	['a','z'] -> S27
 Action: Accept("identifier")
 Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
 
@@ -234,22 +254,132 @@ Action: nil
 Symbols classes: {['"','"'], ['\','\']}
 
 S14{
-	_boolean_f : '#' 'f' •
-	boolean_f : _boolean_f •
+	#( : '#' '(' •
 }
 Transitions:
-Action: Accept("boolean_f")
+Action: Accept("#(")
 Symbols classes: {}
 
 S15{
-	_boolean_t : '#' 't' •
-	boolean_t : _boolean_t •
+	_peculiar_identifier : ('+' | '-' | '.' '.' '.') •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	quoted_identifier : '#' _identifier •
 }
 Transitions:
-Action: Accept("boolean_t")
+Action: Accept("quoted_identifier")
 Symbols classes: {}
 
 S16{
+	_peculiar_identifier : '+' | '-' | '.' • '.' '.'
+	_identifier : _initial {_subsequent} | • _peculiar_identifier
+	quoted_identifier : '#' • _identifier
+}
+Transitions:
+	['.','.'] -> S28
+Action: nil
+Symbols classes: {['.','.']}
+
+S17{
+	_letter : ( 'a'-'z' |  'A'-'Z') •
+	_initial : _letter •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	_identifier : _initial {• _subsequent} | _peculiar_identifier
+	quoted_identifier : '#' _identifier •
+	quoted_identifier : '#' • _identifier
+	_subsequent : _initial | _digit | • _special_subsequent
+	_subsequent : _initial | • _digit | _special_subsequent
+	_subsequent : • _initial | _digit | _special_subsequent
+	_special_subsequent : '.' | '+' | '-' | '!' | • '?'
+	_special_subsequent : '.' | '+' | '-' | • '!' | '?'
+	_special_subsequent : '.' | '+' | • '-' | '!' | '?'
+	_special_subsequent : '.' | • '+' | '-' | '!' | '?'
+	_special_subsequent : • '.' | '+' | '-' | '!' | '?'
+	_digit : •  '0'-'9'
+	_initial : • _letter
+	_letter :  'a'-'z' | •  'A'-'Z'
+	_letter : •  'a'-'z' |  'A'-'Z'
+}
+Transitions:
+	['!','!'] -> S29
+	['+','+'] -> S29
+	['-','-'] -> S29
+	['.','.'] -> S29
+	['0','9'] -> S30
+	['?','?'] -> S29
+	['A','Z'] -> S31
+	['a','z'] -> S31
+Action: Accept("quoted_identifier")
+Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
+
+S18{
+	_boolean_f : '#' 'f' •
+	_letter : ( 'a'-'z' |  'A'-'Z') •
+	boolean_f : _boolean_f •
+	_initial : _letter •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	_identifier : _initial {• _subsequent} | _peculiar_identifier
+	quoted_identifier : '#' _identifier •
+	quoted_identifier : '#' • _identifier
+	_subsequent : _initial | _digit | • _special_subsequent
+	_subsequent : _initial | • _digit | _special_subsequent
+	_subsequent : • _initial | _digit | _special_subsequent
+	_special_subsequent : '.' | '+' | '-' | '!' | • '?'
+	_special_subsequent : '.' | '+' | '-' | • '!' | '?'
+	_special_subsequent : '.' | '+' | • '-' | '!' | '?'
+	_special_subsequent : '.' | • '+' | '-' | '!' | '?'
+	_special_subsequent : • '.' | '+' | '-' | '!' | '?'
+	_digit : •  '0'-'9'
+	_initial : • _letter
+	_letter :  'a'-'z' | •  'A'-'Z'
+	_letter : •  'a'-'z' |  'A'-'Z'
+}
+Transitions:
+	['!','!'] -> S29
+	['+','+'] -> S29
+	['-','-'] -> S29
+	['.','.'] -> S29
+	['0','9'] -> S30
+	['?','?'] -> S29
+	['A','Z'] -> S31
+	['a','z'] -> S31
+Action: Accept("quoted_identifier")
+Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
+
+S19{
+	_boolean_t : '#' 't' •
+	_letter : ( 'a'-'z' |  'A'-'Z') •
+	boolean_t : _boolean_t •
+	_initial : _letter •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	_identifier : _initial {• _subsequent} | _peculiar_identifier
+	quoted_identifier : '#' _identifier •
+	quoted_identifier : '#' • _identifier
+	_subsequent : _initial | _digit | • _special_subsequent
+	_subsequent : _initial | • _digit | _special_subsequent
+	_subsequent : • _initial | _digit | _special_subsequent
+	_special_subsequent : '.' | '+' | '-' | '!' | • '?'
+	_special_subsequent : '.' | '+' | '-' | • '!' | '?'
+	_special_subsequent : '.' | '+' | • '-' | '!' | '?'
+	_special_subsequent : '.' | • '+' | '-' | '!' | '?'
+	_special_subsequent : • '.' | '+' | '-' | '!' | '?'
+	_digit : •  '0'-'9'
+	_initial : • _letter
+	_letter :  'a'-'z' | •  'A'-'Z'
+	_letter : •  'a'-'z' |  'A'-'Z'
+}
+Transitions:
+	['!','!'] -> S29
+	['+','+'] -> S29
+	['-','-'] -> S29
+	['.','.'] -> S29
+	['0','9'] -> S30
+	['?','?'] -> S29
+	['A','Z'] -> S31
+	['a','z'] -> S31
+Action: Accept("quoted_identifier")
+Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
+
+S20{
 	_ureal10 : ['.'] • _uint10 | _uint10 '.' _digit {_digit}
 	_number : [_sign] • _ureal10
 	number : • _number
@@ -257,21 +387,21 @@ S16{
 	_digit : •  '0'-'9'
 }
 Transitions:
-	['0','9'] -> S18
+	['0','9'] -> S22
 Action: nil
 Symbols classes: {['0','9']}
 
-S17{
+S21{
 	_peculiar_identifier : '+' | '-' | '.' '.' • '.'
 	_identifier : _initial {_subsequent} | • _peculiar_identifier
 	identifier : • _identifier
 }
 Transitions:
-	['.','.'] -> S24
+	['.','.'] -> S32
 Action: nil
 Symbols classes: {['.','.']}
 
-S18{
+S22{
 	_digit :  '0'-'9' •
 	_uint10 : _digit {_digit} •
 	_uint10 : _digit {• _digit}
@@ -284,29 +414,29 @@ S18{
 	_digit : •  '0'-'9'
 }
 Transitions:
-	['0','9'] -> S18
+	['0','9'] -> S22
 Action: Accept("number")
 Symbols classes: {['0','9']}
 
-S19{
+S23{
 	_ureal10 : ['.'] _uint10 | _uint10 '.' • _digit {_digit}
 	_number : [_sign] • _ureal10
 	number : • _number
 	_digit : •  '0'-'9'
 }
 Transitions:
-	['0','9'] -> S25
+	['0','9'] -> S33
 Action: nil
 Symbols classes: {['0','9']}
 
-S20{
+S24{
 	!comment : ';' {.} '\n' •
 }
 Transitions:
 Action: Ignore("!comment")
 Symbols classes: {}
 
-S21{
+S25{
 	_special_subsequent : ('.' | '+' | '-' | '!' | '?') •
 	_subsequent : (_initial | _digit | _special_subsequent) •
 	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
@@ -327,18 +457,18 @@ S21{
 	_letter : •  'a'-'z' |  'A'-'Z'
 }
 Transitions:
-	['!','!'] -> S21
-	['+','+'] -> S21
-	['-','-'] -> S21
-	['.','.'] -> S21
-	['0','9'] -> S22
-	['?','?'] -> S21
-	['A','Z'] -> S23
-	['a','z'] -> S23
+	['!','!'] -> S25
+	['+','+'] -> S25
+	['-','-'] -> S25
+	['.','.'] -> S25
+	['0','9'] -> S26
+	['?','?'] -> S25
+	['A','Z'] -> S27
+	['a','z'] -> S27
 Action: Accept("identifier")
 Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
 
-S22{
+S26{
 	_digit :  '0'-'9' •
 	_subsequent : (_initial | _digit | _special_subsequent) •
 	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
@@ -359,18 +489,18 @@ S22{
 	_letter : •  'a'-'z' |  'A'-'Z'
 }
 Transitions:
-	['!','!'] -> S21
-	['+','+'] -> S21
-	['-','-'] -> S21
-	['.','.'] -> S21
-	['0','9'] -> S22
-	['?','?'] -> S21
-	['A','Z'] -> S23
-	['a','z'] -> S23
+	['!','!'] -> S25
+	['+','+'] -> S25
+	['-','-'] -> S25
+	['.','.'] -> S25
+	['0','9'] -> S26
+	['?','?'] -> S25
+	['A','Z'] -> S27
+	['a','z'] -> S27
 Action: Accept("identifier")
 Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
 
-S23{
+S27{
 	_letter : ( 'a'-'z' |  'A'-'Z') •
 	_initial : _letter •
 	_subsequent : (_initial | _digit | _special_subsequent) •
@@ -392,18 +522,125 @@ S23{
 	_letter : •  'a'-'z' |  'A'-'Z'
 }
 Transitions:
-	['!','!'] -> S21
-	['+','+'] -> S21
-	['-','-'] -> S21
-	['.','.'] -> S21
-	['0','9'] -> S22
-	['?','?'] -> S21
-	['A','Z'] -> S23
-	['a','z'] -> S23
+	['!','!'] -> S25
+	['+','+'] -> S25
+	['-','-'] -> S25
+	['.','.'] -> S25
+	['0','9'] -> S26
+	['?','?'] -> S25
+	['A','Z'] -> S27
+	['a','z'] -> S27
 Action: Accept("identifier")
 Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
 
-S24{
+S28{
+	_peculiar_identifier : '+' | '-' | '.' '.' • '.'
+	_identifier : _initial {_subsequent} | • _peculiar_identifier
+	quoted_identifier : '#' • _identifier
+}
+Transitions:
+	['.','.'] -> S15
+Action: nil
+Symbols classes: {['.','.']}
+
+S29{
+	_special_subsequent : ('.' | '+' | '-' | '!' | '?') •
+	_subsequent : (_initial | _digit | _special_subsequent) •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	_identifier : _initial {• _subsequent} | _peculiar_identifier
+	quoted_identifier : '#' _identifier •
+	quoted_identifier : '#' • _identifier
+	_subsequent : _initial | _digit | • _special_subsequent
+	_subsequent : _initial | • _digit | _special_subsequent
+	_subsequent : • _initial | _digit | _special_subsequent
+	_special_subsequent : '.' | '+' | '-' | '!' | • '?'
+	_special_subsequent : '.' | '+' | '-' | • '!' | '?'
+	_special_subsequent : '.' | '+' | • '-' | '!' | '?'
+	_special_subsequent : '.' | • '+' | '-' | '!' | '?'
+	_special_subsequent : • '.' | '+' | '-' | '!' | '?'
+	_digit : •  '0'-'9'
+	_initial : • _letter
+	_letter :  'a'-'z' | •  'A'-'Z'
+	_letter : •  'a'-'z' |  'A'-'Z'
+}
+Transitions:
+	['!','!'] -> S29
+	['+','+'] -> S29
+	['-','-'] -> S29
+	['.','.'] -> S29
+	['0','9'] -> S30
+	['?','?'] -> S29
+	['A','Z'] -> S31
+	['a','z'] -> S31
+Action: Accept("quoted_identifier")
+Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
+
+S30{
+	_digit :  '0'-'9' •
+	_subsequent : (_initial | _digit | _special_subsequent) •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	_identifier : _initial {• _subsequent} | _peculiar_identifier
+	quoted_identifier : '#' _identifier •
+	quoted_identifier : '#' • _identifier
+	_subsequent : _initial | _digit | • _special_subsequent
+	_subsequent : _initial | • _digit | _special_subsequent
+	_subsequent : • _initial | _digit | _special_subsequent
+	_special_subsequent : '.' | '+' | '-' | '!' | • '?'
+	_special_subsequent : '.' | '+' | '-' | • '!' | '?'
+	_special_subsequent : '.' | '+' | • '-' | '!' | '?'
+	_special_subsequent : '.' | • '+' | '-' | '!' | '?'
+	_special_subsequent : • '.' | '+' | '-' | '!' | '?'
+	_digit : •  '0'-'9'
+	_initial : • _letter
+	_letter :  'a'-'z' | •  'A'-'Z'
+	_letter : •  'a'-'z' |  'A'-'Z'
+}
+Transitions:
+	['!','!'] -> S29
+	['+','+'] -> S29
+	['-','-'] -> S29
+	['.','.'] -> S29
+	['0','9'] -> S30
+	['?','?'] -> S29
+	['A','Z'] -> S31
+	['a','z'] -> S31
+Action: Accept("quoted_identifier")
+Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
+
+S31{
+	_letter : ( 'a'-'z' |  'A'-'Z') •
+	_initial : _letter •
+	_subsequent : (_initial | _digit | _special_subsequent) •
+	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
+	_identifier : _initial {• _subsequent} | _peculiar_identifier
+	quoted_identifier : '#' _identifier •
+	quoted_identifier : '#' • _identifier
+	_subsequent : _initial | _digit | • _special_subsequent
+	_subsequent : _initial | • _digit | _special_subsequent
+	_subsequent : • _initial | _digit | _special_subsequent
+	_special_subsequent : '.' | '+' | '-' | '!' | • '?'
+	_special_subsequent : '.' | '+' | '-' | • '!' | '?'
+	_special_subsequent : '.' | '+' | • '-' | '!' | '?'
+	_special_subsequent : '.' | • '+' | '-' | '!' | '?'
+	_special_subsequent : • '.' | '+' | '-' | '!' | '?'
+	_digit : •  '0'-'9'
+	_initial : • _letter
+	_letter :  'a'-'z' | •  'A'-'Z'
+	_letter : •  'a'-'z' |  'A'-'Z'
+}
+Transitions:
+	['!','!'] -> S29
+	['+','+'] -> S29
+	['-','-'] -> S29
+	['.','.'] -> S29
+	['0','9'] -> S30
+	['?','?'] -> S29
+	['A','Z'] -> S31
+	['a','z'] -> S31
+Action: Accept("quoted_identifier")
+Symbols classes: {['!','!'], ['+','+'], ['-','-'], ['.','.'], ['0','9'], ['?','?'], ['A','Z'], ['a','z']}
+
+S32{
 	_peculiar_identifier : ('+' | '-' | '.' '.' '.') •
 	_identifier : (_initial {_subsequent} | _peculiar_identifier) •
 	identifier : _identifier •
@@ -412,7 +649,7 @@ Transitions:
 Action: Accept("identifier")
 Symbols classes: {}
 
-S25{
+S33{
 	_digit :  '0'-'9' •
 	_ureal10 : (['.'] _uint10 | _uint10 '.' _digit {_digit}) •
 	_ureal10 : ['.'] _uint10 | _uint10 '.' _digit {• _digit}
@@ -423,7 +660,7 @@ S25{
 	_digit : •  '0'-'9'
 }
 Transitions:
-	['0','9'] -> S25
+	['0','9'] -> S33
 Action: Accept("number")
 Symbols classes: {['0','9']}
 

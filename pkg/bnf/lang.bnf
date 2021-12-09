@@ -12,6 +12,7 @@ _subsequent: _initial | _digit | _special_subsequent;
 _peculiar_identifier: '+' | '-' | '.' '.' '.';
 _identifier : _initial { _subsequent } | _peculiar_identifier;
 identifier: _identifier;
+quoted_identifier: '#' _identifier;
 
 //
 // boolean
@@ -52,12 +53,13 @@ import (
 // value
 //
 Value
-    : identifier    << ast.Identifier(string($0.(*token.Token).Lit)), nil >>
-    | boolean_t     << ast.Boolean(true), nil >>
-    | boolean_f     << ast.Boolean(false), nil >>
-    | number        << ast.NewNumber(string($0.(*token.Token).Lit)) >>
-    | string        << ast.String(string($0.(*token.Token).Lit)), nil >>
-    | List          << $0, nil >>
+    : identifier            << ast.Identifier(string($0.(*token.Token).Lit)), nil >>
+    | quoted_identifier     << ast.NewQuoted(ast.Identifier(string($0.(*token.Token).Lit[1:]))), nil >>
+    | boolean_t             << ast.Boolean(true), nil >>
+    | boolean_f             << ast.Boolean(false), nil >>
+    | number                << ast.NewNumber(string($0.(*token.Token).Lit)) >>
+    | string                << ast.String(string($0.(*token.Token).Lit)), nil >>
+    | List                  << $0, nil >>
 ;
 
 //
@@ -70,4 +72,6 @@ ListElements
 List
     : "(" ListElements ")"  << $1, nil >>
     | "(" ")"               << ast.NewList(), nil >>
+    | "#(" ListElements ")" << ast.NewQuoted($1.(ast.Node)), nil >>
+    | "#(" ")"              << ast.NewQuoted(ast.NewList()), nil >>
 ;

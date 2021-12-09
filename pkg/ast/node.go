@@ -10,6 +10,7 @@ const (
 	NTNumber  = "number"
 	NTString  = "string"
 	NTBoolean = "boolean"
+	NTQuote   = "quote"
 )
 
 type Node interface {
@@ -91,4 +92,22 @@ func (n Boolean) GetType() NodeType {
 
 func (n Boolean) GetValue() interface{} {
 	return n
+}
+
+type Quoted struct {
+	node Node
+}
+
+func (q Quoted) GetType() NodeType {
+	return NTQuote
+}
+
+func (q Quoted) GetValue() interface{} {
+	return q.node
+}
+
+func NewQuoted(node Node) *Quoted {
+	return &Quoted{
+		node: node,
+	}
 }

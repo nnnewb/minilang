@@ -14,7 +14,7 @@ var gotoTab = gotoTable{
 		-1, // S'
 		1,  // Value
 		-1, // ListElements
-		7,  // List
+		8,  // List
 	},
 	gotoRow{ // S1
 		-1, // S'
@@ -60,21 +60,21 @@ var gotoTab = gotoTable{
 	},
 	gotoRow{ // S8
 		-1, // S'
-		9,  // Value
-		16, // ListElements
-		15, // List
+		-1, // Value
+		-1, // ListElements
+		-1, // List
 	},
 	gotoRow{ // S9
 		-1, // S'
-		-1, // Value
-		-1, // ListElements
-		-1, // List
+		11, // Value
+		19, // ListElements
+		18, // List
 	},
 	gotoRow{ // S10
 		-1, // S'
-		-1, // Value
-		-1, // ListElements
-		-1, // List
+		11, // Value
+		23, // ListElements
+		18, // List
 	},
 	gotoRow{ // S11
 		-1, // S'
@@ -108,15 +108,15 @@ var gotoTab = gotoTable{
 	},
 	gotoRow{ // S16
 		-1, // S'
-		19, // Value
+		-1, // Value
 		-1, // ListElements
-		15, // List
+		-1, // List
 	},
 	gotoRow{ // S17
 		-1, // S'
-		9,  // Value
-		21, // ListElements
-		15, // List
+		-1, // Value
+		-1, // ListElements
+		-1, // List
 	},
 	gotoRow{ // S18
 		-1, // S'
@@ -126,29 +126,89 @@ var gotoTab = gotoTable{
 	},
 	gotoRow{ // S19
 		-1, // S'
-		-1, // Value
+		25, // Value
 		-1, // ListElements
-		-1, // List
+		18, // List
 	},
 	gotoRow{ // S20
 		-1, // S'
-		-1, // Value
-		-1, // ListElements
-		-1, // List
+		11, // Value
+		27, // ListElements
+		18, // List
 	},
 	gotoRow{ // S21
 		-1, // S'
-		19, // Value
+		-1, // Value
 		-1, // ListElements
-		15, // List
+		-1, // List
 	},
 	gotoRow{ // S22
+		-1, // S'
+		11, // Value
+		29, // ListElements
+		18, // List
+	},
+	gotoRow{ // S23
+		-1, // S'
+		25, // Value
+		-1, // ListElements
+		18, // List
+	},
+	gotoRow{ // S24
 		-1, // S'
 		-1, // Value
 		-1, // ListElements
 		-1, // List
 	},
-	gotoRow{ // S23
+	gotoRow{ // S25
+		-1, // S'
+		-1, // Value
+		-1, // ListElements
+		-1, // List
+	},
+	gotoRow{ // S26
+		-1, // S'
+		-1, // Value
+		-1, // ListElements
+		-1, // List
+	},
+	gotoRow{ // S27
+		-1, // S'
+		25, // Value
+		-1, // ListElements
+		18, // List
+	},
+	gotoRow{ // S28
+		-1, // S'
+		-1, // Value
+		-1, // ListElements
+		-1, // List
+	},
+	gotoRow{ // S29
+		-1, // S'
+		25, // Value
+		-1, // ListElements
+		18, // List
+	},
+	gotoRow{ // S30
+		-1, // S'
+		-1, // Value
+		-1, // ListElements
+		-1, // List
+	},
+	gotoRow{ // S31
+		-1, // S'
+		-1, // Value
+		-1, // ListElements
+		-1, // List
+	},
+	gotoRow{ // S32
+		-1, // S'
+		-1, // Value
+		-1, // ListElements
+		-1, // List
+	},
+	gotoRow{ // S33
 		-1, // S'
 		-1, // Value
 		-1, // ListElements
