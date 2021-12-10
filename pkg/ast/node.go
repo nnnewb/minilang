@@ -15,15 +15,10 @@ const (
 
 type Node interface {
 	GetValue() interface{}
-	GetType() NodeType
 }
 
 type List struct {
 	elements []Node
-}
-
-func (l *List) GetType() NodeType {
-	return NTList
 }
 
 func (l *List) GetValue() interface{} {
@@ -46,39 +41,47 @@ func NewListWithInitial(initial Node) *List {
 	return l.Append(initial)
 }
 
-type Identifier string
+type Symbol string
 
-func (i Identifier) GetType() NodeType {
-	return NTIdent
+func (s Symbol) GetValue() interface{} {
+	return s
 }
+
+type Identifier string
 
 func (i Identifier) GetValue() interface{} {
 	return i
 }
 
-type Number float64
+type UInt float64
 
-func (n Number) GetType() NodeType {
-	return NTNumber
-}
-
-func (n Number) GetValue() interface{} {
+func (n UInt) GetValue() interface{} {
 	return n
 }
 
-func NewNumber(text string) (Number, error) {
+func NewUInt(text string) (UInt, error) {
+	if f, err := strconv.ParseUint(text, 10, 64); err != nil {
+		return 0, err
+	} else {
+		return UInt(f), nil
+	}
+}
+
+type Float float64
+
+func (n Float) GetValue() interface{} {
+	return n
+}
+
+func NewFloat(text string) (Float, error) {
 	if f, err := strconv.ParseFloat(text, 64); err != nil {
 		return 0, err
 	} else {
-		return Number(f), nil
+		return Float(f), nil
 	}
 }
 
 type String string
-
-func (n String) GetType() NodeType {
-	return NTString
-}
 
 func (n String) GetValue() interface{} {
 	return n
@@ -86,28 +89,27 @@ func (n String) GetValue() interface{} {
 
 type Boolean bool
 
-func (n Boolean) GetType() NodeType {
-	return NTBoolean
-}
-
 func (n Boolean) GetValue() interface{} {
 	return n
 }
 
 type Quoted struct {
-	node Node
+	elements []Node
 }
 
-func (q Quoted) GetType() NodeType {
-	return NTQuote
+func (q *Quoted) GetValue() interface{} {
+	return q.elements
 }
 
-func (q Quoted) GetValue() interface{} {
-	return q.node
-}
-
-func NewQuoted(node Node) *Quoted {
+func NewQuoted(lst *List) *Quoted {
+	if lst == nil {
+		return &Quoted{
+			elements: make([]Node, 0),
+		}
+	}
+	elements := make([]Node, len(lst.elements))
+	copy(elements, lst.elements)
 	return &Quoted{
-		node: node,
+		elements: elements,
 	}
 }

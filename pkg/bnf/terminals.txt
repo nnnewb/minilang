@@ -4,7 +4,8 @@ identifier
 quoted_identifier
 boolean_t
 boolean_f
-number
+float
+uint
 string
 (
 )

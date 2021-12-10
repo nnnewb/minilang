@@ -4,7 +4,8 @@ S0{
 	Value : •quoted_identifier «$»
 	Value : •boolean_t «$»
 	Value : •boolean_f «$»
-	Value : •number «$»
+	Value : •float «$»
+	Value : •uint «$»
 	Value : •string «$»
 	Value : •List «$»
 	List : •( ListElements ) «$»
@@ -18,11 +19,12 @@ Transitions:
 	quoted_identifier -> 3
 	boolean_t -> 4
 	boolean_f -> 5
-	number -> 6
-	string -> 7
-	List -> 8
-	( -> 9
-	#( -> 10
+	float -> 6
+	uint -> 7
+	string -> 8
+	List -> 9
+	( -> 10
+	#( -> 11
 
 
 S1{
@@ -56,24 +58,30 @@ Transitions:
 
 
 S6{
-	Value : number• «$»
+	Value : float• «$»
 }
 Transitions:
 
 
 S7{
-	Value : string• «$»
+	Value : uint• «$»
 }
 Transitions:
 
 
 S8{
-	Value : List• «$»
+	Value : string• «$»
 }
 Transitions:
 
 
 S9{
+	Value : List• «$»
+}
+Transitions:
+
+
+S10{
 	List : ( •ListElements ) «$»
 	List : ( •) «$»
 	ListElements : •Value «)»
@@ -82,25 +90,28 @@ S9{
 	Value : •quoted_identifier «)»
 	Value : •boolean_t «)»
 	Value : •boolean_f «)»
-	Value : •number «)»
+	Value : •float «)»
+	Value : •uint «)»
 	Value : •string «)»
 	Value : •List «)»
 	ListElements : •Value «#(»
 	ListElements : •Value «(»
 	ListElements : •Value «boolean_f»
 	ListElements : •Value «boolean_t»
+	ListElements : •Value «float»
 	ListElements : •Value «identifier»
-	ListElements : •Value «number»
 	ListElements : •Value «quoted_identifier»
 	ListElements : •Value «string»
+	ListElements : •Value «uint»
 	ListElements : •ListElements Value «#(»
 	ListElements : •ListElements Value «(»
 	ListElements : •ListElements Value «boolean_f»
 	ListElements : •ListElements Value «boolean_t»
+	ListElements : •ListElements Value «float»
 	ListElements : •ListElements Value «identifier»
-	ListElements : •ListElements Value «number»
 	ListElements : •ListElements Value «quoted_identifier»
 	ListElements : •ListElements Value «string»
+	ListElements : •ListElements Value «uint»
 	List : •( ListElements ) «)»
 	List : •( ) «)»
 	List : •#( ListElements ) «)»
@@ -109,58 +120,74 @@ S9{
 	Value : •quoted_identifier «#(»
 	Value : •boolean_t «#(»
 	Value : •boolean_f «#(»
-	Value : •number «#(»
+	Value : •float «#(»
+	Value : •uint «#(»
 	Value : •string «#(»
 	Value : •List «#(»
 	Value : •identifier «(»
 	Value : •quoted_identifier «(»
 	Value : •boolean_t «(»
 	Value : •boolean_f «(»
-	Value : •number «(»
+	Value : •float «(»
+	Value : •uint «(»
 	Value : •string «(»
 	Value : •List «(»
 	Value : •identifier «boolean_f»
 	Value : •quoted_identifier «boolean_f»
 	Value : •boolean_t «boolean_f»
 	Value : •boolean_f «boolean_f»
-	Value : •number «boolean_f»
+	Value : •float «boolean_f»
+	Value : •uint «boolean_f»
 	Value : •string «boolean_f»
 	Value : •List «boolean_f»
 	Value : •identifier «boolean_t»
 	Value : •quoted_identifier «boolean_t»
 	Value : •boolean_t «boolean_t»
 	Value : •boolean_f «boolean_t»
-	Value : •number «boolean_t»
+	Value : •float «boolean_t»
+	Value : •uint «boolean_t»
 	Value : •string «boolean_t»
 	Value : •List «boolean_t»
+	Value : •identifier «float»
+	Value : •quoted_identifier «float»
+	Value : •boolean_t «float»
+	Value : •boolean_f «float»
+	Value : •float «float»
+	Value : •uint «float»
+	Value : •string «float»
+	Value : •List «float»
 	Value : •identifier «identifier»
 	Value : •quoted_identifier «identifier»
 	Value : •boolean_t «identifier»
 	Value : •boolean_f «identifier»
-	Value : •number «identifier»
+	Value : •float «identifier»
+	Value : •uint «identifier»
 	Value : •string «identifier»
 	Value : •List «identifier»
-	Value : •identifier «number»
-	Value : •quoted_identifier «number»
-	Value : •boolean_t «number»
-	Value : •boolean_f «number»
-	Value : •number «number»
-	Value : •string «number»
-	Value : •List «number»
 	Value : •identifier «quoted_identifier»
 	Value : •quoted_identifier «quoted_identifier»
 	Value : •boolean_t «quoted_identifier»
 	Value : •boolean_f «quoted_identifier»
-	Value : •number «quoted_identifier»
+	Value : •float «quoted_identifier»
+	Value : •uint «quoted_identifier»
 	Value : •string «quoted_identifier»
 	Value : •List «quoted_identifier»
 	Value : •identifier «string»
 	Value : •quoted_identifier «string»
 	Value : •boolean_t «string»
 	Value : •boolean_f «string»
-	Value : •number «string»
+	Value : •float «string»
+	Value : •uint «string»
 	Value : •string «string»
 	Value : •List «string»
+	Value : •identifier «uint»
+	Value : •quoted_identifier «uint»
+	Value : •boolean_t «uint»
+	Value : •boolean_f «uint»
+	Value : •float «uint»
+	Value : •uint «uint»
+	Value : •string «uint»
+	Value : •List «uint»
 	List : •( ListElements ) «#(»
 	List : •( ) «#(»
 	List : •#( ListElements ) «#(»
@@ -177,14 +204,14 @@ S9{
 	List : •( ) «boolean_t»
 	List : •#( ListElements ) «boolean_t»
 	List : •#( ) «boolean_t»
+	List : •( ListElements ) «float»
+	List : •( ) «float»
+	List : •#( ListElements ) «float»
+	List : •#( ) «float»
 	List : •( ListElements ) «identifier»
 	List : •( ) «identifier»
 	List : •#( ListElements ) «identifier»
 	List : •#( ) «identifier»
-	List : •( ListElements ) «number»
-	List : •( ) «number»
-	List : •#( ListElements ) «number»
-	List : •#( ) «number»
 	List : •( ListElements ) «quoted_identifier»
 	List : •( ) «quoted_identifier»
 	List : •#( ListElements ) «quoted_identifier»
@@ -193,23 +220,28 @@ S9{
 	List : •( ) «string»
 	List : •#( ListElements ) «string»
 	List : •#( ) «string»
+	List : •( ListElements ) «uint»
+	List : •( ) «uint»
+	List : •#( ListElements ) «uint»
+	List : •#( ) «uint»
 }
 Transitions:
-	Value -> 11
-	identifier -> 12
-	quoted_identifier -> 13
-	boolean_t -> 14
-	boolean_f -> 15
-	number -> 16
-	string -> 17
-	List -> 18
-	ListElements -> 19
-	( -> 20
-	) -> 21
-	#( -> 22
+	Value -> 12
+	identifier -> 13
+	quoted_identifier -> 14
+	boolean_t -> 15
+	boolean_f -> 16
+	float -> 17
+	uint -> 18
+	string -> 19
+	List -> 20
+	ListElements -> 21
+	( -> 22
+	) -> 23
+	#( -> 24
 
 
-S10{
+S11{
 	List : #( •ListElements ) «$»
 	List : #( •) «$»
 	ListElements : •Value «)»
@@ -218,25 +250,28 @@ S10{
 	Value : •quoted_identifier «)»
 	Value : •boolean_t «)»
 	Value : •boolean_f «)»
-	Value : •number «)»
+	Value : •float «)»
+	Value : •uint «)»
 	Value : •string «)»
 	Value : •List «)»
 	ListElements : •Value «#(»
 	ListElements : •Value «(»
 	ListElements : •Value «boolean_f»
 	ListElements : •Value «boolean_t»
+	ListElements : •Value «float»
 	ListElements : •Value «identifier»
-	ListElements : •Value «number»
 	ListElements : •Value «quoted_identifier»
 	ListElements : •Value «string»
+	ListElements : •Value «uint»
 	ListElements : •ListElements Value «#(»
 	ListElements : •ListElements Value «(»
 	ListElements : •ListElements Value «boolean_f»
 	ListElements : •ListElements Value «boolean_t»
+	ListElements : •ListElements Value «float»
 	ListElements : •ListElements Value «identifier»
-	ListElements : •ListElements Value «number»
 	ListElements : •ListElements Value «quoted_identifier»
 	ListElements : •ListElements Value «string»
+	ListElements : •ListElements Value «uint»
 	List : •( ListElements ) «)»
 	List : •( ) «)»
 	List : •#( ListElements ) «)»
@@ -245,58 +280,74 @@ S10{
 	Value : •quoted_identifier «#(»
 	Value : •boolean_t «#(»
 	Value : •boolean_f «#(»
-	Value : •number «#(»
+	Value : •float «#(»
+	Value : •uint «#(»
 	Value : •string «#(»
 	Value : •List «#(»
 	Value : •identifier «(»
 	Value : •quoted_identifier «(»
 	Value : •boolean_t «(»
 	Value : •boolean_f «(»
-	Value : •number «(»
+	Value : •float «(»
+	Value : •uint «(»
 	Value : •string «(»
 	Value : •List «(»
 	Value : •identifier «boolean_f»
 	Value : •quoted_identifier «boolean_f»
 	Value : •boolean_t «boolean_f»
 	Value : •boolean_f «boolean_f»
-	Value : •number «boolean_f»
+	Value : •float «boolean_f»
+	Value : •uint «boolean_f»
 	Value : •string «boolean_f»
 	Value : •List «boolean_f»
 	Value : •identifier «boolean_t»
 	Value : •quoted_identifier «boolean_t»
 	Value : •boolean_t «boolean_t»
 	Value : •boolean_f «boolean_t»
-	Value : •number «boolean_t»
+	Value : •float «boolean_t»
+	Value : •uint «boolean_t»
 	Value : •string «boolean_t»
 	Value : •List «boolean_t»
+	Value : •identifier «float»
+	Value : •quoted_identifier «float»
+	Value : •boolean_t «float»
+	Value : •boolean_f «float»
+	Value : •float «float»
+	Value : •uint «float»
+	Value : •string «float»
+	Value : •List «float»
 	Value : •identifier «identifier»
 	Value : •quoted_identifier «identifier»
 	Value : •boolean_t «identifier»
 	Value : •boolean_f «identifier»
-	Value : •number «identifier»
+	Value : •float «identifier»
+	Value : •uint «identifier»
 	Value : •string «identifier»
 	Value : •List «identifier»
-	Value : •identifier «number»
-	Value : •quoted_identifier «number»
-	Value : •boolean_t «number»
-	Value : •boolean_f «number»
-	Value : •number «number»
-	Value : •string «number»
-	Value : •List «number»
 	Value : •identifier «quoted_identifier»
 	Value : •quoted_identifier «quoted_identifier»
 	Value : •boolean_t «quoted_identifier»
 	Value : •boolean_f «quoted_identifier»
-	Value : •number «quoted_identifier»
+	Value : •float «quoted_identifier»
+	Value : •uint «quoted_identifier»
 	Value : •string «quoted_identifier»
 	Value : •List «quoted_identifier»
 	Value : •identifier «string»
 	Value : •quoted_identifier «string»
 	Value : •boolean_t «string»
 	Value : •boolean_f «string»
-	Value : •number «string»
+	Value : •float «string»
+	Value : •uint «string»
 	Value : •string «string»
 	Value : •List «string»
+	Value : •identifier «uint»
+	Value : •quoted_identifier «uint»
+	Value : •boolean_t «uint»
+	Value : •boolean_f «uint»
+	Value : •float «uint»
+	Value : •uint «uint»
+	Value : •string «uint»
+	Value : •List «uint»
 	List : •( ListElements ) «#(»
 	List : •( ) «#(»
 	List : •#( ListElements ) «#(»
@@ -313,14 +364,14 @@ S10{
 	List : •( ) «boolean_t»
 	List : •#( ListElements ) «boolean_t»
 	List : •#( ) «boolean_t»
+	List : •( ListElements ) «float»
+	List : •( ) «float»
+	List : •#( ListElements ) «float»
+	List : •#( ) «float»
 	List : •( ListElements ) «identifier»
 	List : •( ) «identifier»
 	List : •#( ListElements ) «identifier»
 	List : •#( ) «identifier»
-	List : •( ListElements ) «number»
-	List : •( ) «number»
-	List : •#( ListElements ) «number»
-	List : •#( ) «number»
 	List : •( ListElements ) «quoted_identifier»
 	List : •( ) «quoted_identifier»
 	List : •#( ListElements ) «quoted_identifier»
@@ -329,208 +380,254 @@ S10{
 	List : •( ) «string»
 	List : •#( ListElements ) «string»
 	List : •#( ) «string»
+	List : •( ListElements ) «uint»
+	List : •( ) «uint»
+	List : •#( ListElements ) «uint»
+	List : •#( ) «uint»
 }
 Transitions:
-	Value -> 11
-	identifier -> 12
-	quoted_identifier -> 13
-	boolean_t -> 14
-	boolean_f -> 15
-	number -> 16
-	string -> 17
-	List -> 18
-	( -> 20
-	#( -> 22
-	ListElements -> 23
-	) -> 24
+	Value -> 12
+	identifier -> 13
+	quoted_identifier -> 14
+	boolean_t -> 15
+	boolean_f -> 16
+	float -> 17
+	uint -> 18
+	string -> 19
+	List -> 20
+	( -> 22
+	#( -> 24
+	ListElements -> 25
+	) -> 26
 
 
-S11{
+S12{
 	ListElements : Value• «)»
 	ListElements : Value• «#(»
 	ListElements : Value• «(»
 	ListElements : Value• «boolean_f»
 	ListElements : Value• «boolean_t»
+	ListElements : Value• «float»
 	ListElements : Value• «identifier»
-	ListElements : Value• «number»
 	ListElements : Value• «quoted_identifier»
 	ListElements : Value• «string»
-}
-Transitions:
-
-
-S12{
-	Value : identifier• «)»
-	Value : identifier• «#(»
-	Value : identifier• «(»
-	Value : identifier• «boolean_f»
-	Value : identifier• «boolean_t»
-	Value : identifier• «identifier»
-	Value : identifier• «number»
-	Value : identifier• «quoted_identifier»
-	Value : identifier• «string»
+	ListElements : Value• «uint»
 }
 Transitions:
 
 
 S13{
-	Value : quoted_identifier• «)»
-	Value : quoted_identifier• «#(»
-	Value : quoted_identifier• «(»
-	Value : quoted_identifier• «boolean_f»
-	Value : quoted_identifier• «boolean_t»
-	Value : quoted_identifier• «identifier»
-	Value : quoted_identifier• «number»
-	Value : quoted_identifier• «quoted_identifier»
-	Value : quoted_identifier• «string»
+	Value : identifier• «)»
+	Value : identifier• «#(»
+	Value : identifier• «(»
+	Value : identifier• «boolean_f»
+	Value : identifier• «boolean_t»
+	Value : identifier• «float»
+	Value : identifier• «identifier»
+	Value : identifier• «quoted_identifier»
+	Value : identifier• «string»
+	Value : identifier• «uint»
 }
 Transitions:
 
 
 S14{
-	Value : boolean_t• «)»
-	Value : boolean_t• «#(»
-	Value : boolean_t• «(»
-	Value : boolean_t• «boolean_f»
-	Value : boolean_t• «boolean_t»
-	Value : boolean_t• «identifier»
-	Value : boolean_t• «number»
-	Value : boolean_t• «quoted_identifier»
-	Value : boolean_t• «string»
+	Value : quoted_identifier• «)»
+	Value : quoted_identifier• «#(»
+	Value : quoted_identifier• «(»
+	Value : quoted_identifier• «boolean_f»
+	Value : quoted_identifier• «boolean_t»
+	Value : quoted_identifier• «float»
+	Value : quoted_identifier• «identifier»
+	Value : quoted_identifier• «quoted_identifier»
+	Value : quoted_identifier• «string»
+	Value : quoted_identifier• «uint»
 }
 Transitions:
 
 
 S15{
-	Value : boolean_f• «)»
-	Value : boolean_f• «#(»
-	Value : boolean_f• «(»
-	Value : boolean_f• «boolean_f»
-	Value : boolean_f• «boolean_t»
-	Value : boolean_f• «identifier»
-	Value : boolean_f• «number»
-	Value : boolean_f• «quoted_identifier»
-	Value : boolean_f• «string»
+	Value : boolean_t• «)»
+	Value : boolean_t• «#(»
+	Value : boolean_t• «(»
+	Value : boolean_t• «boolean_f»
+	Value : boolean_t• «boolean_t»
+	Value : boolean_t• «float»
+	Value : boolean_t• «identifier»
+	Value : boolean_t• «quoted_identifier»
+	Value : boolean_t• «string»
+	Value : boolean_t• «uint»
 }
 Transitions:
 
 
 S16{
-	Value : number• «)»
-	Value : number• «#(»
-	Value : number• «(»
-	Value : number• «boolean_f»
-	Value : number• «boolean_t»
-	Value : number• «identifier»
-	Value : number• «number»
-	Value : number• «quoted_identifier»
-	Value : number• «string»
+	Value : boolean_f• «)»
+	Value : boolean_f• «#(»
+	Value : boolean_f• «(»
+	Value : boolean_f• «boolean_f»
+	Value : boolean_f• «boolean_t»
+	Value : boolean_f• «float»
+	Value : boolean_f• «identifier»
+	Value : boolean_f• «quoted_identifier»
+	Value : boolean_f• «string»
+	Value : boolean_f• «uint»
 }
 Transitions:
 
 
 S17{
-	Value : string• «)»
-	Value : string• «#(»
-	Value : string• «(»
-	Value : string• «boolean_f»
-	Value : string• «boolean_t»
-	Value : string• «identifier»
-	Value : string• «number»
-	Value : string• «quoted_identifier»
-	Value : string• «string»
+	Value : float• «)»
+	Value : float• «#(»
+	Value : float• «(»
+	Value : float• «boolean_f»
+	Value : float• «boolean_t»
+	Value : float• «float»
+	Value : float• «identifier»
+	Value : float• «quoted_identifier»
+	Value : float• «string»
+	Value : float• «uint»
 }
 Transitions:
 
 
 S18{
-	Value : List• «)»
-	Value : List• «#(»
-	Value : List• «(»
-	Value : List• «boolean_f»
-	Value : List• «boolean_t»
-	Value : List• «identifier»
-	Value : List• «number»
-	Value : List• «quoted_identifier»
-	Value : List• «string»
+	Value : uint• «)»
+	Value : uint• «#(»
+	Value : uint• «(»
+	Value : uint• «boolean_f»
+	Value : uint• «boolean_t»
+	Value : uint• «float»
+	Value : uint• «identifier»
+	Value : uint• «quoted_identifier»
+	Value : uint• «string»
+	Value : uint• «uint»
 }
 Transitions:
 
 
 S19{
+	Value : string• «)»
+	Value : string• «#(»
+	Value : string• «(»
+	Value : string• «boolean_f»
+	Value : string• «boolean_t»
+	Value : string• «float»
+	Value : string• «identifier»
+	Value : string• «quoted_identifier»
+	Value : string• «string»
+	Value : string• «uint»
+}
+Transitions:
+
+
+S20{
+	Value : List• «)»
+	Value : List• «#(»
+	Value : List• «(»
+	Value : List• «boolean_f»
+	Value : List• «boolean_t»
+	Value : List• «float»
+	Value : List• «identifier»
+	Value : List• «quoted_identifier»
+	Value : List• «string»
+	Value : List• «uint»
+}
+Transitions:
+
+
+S21{
 	List : ( ListElements •) «$»
 	ListElements : ListElements •Value «)»
 	ListElements : ListElements •Value «#(»
 	ListElements : ListElements •Value «(»
 	ListElements : ListElements •Value «boolean_f»
 	ListElements : ListElements •Value «boolean_t»
+	ListElements : ListElements •Value «float»
 	ListElements : ListElements •Value «identifier»
-	ListElements : ListElements •Value «number»
 	ListElements : ListElements •Value «quoted_identifier»
 	ListElements : ListElements •Value «string»
+	ListElements : ListElements •Value «uint»
 	Value : •identifier «)»
 	Value : •quoted_identifier «)»
 	Value : •boolean_t «)»
 	Value : •boolean_f «)»
-	Value : •number «)»
+	Value : •float «)»
+	Value : •uint «)»
 	Value : •string «)»
 	Value : •List «)»
 	Value : •identifier «#(»
 	Value : •quoted_identifier «#(»
 	Value : •boolean_t «#(»
 	Value : •boolean_f «#(»
-	Value : •number «#(»
+	Value : •float «#(»
+	Value : •uint «#(»
 	Value : •string «#(»
 	Value : •List «#(»
 	Value : •identifier «(»
 	Value : •quoted_identifier «(»
 	Value : •boolean_t «(»
 	Value : •boolean_f «(»
-	Value : •number «(»
+	Value : •float «(»
+	Value : •uint «(»
 	Value : •string «(»
 	Value : •List «(»
 	Value : •identifier «boolean_f»
 	Value : •quoted_identifier «boolean_f»
 	Value : •boolean_t «boolean_f»
 	Value : •boolean_f «boolean_f»
-	Value : •number «boolean_f»
+	Value : •float «boolean_f»
+	Value : •uint «boolean_f»
 	Value : •string «boolean_f»
 	Value : •List «boolean_f»
 	Value : •identifier «boolean_t»
 	Value : •quoted_identifier «boolean_t»
 	Value : •boolean_t «boolean_t»
 	Value : •boolean_f «boolean_t»
-	Value : •number «boolean_t»
+	Value : •float «boolean_t»
+	Value : •uint «boolean_t»
 	Value : •string «boolean_t»
 	Value : •List «boolean_t»
+	Value : •identifier «float»
+	Value : •quoted_identifier «float»
+	Value : •boolean_t «float»
+	Value : •boolean_f «float»
+	Value : •float «float»
+	Value : •uint «float»
+	Value : •string «float»
+	Value : •List «float»
 	Value : •identifier «identifier»
 	Value : •quoted_identifier «identifier»
 	Value : •boolean_t «identifier»
 	Value : •boolean_f «identifier»
-	Value : •number «identifier»
+	Value : •float «identifier»
+	Value : •uint «identifier»
 	Value : •string «identifier»
 	Value : •List «identifier»
-	Value : •identifier «number»
-	Value : •quoted_identifier «number»
-	Value : •boolean_t «number»
-	Value : •boolean_f «number»
-	Value : •number «number»
-	Value : •string «number»
-	Value : •List «number»
 	Value : •identifier «quoted_identifier»
 	Value : •quoted_identifier «quoted_identifier»
 	Value : •boolean_t «quoted_identifier»
 	Value : •boolean_f «quoted_identifier»
-	Value : •number «quoted_identifier»
+	Value : •float «quoted_identifier»
+	Value : •uint «quoted_identifier»
 	Value : •string «quoted_identifier»
 	Value : •List «quoted_identifier»
 	Value : •identifier «string»
 	Value : •quoted_identifier «string»
 	Value : •boolean_t «string»
 	Value : •boolean_f «string»
-	Value : •number «string»
+	Value : •float «string»
+	Value : •uint «string»
 	Value : •string «string»
 	Value : •List «string»
+	Value : •identifier «uint»
+	Value : •quoted_identifier «uint»
+	Value : •boolean_t «uint»
+	Value : •boolean_f «uint»
+	Value : •float «uint»
+	Value : •uint «uint»
+	Value : •string «uint»
+	Value : •List «uint»
 	List : •( ListElements ) «)»
 	List : •( ) «)»
 	List : •#( ListElements ) «)»
@@ -551,14 +648,14 @@ S19{
 	List : •( ) «boolean_t»
 	List : •#( ListElements ) «boolean_t»
 	List : •#( ) «boolean_t»
+	List : •( ListElements ) «float»
+	List : •( ) «float»
+	List : •#( ListElements ) «float»
+	List : •#( ) «float»
 	List : •( ListElements ) «identifier»
 	List : •( ) «identifier»
 	List : •#( ListElements ) «identifier»
 	List : •#( ) «identifier»
-	List : •( ListElements ) «number»
-	List : •( ) «number»
-	List : •#( ListElements ) «number»
-	List : •#( ) «number»
 	List : •( ListElements ) «quoted_identifier»
 	List : •( ) «quoted_identifier»
 	List : •#( ListElements ) «quoted_identifier»
@@ -567,22 +664,27 @@ S19{
 	List : •( ) «string»
 	List : •#( ListElements ) «string»
 	List : •#( ) «string»
+	List : •( ListElements ) «uint»
+	List : •( ) «uint»
+	List : •#( ListElements ) «uint»
+	List : •#( ) «uint»
 }
 Transitions:
-	identifier -> 12
-	quoted_identifier -> 13
-	boolean_t -> 14
-	boolean_f -> 15
-	number -> 16
-	string -> 17
-	List -> 18
-	( -> 20
-	#( -> 22
-	Value -> 25
-	) -> 26
+	identifier -> 13
+	quoted_identifier -> 14
+	boolean_t -> 15
+	boolean_f -> 16
+	float -> 17
+	uint -> 18
+	string -> 19
+	List -> 20
+	( -> 22
+	#( -> 24
+	Value -> 27
+	) -> 28
 
 
-S20{
+S22{
 	List : ( •ListElements ) «)»
 	List : ( •) «)»
 	List : ( •ListElements ) «#(»
@@ -593,39 +695,44 @@ S20{
 	List : ( •) «boolean_f»
 	List : ( •ListElements ) «boolean_t»
 	List : ( •) «boolean_t»
+	List : ( •ListElements ) «float»
+	List : ( •) «float»
 	List : ( •ListElements ) «identifier»
 	List : ( •) «identifier»
-	List : ( •ListElements ) «number»
-	List : ( •) «number»
 	List : ( •ListElements ) «quoted_identifier»
 	List : ( •) «quoted_identifier»
 	List : ( •ListElements ) «string»
 	List : ( •) «string»
+	List : ( •ListElements ) «uint»
+	List : ( •) «uint»
 	ListElements : •Value «)»
 	ListElements : •ListElements Value «)»
 	Value : •identifier «)»
 	Value : •quoted_identifier «)»
 	Value : •boolean_t «)»
 	Value : •boolean_f «)»
-	Value : •number «)»
+	Value : •float «)»
+	Value : •uint «)»
 	Value : •string «)»
 	Value : •List «)»
 	ListElements : •Value «#(»
 	ListElements : •Value «(»
 	ListElements : •Value «boolean_f»
 	ListElements : •Value «boolean_t»
+	ListElements : •Value «float»
 	ListElements : •Value «identifier»
-	ListElements : •Value «number»
 	ListElements : •Value «quoted_identifier»
 	ListElements : •Value «string»
+	ListElements : •Value «uint»
 	ListElements : •ListElements Value «#(»
 	ListElements : •ListElements Value «(»
 	ListElements : •ListElements Value «boolean_f»
 	ListElements : •ListElements Value «boolean_t»
+	ListElements : •ListElements Value «float»
 	ListElements : •ListElements Value «identifier»
-	ListElements : •ListElements Value «number»
 	ListElements : •ListElements Value «quoted_identifier»
 	ListElements : •ListElements Value «string»
+	ListElements : •ListElements Value «uint»
 	List : •( ListElements ) «)»
 	List : •( ) «)»
 	List : •#( ListElements ) «)»
@@ -634,58 +741,74 @@ S20{
 	Value : •quoted_identifier «#(»
 	Value : •boolean_t «#(»
 	Value : •boolean_f «#(»
-	Value : •number «#(»
+	Value : •float «#(»
+	Value : •uint «#(»
 	Value : •string «#(»
 	Value : •List «#(»
 	Value : •identifier «(»
 	Value : •quoted_identifier «(»
 	Value : •boolean_t «(»
 	Value : •boolean_f «(»
-	Value : •number «(»
+	Value : •float «(»
+	Value : •uint «(»
 	Value : •string «(»
 	Value : •List «(»
 	Value : •identifier «boolean_f»
 	Value : •quoted_identifier «boolean_f»
 	Value : •boolean_t «boolean_f»
 	Value : •boolean_f «boolean_f»
-	Value : •number «boolean_f»
+	Value : •float «boolean_f»
+	Value : •uint «boolean_f»
 	Value : •string «boolean_f»
 	Value : •List «boolean_f»
 	Value : •identifier «boolean_t»
 	Value : •quoted_identifier «boolean_t»
 	Value : •boolean_t «boolean_t»
 	Value : •boolean_f «boolean_t»
-	Value : •number «boolean_t»
+	Value : •float «boolean_t»
+	Value : •uint «boolean_t»
 	Value : •string «boolean_t»
 	Value : •List «boolean_t»
+	Value : •identifier «float»
+	Value : •quoted_identifier «float»
+	Value : •boolean_t «float»
+	Value : •boolean_f «float»
+	Value : •float «float»
+	Value : •uint «float»
+	Value : •string «float»
+	Value : •List «float»
 	Value : •identifier «identifier»
 	Value : •quoted_identifier «identifier»
 	Value : •boolean_t «identifier»
 	Value : •boolean_f «identifier»
-	Value : •number «identifier»
+	Value : •float «identifier»
+	Value : •uint «identifier»
 	Value : •string «identifier»
 	Value : •List «identifier»
-	Value : •identifier «number»
-	Value : •quoted_identifier «number»
-	Value : •boolean_t «number»
-	Value : •boolean_f «number»
-	Value : •number «number»
-	Value : •string «number»
-	Value : •List «number»
 	Value : •identifier «quoted_identifier»
 	Value : •quoted_identifier «quoted_identifier»
 	Value : •boolean_t «quoted_identifier»
 	Value : •boolean_f «quoted_identifier»
-	Value : •number «quoted_identifier»
+	Value : •float «quoted_identifier»
+	Value : •uint «quoted_identifier»
 	Value : •string «quoted_identifier»
 	Value : •List «quoted_identifier»
 	Value : •identifier «string»
 	Value : •quoted_identifier «string»
 	Value : •boolean_t «string»
 	Value : •boolean_f «string»
-	Value : •number «string»
+	Value : •float «string»
+	Value : •uint «string»
 	Value : •string «string»
 	Value : •List «string»
+	Value : •identifier «uint»
+	Value : •quoted_identifier «uint»
+	Value : •boolean_t «uint»
+	Value : •boolean_f «uint»
+	Value : •float «uint»
+	Value : •uint «uint»
+	Value : •string «uint»
+	Value : •List «uint»
 	List : •( ListElements ) «#(»
 	List : •( ) «#(»
 	List : •#( ListElements ) «#(»
@@ -702,14 +825,14 @@ S20{
 	List : •( ) «boolean_t»
 	List : •#( ListElements ) «boolean_t»
 	List : •#( ) «boolean_t»
+	List : •( ListElements ) «float»
+	List : •( ) «float»
+	List : •#( ListElements ) «float»
+	List : •#( ) «float»
 	List : •( ListElements ) «identifier»
 	List : •( ) «identifier»
 	List : •#( ListElements ) «identifier»
 	List : •#( ) «identifier»
-	List : •( ListElements ) «number»
-	List : •( ) «number»
-	List : •#( ListElements ) «number»
-	List : •#( ) «number»
 	List : •( ListElements ) «quoted_identifier»
 	List : •( ) «quoted_identifier»
 	List : •#( ListElements ) «quoted_identifier»
@@ -718,29 +841,34 @@ S20{
 	List : •( ) «string»
 	List : •#( ListElements ) «string»
 	List : •#( ) «string»
+	List : •( ListElements ) «uint»
+	List : •( ) «uint»
+	List : •#( ListElements ) «uint»
+	List : •#( ) «uint»
 }
 Transitions:
-	Value -> 11
-	identifier -> 12
-	quoted_identifier -> 13
-	boolean_t -> 14
-	boolean_f -> 15
-	number -> 16
-	string -> 17
-	List -> 18
-	( -> 20
-	#( -> 22
-	ListElements -> 27
-	) -> 28
+	Value -> 12
+	identifier -> 13
+	quoted_identifier -> 14
+	boolean_t -> 15
+	boolean_f -> 16
+	float -> 17
+	uint -> 18
+	string -> 19
+	List -> 20
+	( -> 22
+	#( -> 24
+	ListElements -> 29
+	) -> 30
 
 
-S21{
+S23{
 	List : ( )• «$»
 }
 Transitions:
 
 
-S22{
+S24{
 	List : #( •ListElements ) «)»
 	List : #( •) «)»
 	List : #( •ListElements ) «#(»
@@ -751,39 +879,44 @@ S22{
 	List : #( •) «boolean_f»
 	List : #( •ListElements ) «boolean_t»
 	List : #( •) «boolean_t»
+	List : #( •ListElements ) «float»
+	List : #( •) «float»
 	List : #( •ListElements ) «identifier»
 	List : #( •) «identifier»
-	List : #( •ListElements ) «number»
-	List : #( •) «number»
 	List : #( •ListElements ) «quoted_identifier»
 	List : #( •) «quoted_identifier»
 	List : #( •ListElements ) «string»
 	List : #( •) «string»
+	List : #( •ListElements ) «uint»
+	List : #( •) «uint»
 	ListElements : •Value «)»
 	ListElements : •ListElements Value «)»
 	Value : •identifier «)»
 	Value : •quoted_identifier «)»
 	Value : •boolean_t «)»
 	Value : •boolean_f «)»
-	Value : •number «)»
+	Value : •float «)»
+	Value : •uint «)»
 	Value : •string «)»
 	Value : •List «)»
 	ListElements : •Value «#(»
 	ListElements : •Value «(»
 	ListElements : •Value «boolean_f»
 	ListElements : •Value «boolean_t»
+	ListElements : •Value «float»
 	ListElements : •Value «identifier»
-	ListElements : •Value «number»
 	ListElements : •Value «quoted_identifier»
 	ListElements : •Value «string»
+	ListElements : •Value «uint»
 	ListElements : •ListElements Value «#(»
 	ListElements : •ListElements Value «(»
 	ListElements : •ListElements Value «boolean_f»
 	ListElements : •ListElements Value «boolean_t»
+	ListElements : •ListElements Value «float»
 	ListElements : •ListElements Value «identifier»
-	ListElements : •ListElements Value «number»
 	ListElements : •ListElements Value «quoted_identifier»
 	ListElements : •ListElements Value «string»
+	ListElements : •ListElements Value «uint»
 	List : •( ListElements ) «)»
 	List : •( ) «)»
 	List : •#( ListElements ) «)»
@@ -792,58 +925,74 @@ S22{
 	Value : •quoted_identifier «#(»
 	Value : •boolean_t «#(»
 	Value : •boolean_f «#(»
-	Value : •number «#(»
+	Value : •float «#(»
+	Value : •uint «#(»
 	Value : •string «#(»
 	Value : •List «#(»
 	Value : •identifier «(»
 	Value : •quoted_identifier «(»
 	Value : •boolean_t «(»
 	Value : •boolean_f «(»
-	Value : •number «(»
+	Value : •float «(»
+	Value : •uint «(»
 	Value : •string «(»
 	Value : •List «(»
 	Value : •identifier «boolean_f»
 	Value : •quoted_identifier «boolean_f»
 	Value : •boolean_t «boolean_f»
 	Value : •boolean_f «boolean_f»
-	Value : •number «boolean_f»
+	Value : •float «boolean_f»
+	Value : •uint «boolean_f»
 	Value : •string «boolean_f»
 	Value : •List «boolean_f»
 	Value : •identifier «boolean_t»
 	Value : •quoted_identifier «boolean_t»
 	Value : •boolean_t «boolean_t»
 	Value : •boolean_f «boolean_t»
-	Value : •number «boolean_t»
+	Value : •float «boolean_t»
+	Value : •uint «boolean_t»
 	Value : •string «boolean_t»
 	Value : •List «boolean_t»
+	Value : •identifier «float»
+	Value : •quoted_identifier «float»
+	Value : •boolean_t «float»
+	Value : •boolean_f «float»
+	Value : •float «float»
+	Value : •uint «float»
+	Value : •string «float»
+	Value : •List «float»
 	Value : •identifier «identifier»
 	Value : •quoted_identifier «identifier»
 	Value : •boolean_t «identifier»
 	Value : •boolean_f «identifier»
-	Value : •number «identifier»
+	Value : •float «identifier»
+	Value : •uint «identifier»
 	Value : •string «identifier»
 	Value : •List «identifier»
-	Value : •identifier «number»
-	Value : •quoted_identifier «number»
-	Value : •boolean_t «number»
-	Value : •boolean_f «number»
-	Value : •number «number»
-	Value : •string «number»
-	Value : •List «number»
 	Value : •identifier «quoted_identifier»
 	Value : •quoted_identifier «quoted_identifier»
 	Value : •boolean_t «quoted_identifier»
 	Value : •boolean_f «quoted_identifier»
-	Value : •number «quoted_identifier»
+	Value : •float «quoted_identifier»
+	Value : •uint «quoted_identifier»
 	Value : •string «quoted_identifier»
 	Value : •List «quoted_identifier»
 	Value : •identifier «string»
 	Value : •quoted_identifier «string»
 	Value : •boolean_t «string»
 	Value : •boolean_f «string»
-	Value : •number «string»
+	Value : •float «string»
+	Value : •uint «string»
 	Value : •string «string»
 	Value : •List «string»
+	Value : •identifier «uint»
+	Value : •quoted_identifier «uint»
+	Value : •boolean_t «uint»
+	Value : •boolean_f «uint»
+	Value : •float «uint»
+	Value : •uint «uint»
+	Value : •string «uint»
+	Value : •List «uint»
 	List : •( ListElements ) «#(»
 	List : •( ) «#(»
 	List : •#( ListElements ) «#(»
@@ -860,14 +1009,14 @@ S22{
 	List : •( ) «boolean_t»
 	List : •#( ListElements ) «boolean_t»
 	List : •#( ) «boolean_t»
+	List : •( ListElements ) «float»
+	List : •( ) «float»
+	List : •#( ListElements ) «float»
+	List : •#( ) «float»
 	List : •( ListElements ) «identifier»
 	List : •( ) «identifier»
 	List : •#( ListElements ) «identifier»
 	List : •#( ) «identifier»
-	List : •( ListElements ) «number»
-	List : •( ) «number»
-	List : •#( ListElements ) «number»
-	List : •#( ) «number»
 	List : •( ListElements ) «quoted_identifier»
 	List : •( ) «quoted_identifier»
 	List : •#( ListElements ) «quoted_identifier»
@@ -876,96 +1025,119 @@ S22{
 	List : •( ) «string»
 	List : •#( ListElements ) «string»
 	List : •#( ) «string»
+	List : •( ListElements ) «uint»
+	List : •( ) «uint»
+	List : •#( ListElements ) «uint»
+	List : •#( ) «uint»
 }
 Transitions:
-	Value -> 11
-	identifier -> 12
-	quoted_identifier -> 13
-	boolean_t -> 14
-	boolean_f -> 15
-	number -> 16
-	string -> 17
-	List -> 18
-	( -> 20
-	#( -> 22
-	ListElements -> 29
-	) -> 30
+	Value -> 12
+	identifier -> 13
+	quoted_identifier -> 14
+	boolean_t -> 15
+	boolean_f -> 16
+	float -> 17
+	uint -> 18
+	string -> 19
+	List -> 20
+	( -> 22
+	#( -> 24
+	ListElements -> 31
+	) -> 32
 
 
-S23{
+S25{
 	List : #( ListElements •) «$»
 	ListElements : ListElements •Value «)»
 	ListElements : ListElements •Value «#(»
 	ListElements : ListElements •Value «(»
 	ListElements : ListElements •Value «boolean_f»
 	ListElements : ListElements •Value «boolean_t»
+	ListElements : ListElements •Value «float»
 	ListElements : ListElements •Value «identifier»
-	ListElements : ListElements •Value «number»
 	ListElements : ListElements •Value «quoted_identifier»
 	ListElements : ListElements •Value «string»
+	ListElements : ListElements •Value «uint»
 	Value : •identifier «)»
 	Value : •quoted_identifier «)»
 	Value : •boolean_t «)»
 	Value : •boolean_f «)»
-	Value : •number «)»
+	Value : •float «)»
+	Value : •uint «)»
 	Value : •string «)»
 	Value : •List «)»
 	Value : •identifier «#(»
 	Value : •quoted_identifier «#(»
 	Value : •boolean_t «#(»
 	Value : •boolean_f «#(»
-	Value : •number «#(»
+	Value : •float «#(»
+	Value : •uint «#(»
 	Value : •string «#(»
 	Value : •List «#(»
 	Value : •identifier «(»
 	Value : •quoted_identifier «(»
 	Value : •boolean_t «(»
 	Value : •boolean_f «(»
-	Value : •number «(»
+	Value : •float «(»
+	Value : •uint «(»
 	Value : •string «(»
 	Value : •List «(»
 	Value : •identifier «boolean_f»
 	Value : •quoted_identifier «boolean_f»
 	Value : •boolean_t «boolean_f»
 	Value : •boolean_f «boolean_f»
-	Value : •number «boolean_f»
+	Value : •float «boolean_f»
+	Value : •uint «boolean_f»
 	Value : •string «boolean_f»
 	Value : •List «boolean_f»
 	Value : •identifier «boolean_t»
 	Value : •quoted_identifier «boolean_t»
 	Value : •boolean_t «boolean_t»
 	Value : •boolean_f «boolean_t»
-	Value : •number «boolean_t»
+	Value : •float «boolean_t»
+	Value : •uint «boolean_t»
 	Value : •string «boolean_t»
 	Value : •List «boolean_t»
+	Value : •identifier «float»
+	Value : •quoted_identifier «float»
+	Value : •boolean_t «float»
+	Value : •boolean_f «float»
+	Value : •float «float»
+	Value : •uint «float»
+	Value : •string «float»
+	Value : •List «float»
 	Value : •identifier «identifier»
 	Value : •quoted_identifier «identifier»
 	Value : •boolean_t «identifier»
 	Value : •boolean_f «identifier»
-	Value : •number «identifier»
+	Value : •float «identifier»
+	Value : •uint «identifier»
 	Value : •string «identifier»
 	Value : •List «identifier»
-	Value : •identifier «number»
-	Value : •quoted_identifier «number»
-	Value : •boolean_t «number»
-	Value : •boolean_f «number»
-	Value : •number «number»
-	Value : •string «number»
-	Value : •List «number»
 	Value : •identifier «quoted_identifier»
 	Value : •quoted_identifier «quoted_identifier»
 	Value : •boolean_t «quoted_identifier»
 	Value : •boolean_f «quoted_identifier»
-	Value : •number «quoted_identifier»
+	Value : •float «quoted_identifier»
+	Value : •uint «quoted_identifier»
 	Value : •string «quoted_identifier»
 	Value : •List «quoted_identifier»
 	Value : •identifier «string»
 	Value : •quoted_identifier «string»
 	Value : •boolean_t «string»
 	Value : •boolean_f «string»
-	Value : •number «string»
+	Value : •float «string»
+	Value : •uint «string»
 	Value : •string «string»
 	Value : •List «string»
+	Value : •identifier «uint»
+	Value : •quoted_identifier «uint»
+	Value : •boolean_t «uint»
+	Value : •boolean_f «uint»
+	Value : •float «uint»
+	Value : •uint «uint»
+	Value : •string «uint»
+	Value : •List «uint»
 	List : •( ListElements ) «)»
 	List : •( ) «)»
 	List : •#( ListElements ) «)»
@@ -986,14 +1158,14 @@ S23{
 	List : •( ) «boolean_t»
 	List : •#( ListElements ) «boolean_t»
 	List : •#( ) «boolean_t»
+	List : •( ListElements ) «float»
+	List : •( ) «float»
+	List : •#( ListElements ) «float»
+	List : •#( ) «float»
 	List : •( ListElements ) «identifier»
 	List : •( ) «identifier»
 	List : •#( ListElements ) «identifier»
 	List : •#( ) «identifier»
-	List : •( ListElements ) «number»
-	List : •( ) «number»
-	List : •#( ListElements ) «number»
-	List : •#( ) «number»
 	List : •( ListElements ) «quoted_identifier»
 	List : •( ) «quoted_identifier»
 	List : •#( ListElements ) «quoted_identifier»
@@ -1002,129 +1174,154 @@ S23{
 	List : •( ) «string»
 	List : •#( ListElements ) «string»
 	List : •#( ) «string»
+	List : •( ListElements ) «uint»
+	List : •( ) «uint»
+	List : •#( ListElements ) «uint»
+	List : •#( ) «uint»
 }
 Transitions:
-	identifier -> 12
-	quoted_identifier -> 13
-	boolean_t -> 14
-	boolean_f -> 15
-	number -> 16
-	string -> 17
-	List -> 18
-	( -> 20
-	#( -> 22
-	Value -> 25
-	) -> 31
+	identifier -> 13
+	quoted_identifier -> 14
+	boolean_t -> 15
+	boolean_f -> 16
+	float -> 17
+	uint -> 18
+	string -> 19
+	List -> 20
+	( -> 22
+	#( -> 24
+	Value -> 27
+	) -> 33
 
 
-S24{
+S26{
 	List : #( )• «$»
 }
 Transitions:
 
 
-S25{
+S27{
 	ListElements : ListElements Value• «)»
 	ListElements : ListElements Value• «#(»
 	ListElements : ListElements Value• «(»
 	ListElements : ListElements Value• «boolean_f»
 	ListElements : ListElements Value• «boolean_t»
+	ListElements : ListElements Value• «float»
 	ListElements : ListElements Value• «identifier»
-	ListElements : ListElements Value• «number»
 	ListElements : ListElements Value• «quoted_identifier»
 	ListElements : ListElements Value• «string»
+	ListElements : ListElements Value• «uint»
 }
 Transitions:
 
 
-S26{
+S28{
 	List : ( ListElements )• «$»
 }
 Transitions:
 
 
-S27{
+S29{
 	List : ( ListElements •) «)»
 	List : ( ListElements •) «#(»
 	List : ( ListElements •) «(»
 	List : ( ListElements •) «boolean_f»
 	List : ( ListElements •) «boolean_t»
+	List : ( ListElements •) «float»
 	List : ( ListElements •) «identifier»
-	List : ( ListElements •) «number»
 	List : ( ListElements •) «quoted_identifier»
 	List : ( ListElements •) «string»
+	List : ( ListElements •) «uint»
 	ListElements : ListElements •Value «)»
 	ListElements : ListElements •Value «#(»
 	ListElements : ListElements •Value «(»
 	ListElements : ListElements •Value «boolean_f»
 	ListElements : ListElements •Value «boolean_t»
+	ListElements : ListElements •Value «float»
 	ListElements : ListElements •Value «identifier»
-	ListElements : ListElements •Value «number»
 	ListElements : ListElements •Value «quoted_identifier»
 	ListElements : ListElements •Value «string»
+	ListElements : ListElements •Value «uint»
 	Value : •identifier «)»
 	Value : •quoted_identifier «)»
 	Value : •boolean_t «)»
 	Value : •boolean_f «)»
-	Value : •number «)»
+	Value : •float «)»
+	Value : •uint «)»
 	Value : •string «)»
 	Value : •List «)»
 	Value : •identifier «#(»
 	Value : •quoted_identifier «#(»
 	Value : •boolean_t «#(»
 	Value : •boolean_f «#(»
-	Value : •number «#(»
+	Value : •float «#(»
+	Value : •uint «#(»
 	Value : •string «#(»
 	Value : •List «#(»
 	Value : •identifier «(»
 	Value : •quoted_identifier «(»
 	Value : •boolean_t «(»
 	Value : •boolean_f «(»
-	Value : •number «(»
+	Value : •float «(»
+	Value : •uint «(»
 	Value : •string «(»
 	Value : •List «(»
 	Value : •identifier «boolean_f»
 	Value : •quoted_identifier «boolean_f»
 	Value : •boolean_t «boolean_f»
 	Value : •boolean_f «boolean_f»
-	Value : •number «boolean_f»
+	Value : •float «boolean_f»
+	Value : •uint «boolean_f»
 	Value : •string «boolean_f»
 	Value : •List «boolean_f»
 	Value : •identifier «boolean_t»
 	Value : •quoted_identifier «boolean_t»
 	Value : •boolean_t «boolean_t»
 	Value : •boolean_f «boolean_t»
-	Value : •number «boolean_t»
+	Value : •float «boolean_t»
+	Value : •uint «boolean_t»
 	Value : •string «boolean_t»
 	Value : •List «boolean_t»
+	Value : •identifier «float»
+	Value : •quoted_identifier «float»
+	Value : •boolean_t «float»
+	Value : •boolean_f «float»
+	Value : •float «float»
+	Value : •uint «float»
+	Value : •string «float»
+	Value : •List «float»
 	Value : •identifier «identifier»
 	Value : •quoted_identifier «identifier»
 	Value : •boolean_t «identifier»
 	Value : •boolean_f «identifier»
-	Value : •number «identifier»
+	Value : •float «identifier»
+	Value : •uint «identifier»
 	Value : •string «identifier»
 	Value : •List «identifier»
-	Value : •identifier «number»
-	Value : •quoted_identifier «number»
-	Value : •boolean_t «number»
-	Value : •boolean_f «number»
-	Value : •number «number»
-	Value : •string «number»
-	Value : •List «number»
 	Value : •identifier «quoted_identifier»
 	Value : •quoted_identifier «quoted_identifier»
 	Value : •boolean_t «quoted_identifier»
 	Value : •boolean_f «quoted_identifier»
-	Value : •number «quoted_identifier»
+	Value : •float «quoted_identifier»
+	Value : •uint «quoted_identifier»
 	Value : •string «quoted_identifier»
 	Value : •List «quoted_identifier»
 	Value : •identifier «string»
 	Value : •quoted_identifier «string»
 	Value : •boolean_t «string»
 	Value : •boolean_f «string»
-	Value : •number «string»
+	Value : •float «string»
+	Value : •uint «string»
 	Value : •string «string»
 	Value : •List «string»
+	Value : •identifier «uint»
+	Value : •quoted_identifier «uint»
+	Value : •boolean_t «uint»
+	Value : •boolean_f «uint»
+	Value : •float «uint»
+	Value : •uint «uint»
+	Value : •string «uint»
+	Value : •List «uint»
 	List : •( ListElements ) «)»
 	List : •( ) «)»
 	List : •#( ListElements ) «)»
@@ -1145,14 +1342,14 @@ S27{
 	List : •( ) «boolean_t»
 	List : •#( ListElements ) «boolean_t»
 	List : •#( ) «boolean_t»
+	List : •( ListElements ) «float»
+	List : •( ) «float»
+	List : •#( ListElements ) «float»
+	List : •#( ) «float»
 	List : •( ListElements ) «identifier»
 	List : •( ) «identifier»
 	List : •#( ListElements ) «identifier»
 	List : •#( ) «identifier»
-	List : •( ListElements ) «number»
-	List : •( ) «number»
-	List : •#( ListElements ) «number»
-	List : •#( ) «number»
 	List : •( ListElements ) «quoted_identifier»
 	List : •( ) «quoted_identifier»
 	List : •#( ListElements ) «quoted_identifier»
@@ -1161,117 +1358,142 @@ S27{
 	List : •( ) «string»
 	List : •#( ListElements ) «string»
 	List : •#( ) «string»
+	List : •( ListElements ) «uint»
+	List : •( ) «uint»
+	List : •#( ListElements ) «uint»
+	List : •#( ) «uint»
 }
 Transitions:
-	identifier -> 12
-	quoted_identifier -> 13
-	boolean_t -> 14
-	boolean_f -> 15
-	number -> 16
-	string -> 17
-	List -> 18
-	( -> 20
-	#( -> 22
-	Value -> 25
-	) -> 32
+	identifier -> 13
+	quoted_identifier -> 14
+	boolean_t -> 15
+	boolean_f -> 16
+	float -> 17
+	uint -> 18
+	string -> 19
+	List -> 20
+	( -> 22
+	#( -> 24
+	Value -> 27
+	) -> 34
 
 
-S28{
+S30{
 	List : ( )• «)»
 	List : ( )• «#(»
 	List : ( )• «(»
 	List : ( )• «boolean_f»
 	List : ( )• «boolean_t»
+	List : ( )• «float»
 	List : ( )• «identifier»
-	List : ( )• «number»
 	List : ( )• «quoted_identifier»
 	List : ( )• «string»
+	List : ( )• «uint»
 }
 Transitions:
 
 
-S29{
+S31{
 	List : #( ListElements •) «)»
 	List : #( ListElements •) «#(»
 	List : #( ListElements •) «(»
 	List : #( ListElements •) «boolean_f»
 	List : #( ListElements •) «boolean_t»
+	List : #( ListElements •) «float»
 	List : #( ListElements •) «identifier»
-	List : #( ListElements •) «number»
 	List : #( ListElements •) «quoted_identifier»
 	List : #( ListElements •) «string»
+	List : #( ListElements •) «uint»
 	ListElements : ListElements •Value «)»
 	ListElements : ListElements •Value «#(»
 	ListElements : ListElements •Value «(»
 	ListElements : ListElements •Value «boolean_f»
 	ListElements : ListElements •Value «boolean_t»
+	ListElements : ListElements •Value «float»
 	ListElements : ListElements •Value «identifier»
-	ListElements : ListElements •Value «number»
 	ListElements : ListElements •Value «quoted_identifier»
 	ListElements : ListElements •Value «string»
+	ListElements : ListElements •Value «uint»
 	Value : •identifier «)»
 	Value : •quoted_identifier «)»
 	Value : •boolean_t «)»
 	Value : •boolean_f «)»
-	Value : •number «)»
+	Value : •float «)»
+	Value : •uint «)»
 	Value : •string «)»
 	Value : •List «)»
 	Value : •identifier «#(»
 	Value : •quoted_identifier «#(»
 	Value : •boolean_t «#(»
 	Value : •boolean_f «#(»
-	Value : •number «#(»
+	Value : •float «#(»
+	Value : •uint «#(»
 	Value : •string «#(»
 	Value : •List «#(»
 	Value : •identifier «(»
 	Value : •quoted_identifier «(»
 	Value : •boolean_t «(»
 	Value : •boolean_f «(»
-	Value : •number «(»
+	Value : •float «(»
+	Value : •uint «(»
 	Value : •string «(»
 	Value : •List «(»
 	Value : •identifier «boolean_f»
 	Value : •quoted_identifier «boolean_f»
 	Value : •boolean_t «boolean_f»
 	Value : •boolean_f «boolean_f»
-	Value : •number «boolean_f»
+	Value : •float «boolean_f»
+	Value : •uint «boolean_f»
 	Value : •string «boolean_f»
 	Value : •List «boolean_f»
 	Value : •identifier «boolean_t»
 	Value : •quoted_identifier «boolean_t»
 	Value : •boolean_t «boolean_t»
 	Value : •boolean_f «boolean_t»
-	Value : •number «boolean_t»
+	Value : •float «boolean_t»
+	Value : •uint «boolean_t»
 	Value : •string «boolean_t»
 	Value : •List «boolean_t»
+	Value : •identifier «float»
+	Value : •quoted_identifier «float»
+	Value : •boolean_t «float»
+	Value : •boolean_f «float»
+	Value : •float «float»
+	Value : •uint «float»
+	Value : •string «float»
+	Value : •List «float»
 	Value : •identifier «identifier»
 	Value : •quoted_identifier «identifier»
 	Value : •boolean_t «identifier»
 	Value : •boolean_f «identifier»
-	Value : •number «identifier»
+	Value : •float «identifier»
+	Value : •uint «identifier»
 	Value : •string «identifier»
 	Value : •List «identifier»
-	Value : •identifier «number»
-	Value : •quoted_identifier «number»
-	Value : •boolean_t «number»
-	Value : •boolean_f «number»
-	Value : •number «number»
-	Value : •string «number»
-	Value : •List «number»
 	Value : •identifier «quoted_identifier»
 	Value : •quoted_identifier «quoted_identifier»
 	Value : •boolean_t «quoted_identifier»
 	Value : •boolean_f «quoted_identifier»
-	Value : •number «quoted_identifier»
+	Value : •float «quoted_identifier»
+	Value : •uint «quoted_identifier»
 	Value : •string «quoted_identifier»
 	Value : •List «quoted_identifier»
 	Value : •identifier «string»
 	Value : •quoted_identifier «string»
 	Value : •boolean_t «string»
 	Value : •boolean_f «string»
-	Value : •number «string»
+	Value : •float «string»
+	Value : •uint «string»
 	Value : •string «string»
 	Value : •List «string»
+	Value : •identifier «uint»
+	Value : •quoted_identifier «uint»
+	Value : •boolean_t «uint»
+	Value : •boolean_f «uint»
+	Value : •float «uint»
+	Value : •uint «uint»
+	Value : •string «uint»
+	Value : •List «uint»
 	List : •( ListElements ) «)»
 	List : •( ) «)»
 	List : •#( ListElements ) «)»
@@ -1292,14 +1514,14 @@ S29{
 	List : •( ) «boolean_t»
 	List : •#( ListElements ) «boolean_t»
 	List : •#( ) «boolean_t»
+	List : •( ListElements ) «float»
+	List : •( ) «float»
+	List : •#( ListElements ) «float»
+	List : •#( ) «float»
 	List : •( ListElements ) «identifier»
 	List : •( ) «identifier»
 	List : •#( ListElements ) «identifier»
 	List : •#( ) «identifier»
-	List : •( ListElements ) «number»
-	List : •( ) «number»
-	List : •#( ListElements ) «number»
-	List : •#( ) «number»
 	List : •( ListElements ) «quoted_identifier»
 	List : •( ) «quoted_identifier»
 	List : •#( ListElements ) «quoted_identifier»
@@ -1308,65 +1530,73 @@ S29{
 	List : •( ) «string»
 	List : •#( ListElements ) «string»
 	List : •#( ) «string»
+	List : •( ListElements ) «uint»
+	List : •( ) «uint»
+	List : •#( ListElements ) «uint»
+	List : •#( ) «uint»
 }
 Transitions:
-	identifier -> 12
-	quoted_identifier -> 13
-	boolean_t -> 14
-	boolean_f -> 15
-	number -> 16
-	string -> 17
-	List -> 18
-	( -> 20
-	#( -> 22
-	Value -> 25
-	) -> 33
+	identifier -> 13
+	quoted_identifier -> 14
+	boolean_t -> 15
+	boolean_f -> 16
+	float -> 17
+	uint -> 18
+	string -> 19
+	List -> 20
+	( -> 22
+	#( -> 24
+	Value -> 27
+	) -> 35
 
 
-S30{
+S32{
 	List : #( )• «)»
 	List : #( )• «#(»
 	List : #( )• «(»
 	List : #( )• «boolean_f»
 	List : #( )• «boolean_t»
+	List : #( )• «float»
 	List : #( )• «identifier»
-	List : #( )• «number»
 	List : #( )• «quoted_identifier»
 	List : #( )• «string»
-}
-Transitions:
-
-
-S31{
-	List : #( ListElements )• «$»
-}
-Transitions:
-
-
-S32{
-	List : ( ListElements )• «)»
-	List : ( ListElements )• «#(»
-	List : ( ListElements )• «(»
-	List : ( ListElements )• «boolean_f»
-	List : ( ListElements )• «boolean_t»
-	List : ( ListElements )• «identifier»
-	List : ( ListElements )• «number»
-	List : ( ListElements )• «quoted_identifier»
-	List : ( ListElements )• «string»
+	List : #( )• «uint»
 }
 Transitions:
 
 
 S33{
+	List : #( ListElements )• «$»
+}
+Transitions:
+
+
+S34{
+	List : ( ListElements )• «)»
+	List : ( ListElements )• «#(»
+	List : ( ListElements )• «(»
+	List : ( ListElements )• «boolean_f»
+	List : ( ListElements )• «boolean_t»
+	List : ( ListElements )• «float»
+	List : ( ListElements )• «identifier»
+	List : ( ListElements )• «quoted_identifier»
+	List : ( ListElements )• «string»
+	List : ( ListElements )• «uint»
+}
+Transitions:
+
+
+S35{
 	List : #( ListElements )• «)»
 	List : #( ListElements )• «#(»
 	List : #( ListElements )• «(»
 	List : #( ListElements )• «boolean_f»
 	List : #( ListElements )• «boolean_t»
+	List : #( ListElements )• «float»
 	List : #( ListElements )• «identifier»
-	List : #( ListElements )• «number»
 	List : #( ListElements )• «quoted_identifier»
 	List : #( ListElements )• «string»
+	List : #( ListElements )• «uint»
 }
 Transitions:
 

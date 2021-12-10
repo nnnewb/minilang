@@ -3,30 +3,33 @@ S': {
 	(
 	boolean_f
 	boolean_t
+	float
 	identifier
-	number
 	quoted_identifier
 	string
+	uint
 }
 Value: {
 	#(
 	(
 	boolean_f
 	boolean_t
+	float
 	identifier
-	number
 	quoted_identifier
 	string
+	uint
 }
 ListElements: {
 	#(
 	(
 	boolean_f
 	boolean_t
+	float
 	identifier
-	number
 	quoted_identifier
 	string
+	uint
 }
 List: {
 	#(

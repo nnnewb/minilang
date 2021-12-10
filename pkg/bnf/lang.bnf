@@ -30,13 +30,13 @@ _string : '"' { _string_element } '"';
 string: _string;
 
 //
-// number
+// numeric
 //
 _sign: '+' | '-';
 _uint10: _digit { _digit };
-_ureal10 : ['.'] _uint10 | _uint10 '.' _digit {_digit};
-_number : [_sign] _ureal10;
-number: _number;
+_float : [_sign] ['.'] _uint10 | [_sign] _uint10 '.' _digit {_digit};
+float: _float;
+uint: _uint10;
 
 //
 // Syntax start here
@@ -54,10 +54,11 @@ import (
 //
 Value
     : identifier            << ast.Identifier(string($0.(*token.Token).Lit)), nil >>
-    | quoted_identifier     << ast.NewQuoted(ast.Identifier(string($0.(*token.Token).Lit[1:]))), nil >>
+    | quoted_identifier     << ast.Symbol(ast.Identifier(string($0.(*token.Token).Lit[1:]))), nil >>
     | boolean_t             << ast.Boolean(true), nil >>
     | boolean_f             << ast.Boolean(false), nil >>
-    | number                << ast.NewNumber(string($0.(*token.Token).Lit)) >>
+    | float                 << ast.NewFloat(string($0.(*token.Token).Lit)) >>
+    | uint                  << ast.NewUInt(string($0.(*token.Token).Lit)) >>
     | string                << ast.String(string($0.(*token.Token).Lit)), nil >>
     | List                  << $0, nil >>
 ;
@@ -72,6 +73,6 @@ ListElements
 List
     : "(" ListElements ")"  << $1, nil >>
     | "(" ")"               << ast.NewList(), nil >>
-    | "#(" ListElements ")" << ast.NewQuoted($1.(ast.Node)), nil >>
-    | "#(" ")"              << ast.NewQuoted(ast.NewList()), nil >>
+    | "#(" ListElements ")" << ast.NewQuoted($1.(*ast.List)), nil >>
+    | "#(" ")"              << ast.NewQuoted(nil), nil >>
 ;

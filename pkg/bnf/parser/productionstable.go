@@ -43,13 +43,13 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Value : quoted_identifier	<< ast.NewQuoted(ast.Identifier(string(X[0].(*token.Token).Lit[1:]))), nil >>`,
+		String: `Value : quoted_identifier	<< ast.Symbol(ast.Identifier(string(X[0].(*token.Token).Lit[1:]))), nil >>`,
 		Id:         "Value",
 		NTType:     1,
 		Index:      2,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewQuoted(ast.Identifier(string(X[0].(*token.Token).Lit[1:]))), nil
+			return ast.Symbol(ast.Identifier(string(X[0].(*token.Token).Lit[1:]))), nil
 		},
 	},
 	ProdTabEntry{
@@ -73,20 +73,30 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Value : number	<< ast.NewNumber(string(X[0].(*token.Token).Lit)) >>`,
+		String: `Value : float	<< ast.NewFloat(string(X[0].(*token.Token).Lit)) >>`,
 		Id:         "Value",
 		NTType:     1,
 		Index:      5,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewNumber(string(X[0].(*token.Token).Lit))
+			return ast.NewFloat(string(X[0].(*token.Token).Lit))
+		},
+	},
+	ProdTabEntry{
+		String: `Value : uint	<< ast.NewUInt(string(X[0].(*token.Token).Lit)) >>`,
+		Id:         "Value",
+		NTType:     1,
+		Index:      6,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.NewUInt(string(X[0].(*token.Token).Lit))
 		},
 	},
 	ProdTabEntry{
 		String: `Value : string	<< ast.String(string(X[0].(*token.Token).Lit)), nil >>`,
 		Id:         "Value",
 		NTType:     1,
-		Index:      6,
+		Index:      7,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.String(string(X[0].(*token.Token).Lit)), nil
@@ -96,7 +106,7 @@ var productionsTable = ProdTab{
 		String: `Value : List	<< X[0], nil >>`,
 		Id:         "Value",
 		NTType:     1,
-		Index:      7,
+		Index:      8,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0], nil
@@ -106,7 +116,7 @@ var productionsTable = ProdTab{
 		String: `ListElements : Value	<< ast.NewListWithInitial(X[0].(ast.Node)), nil >>`,
 		Id:         "ListElements",
 		NTType:     2,
-		Index:      8,
+		Index:      9,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewListWithInitial(X[0].(ast.Node)), nil
@@ -116,7 +126,7 @@ var productionsTable = ProdTab{
 		String: `ListElements : ListElements Value	<< X[0].(*ast.List).Append(X[1].(ast.Node)), nil >>`,
 		Id:         "ListElements",
 		NTType:     2,
-		Index:      9,
+		Index:      10,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0].(*ast.List).Append(X[1].(ast.Node)), nil
@@ -126,7 +136,7 @@ var productionsTable = ProdTab{
 		String: `List : "(" ListElements ")"	<< X[1], nil >>`,
 		Id:         "List",
 		NTType:     3,
-		Index:      10,
+		Index:      11,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[1], nil
@@ -136,30 +146,30 @@ var productionsTable = ProdTab{
 		String: `List : "(" ")"	<< ast.NewList(), nil >>`,
 		Id:         "List",
 		NTType:     3,
-		Index:      11,
+		Index:      12,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewList(), nil
 		},
 	},
 	ProdTabEntry{
-		String: `List : "#(" ListElements ")"	<< ast.NewQuoted(X[1].(ast.Node)), nil >>`,
-		Id:         "List",
-		NTType:     3,
-		Index:      12,
-		NumSymbols: 3,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewQuoted(X[1].(ast.Node)), nil
-		},
-	},
-	ProdTabEntry{
-		String: `List : "#(" ")"	<< ast.NewQuoted(ast.NewList()), nil >>`,
+		String: `List : "#(" ListElements ")"	<< ast.NewQuoted(X[1].(*ast.List)), nil >>`,
 		Id:         "List",
 		NTType:     3,
 		Index:      13,
+		NumSymbols: 3,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.NewQuoted(X[1].(*ast.List)), nil
+		},
+	},
+	ProdTabEntry{
+		String: `List : "#(" ")"	<< ast.NewQuoted(nil), nil >>`,
+		Id:         "List",
+		NTType:     3,
+		Index:      14,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewQuoted(ast.NewList()), nil
+			return ast.NewQuoted(nil), nil
 		},
 	},
 }

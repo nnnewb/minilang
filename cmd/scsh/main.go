@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/c-bata/go-prompt"
-	"github.com/nnnewb/minilang/internal/builtin"
-	"github.com/nnnewb/minilang/internal/environment"
+	"github.com/nnnewb/minilang/internal/ilcompiler"
+	"github.com/nnnewb/minilang/internal/vm"
 	"github.com/nnnewb/minilang/pkg/ast"
 	"github.com/nnnewb/minilang/pkg/bnf/lexer"
 	"github.com/nnnewb/minilang/pkg/bnf/parser"
@@ -13,23 +14,13 @@ import (
 
 func main() {
 	for {
-		input := prompt.Input(">", func(d prompt.Document) []prompt.Suggest {
+		input := prompt.Input(">>> ", func(d prompt.Document) []prompt.Suggest {
 			return []prompt.Suggest{}
 		})
 
 		if input == ".quit" {
 			break
 		}
-
-		ee := environment.NewExecutionEnv(nil)
-		builtin.RegisterArithmeticBuiltin(ee)
-		ee.SetValue("display", environment.BuiltinFunc(func(ee *environment.ExecutionEnv, args []environment.Value) (environment.Value, error) {
-			for _, v := range args {
-				fmt.Printf("%v", v)
-			}
-			println()
-			return nil, nil
-		}))
 
 		lexer := lexer.NewLexer([]byte(input))
 		parser := parser.NewParser()
@@ -39,12 +30,40 @@ func main() {
 			continue
 		}
 
-		val := environment.NewValueFromASTNode(parseResult.(ast.Node))
-		evaluated, err := ee.Evaluate(val)
+		compiler := ilcompiler.NewCompiler()
+		inst, err := compiler.Compile(parseResult.(ast.Node))
 		if err != nil {
-			fmt.Printf("evaluation failed, error %v\n", err)
-			continue
+			fmt.Printf("compile error %v\n", err)
 		}
-		fmt.Printf("# (%T) %v\n", evaluated, evaluated)
+
+		if len(inst) > 0 {
+			executor := vm.NewStackBasedVMInterpreter(inst)
+			executor.InterOp["display"] = func(interpreter *vm.StackBasedVMInterpreter) error {
+				sb := strings.Builder{}
+				argc := uint32(interpreter.Stack.Pop().(vm.UInt))
+				var i uint32
+				for i = 0; i < argc; i++ {
+					arg := interpreter.Stack.Pop()
+					sb.WriteString(fmt.Sprintf("%v", arg))
+					if i+1 != argc {
+						sb.WriteString(" ")
+					}
+				}
+				println(sb.String())
+				interpreter.Stack.Push(vm.UInt(0))
+				return nil
+			}
+			for {
+				err = executor.ExecNextInstruction()
+				if err != nil {
+					if err == vm.ErrNoMoreInstructions {
+						break
+					} else {
+						fmt.Printf("vm error: %v\n", err)
+						break
+					}
+				}
+			}
+		}
 	}
 }
