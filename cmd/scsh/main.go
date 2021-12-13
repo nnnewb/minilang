@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/c-bata/go-prompt"
-	"github.com/nnnewb/minilang/internal/ilcompiler"
+	"github.com/nnnewb/minilang/internal/builtin"
+	"github.com/nnnewb/minilang/internal/compiler"
 	"github.com/nnnewb/minilang/internal/vm"
 	"github.com/nnnewb/minilang/pkg/ast"
 	"github.com/nnnewb/minilang/pkg/bnf/lexer"
@@ -30,40 +30,31 @@ func main() {
 			continue
 		}
 
-		compiler := ilcompiler.NewCompiler()
+		compiler := compiler.NewCompiler()
 		inst, err := compiler.Compile(parseResult.(ast.Node))
 		if err != nil {
 			fmt.Printf("compile error %v\n", err)
 		}
 
-		if len(inst) > 0 {
-			executor := vm.NewStackBasedVMInterpreter(inst)
-			executor.InterOp["display"] = func(interpreter *vm.StackBasedVMInterpreter) error {
-				sb := strings.Builder{}
-				argc := uint32(interpreter.Stack.Pop().(vm.UInt))
-				var i uint32
-				for i = 0; i < argc; i++ {
-					arg := interpreter.Stack.Pop()
-					sb.WriteString(fmt.Sprintf("%v", arg))
-					if i+1 != argc {
-						sb.WriteString(" ")
-					}
-				}
-				println(sb.String())
-				interpreter.Stack.Push(vm.UInt(0))
-				return nil
+		executor := vm.NewStackBasedVMInterpreter(inst)
+		builtin.RegisterArithmetic(executor)
+		for {
+			if int(executor.IP) < len(executor.Instructions) {
+				fmt.Printf("IP[%d] -> %s\n", executor.IP, executor.Instructions[executor.IP])
 			}
-			for {
-				err = executor.ExecNextInstruction()
-				if err != nil {
-					if err == vm.ErrNoMoreInstructions {
-						break
-					} else {
-						fmt.Printf("vm error: %v\n", err)
-						break
-					}
+
+			err = executor.ExecNextInstruction()
+			if err != nil {
+				if err == vm.ErrNoMoreInstructions {
+					break
+				} else {
+					fmt.Printf("vm error: %v\n", err)
+					break
 				}
 			}
 		}
+
+		evaluated := executor.Pop()
+		fmt.Printf("%T# %v\n", evaluated, evaluated)
 	}
 }

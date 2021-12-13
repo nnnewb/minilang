@@ -1,12 +1,6 @@
-package ilcompiler
+package compiler
 
 import "github.com/nnnewb/minilang/internal/vm"
-
-func interop() vm.Instruction {
-	return vm.Instruction{
-		OpCode: vm.INTEROP,
-	}
-}
 
 func push(val vm.Object) vm.Instruction {
 	return vm.Instruction{

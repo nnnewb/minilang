@@ -2,6 +2,7 @@ package vm
 
 import (
 	"fmt"
+	"log"
 )
 
 type SymbolLookupTable struct {
@@ -9,7 +10,8 @@ type SymbolLookupTable struct {
 }
 
 type StackBasedVMInterpreter struct {
-	Stack        *Stack        // 栈空间
+	Stack        []Object      // 栈空间，包括传参和本地变量都存放在这里
+	Top          int           // 栈顶地址
 	IP           UInt          // Instruction Pointer 指令指针
 	Instructions []Instruction // 程序指令集合
 	InterOp      map[string]func(interpreter *StackBasedVMInterpreter) error
@@ -18,49 +20,79 @@ type StackBasedVMInterpreter struct {
 
 func NewStackBasedVMInterpreter(instructions []Instruction) *StackBasedVMInterpreter {
 	return &StackBasedVMInterpreter{
-		Stack:        NewStack(),
+		Stack:        make([]Object, 0),
+		Top:          -1,
 		IP:           0,
 		Instructions: instructions,
 		InterOp:      make(map[string]func(interpreter *StackBasedVMInterpreter) error),
 	}
 }
 
-func (interpreter *StackBasedVMInterpreter) ExecNextInstruction() error {
-	if int(interpreter.IP) >= len(interpreter.Instructions) {
+func (i *StackBasedVMInterpreter) Push(obj Object) {
+	log.Printf("#%d vm.stack.push: %v (%T)\n", i.Top, obj, obj)
+	if i.Top+1 < len(i.Stack) {
+		i.Stack[i.Top+1] = obj
+	} else {
+		i.Stack = append(i.Stack, obj)
+	}
+	i.Top++
+}
+
+func (i *StackBasedVMInterpreter) Pop() Object {
+	if i.Top < 0 {
+		log.Fatalf("stack overflow: %d", i.Top)
+		return nil
+	}
+
+	ret := i.Stack[i.Top]
+	log.Printf("#%d vm.stack.pop: %v (%T)\n", i.Top, ret, ret)
+	i.Top--
+	return ret
+}
+
+func (i *StackBasedVMInterpreter) Peek() Object {
+	return i.Stack[i.Top]
+}
+
+func (i *StackBasedVMInterpreter) ExecNextInstruction() error {
+	if int(i.IP) >= len(i.Instructions) {
 		return ErrNoMoreInstructions
 	}
 
-	inst := interpreter.Instructions[interpreter.IP]
+	inst := i.Instructions[i.IP]
 	switch inst.OpCode {
 	case CALL:
-		interpreter.Stack.Push(UInt(interpreter.IP + 1))
-		interpreter.IP = inst.Operand[0].(UInt)
-		return nil
-	case INTEROP:
-		sym := interpreter.Stack.Pop().(Symbol)
-		if callee, ok := interpreter.InterOp[string(sym)]; ok {
-			if err := callee(interpreter); err != nil {
+		i.Push(UInt(i.IP + 1))
+		if sym, ok := inst.Operand[0].(Symbol); ok {
+			if err := i.InterOp[string(sym)](i); err != nil {
 				return err
 			}
-		} else {
-			return fmt.Errorf("%s is not defined", sym)
 		}
+		return nil
+	case RET:
+		if len(inst.Operand) == 0 {
+			return fmt.Errorf("invalid return instruction")
+		}
+		returnAddress := i.Pop().(UInt)
+		i.IP = returnAddress
+		i.Push(inst.Operand[0])
+		return nil
 	case PUSH:
 		for _, ope := range inst.Operand {
-			interpreter.Stack.Push(ope)
+			i.Push(ope)
 		}
 	case POP:
-		var i uint32
-		for i = 0; i < uint32(inst.Operand[0].(UInt)); i++ {
-			interpreter.Stack.Pop()
+		var idx uint32
+		for idx = 0; idx < uint32(inst.Operand[0].(UInt)); idx++ {
+			i.Pop()
 		}
 	case JUMP:
-		interpreter.IP = inst.Operand[0].(UInt)
+		i.IP = inst.Operand[0].(UInt)
 	case JZ:
-		cond := interpreter.Stack.Pop()
+		cond := i.Pop()
 		if b, ok := cond.(Boolean); ok {
 			if bool(b) {
-				interpreter.IP = inst.Operand[0].(UInt)
+				i.IP = inst.Operand[0].(UInt)
 				return nil
 			}
 		} else {
@@ -69,8 +101,8 @@ func (interpreter *StackBasedVMInterpreter) ExecNextInstruction() error {
 	case LOAD:
 		for _, sym := range inst.Operand {
 			if name, ok := sym.(Symbol); ok {
-				if v, ok := interpreter.SymbolTable.Table[string(name)]; ok {
-					interpreter.Stack.Push(v)
+				if v, ok := i.SymbolTable.Table[string(name)]; ok {
+					i.Push(v)
 				} else {
 					return fmt.Errorf("undefined name %s", name)
 				}
@@ -81,6 +113,6 @@ func (interpreter *StackBasedVMInterpreter) ExecNextInstruction() error {
 	default:
 		return fmt.Errorf("unexpected opcode %v", inst.OpCode)
 	}
-	interpreter.IP++
+	i.IP++
 	return nil
 }

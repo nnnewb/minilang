@@ -4,9 +4,12 @@ type OpCode int32
 
 const (
 	RESERVED = iota
-	// CALL <PTR>
-	// 压栈下一条指令的地址，跳转到目标位置
+	// CALL <STR>
+	// 压栈下一条指令的地址，跳转到指定位置
 	CALL
+	// RET <OBJ>
+	// 取栈顶的对象作为跳转地址，压栈返回值
+	RET
 	// LOAD <STR>
 	// 读取局部环境里的变量压栈
 	LOAD
@@ -22,8 +25,17 @@ const (
 	// JZ <DEST>
 	// 弹出栈顶，变量非 0 则跳转
 	JZ
-	// INTEROP
-	// 压栈下一条指令的地址，调用运行时函数
-	// TODO 考虑下 JIT 怎么转译这条指令
-	INTEROP
 )
+
+func (o OpCode) String() string {
+	return []string{
+		"RESERVED",
+		"CALL",
+		"RET",
+		"LOAD",
+		"PUSH",
+		"POP",
+		"JUMP",
+		"JZ",
+	}[o]
+}
