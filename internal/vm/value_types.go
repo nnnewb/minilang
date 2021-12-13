@@ -40,6 +40,12 @@ func (s Symbol) TypeName() string {
 	return "symbol"
 }
 
+type Nil struct{}
+
+func (n Nil) TypeName() string {
+	return "nil"
+}
+
 type List struct {
 	underlying []Object
 }
@@ -48,10 +54,33 @@ func (l *List) TypeName() string {
 	return "list"
 }
 
-type Procedure []Instruction
+type Procedure struct {
+	Location  int
+	Code      []Instruction
+	Builtin   NativeFunc
+	isBuiltin bool
+}
 
-func (p Procedure) TypeName() string {
+func (p *Procedure) TypeName() string {
 	return "procedure"
+}
+
+func NewProcedureFromInstruction(instructions []Instruction) *Procedure {
+	return &Procedure{
+		Location:  0,
+		Code:      instructions,
+		Builtin:   nil,
+		isBuiltin: false,
+	}
+}
+
+func NewProcedureFromNativeFunc(fun NativeFunc) *Procedure {
+	return &Procedure{
+		Location:  0,
+		Code:      nil,
+		Builtin:   fun,
+		isBuiltin: true,
+	}
 }
 
 func ObjectFromLiteral(node ast.Node) Object {
@@ -70,6 +99,8 @@ func ObjectFromLiteral(node ast.Node) Object {
 			lst.underlying = append(lst.underlying, ObjectFromLiteral(n))
 		}
 		return lst
+	case ast.Symbol:
+		return Symbol(node)
 	default:
 		log.Fatalf("unexpected ast node in ToValue %v(%T)", node, node)
 	}

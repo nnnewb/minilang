@@ -13,6 +13,10 @@ import (
 )
 
 func main() {
+	m := vm.NewMiniVM([]vm.Instruction{})
+	builtin.RegisterArithmetic(m)
+	builtin.RegisterLanguageFacility(m)
+
 	for {
 		input := prompt.Input(">>> ", func(d prompt.Document) []prompt.Suggest {
 			return []prompt.Suggest{}
@@ -31,19 +35,14 @@ func main() {
 		}
 
 		compiler := compiler.NewCompiler()
-		inst, err := compiler.Compile(parseResult.(ast.Node))
+		instructions, err := compiler.Compile(parseResult.(ast.Node))
 		if err != nil {
 			fmt.Printf("compile error %v\n", err)
 		}
 
-		executor := vm.NewStackBasedVMInterpreter(inst)
-		builtin.RegisterArithmetic(executor)
+		m.AddInstructions(instructions)
 		for {
-			if int(executor.IP) < len(executor.Instructions) {
-				fmt.Printf("IP[%d] -> %s\n", executor.IP, executor.Instructions[executor.IP])
-			}
-
-			err = executor.ExecNextInstruction()
+			err = m.ExecNextInstruction()
 			if err != nil {
 				if err == vm.ErrNoMoreInstructions {
 					break
@@ -54,7 +53,7 @@ func main() {
 			}
 		}
 
-		evaluated := executor.Pop()
+		evaluated := m.Pop()
 		fmt.Printf("%T# %v\n", evaluated, evaluated)
 	}
 }
