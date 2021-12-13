@@ -124,33 +124,6 @@ func (m *MiniVM) instPop(inst Instruction) error {
 	return nil
 }
 
-func (m *MiniVM) instJump(inst Instruction) error {
-	if len(inst.Operand) == 0 || len(inst.Operand) > 1 {
-		return fmt.Errorf("invalid JUMP instruction: %s", inst)
-	}
-
-	m.IP = inst.Operand[0].(UInt)
-	return nil
-}
-
-func (m *MiniVM) instJz(inst Instruction) error {
-	if len(inst.Operand) == 0 || len(inst.Operand) > 1 {
-		return fmt.Errorf("invalid JZ instruction: %s", inst)
-	}
-
-	cond := m.Pop()
-	if b, ok := cond.(Boolean); ok {
-		if bool(b) {
-			m.IP = inst.Operand[0].(UInt)
-			return nil
-		}
-	} else {
-		return fmt.Errorf("unexpected conditional value %v(%T)", cond, cond)
-	}
-
-	return nil
-}
-
 func (m *MiniVM) instLoad(inst Instruction) error {
 	if len(inst.Operand) == 0 || len(inst.Operand) > 1 {
 		return fmt.Errorf("invalid LOAD instruction: %s", inst)
@@ -183,10 +156,6 @@ func (m *MiniVM) ExecNextInstruction() error {
 		m.instPush(inst)
 	case POP:
 		m.instPop(inst)
-	case JUMP:
-		return m.instJump(inst)
-	case JZ:
-		return m.instJz(inst)
 	case LOAD:
 		m.instLoad(inst)
 	default:

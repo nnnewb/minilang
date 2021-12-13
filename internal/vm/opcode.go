@@ -19,12 +19,6 @@ const (
 	// POP <NUM>
 	// 出栈一定数量的对象，出栈的对象直接丢弃
 	POP
-	// JUMP <DEST>
-	// 无条件跳转到目标位置
-	JUMP
-	// JZ <DEST>
-	// 弹出栈顶，变量非 0 则跳转
-	JZ
 )
 
 func (o OpCode) String() string {
@@ -35,7 +29,5 @@ func (o OpCode) String() string {
 		"LOAD",
 		"PUSH",
 		"POP",
-		"JUMP",
-		"JZ",
 	}[o]
 }
