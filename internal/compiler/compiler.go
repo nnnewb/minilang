@@ -53,3 +53,30 @@ func (c *Compiler) Compile(root ast.Node) ([]vm.Instruction, error) {
 	}
 	return instructions, nil
 }
+
+func (c *Compiler) ReverseCompile(obj vm.Object) (ast.Node, error) {
+	switch v := obj.(type) {
+	case vm.UInt:
+		return ast.UInt(v), nil
+	case vm.Float:
+		return ast.Float(v), nil
+	case vm.Boolean:
+		return ast.Boolean(v), nil
+	case vm.String:
+		return ast.String(v), nil
+	case vm.Symbol:
+		return ast.Symbol(v), nil
+	case *vm.List:
+		root := ast.NewList()
+		for _, elem := range v.GetUnderlyingList() {
+			reversed, err := c.ReverseCompile(elem)
+			if err != nil {
+				return nil, err
+			}
+			root.Append(reversed)
+		}
+		return root, nil
+	default:
+		return nil, fmt.Errorf("%v(%T) cannot reversed", obj, obj)
+	}
+}

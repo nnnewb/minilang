@@ -54,6 +54,12 @@ func (l *List) TypeName() string {
 	return "list"
 }
 
+func (l *List) GetUnderlyingList() []Object {
+	r := make([]Object, 0, len(l.underlying))
+	copy(r, l.underlying)
+	return r
+}
+
 type Procedure struct {
 	Location  int
 	Code      []Instruction

@@ -26,8 +26,9 @@ func mustReadLine(reader *bufio.Reader) string {
 
 func main() {
 	m := vm.NewMiniVM([]vm.Instruction{})
-	builtin.RegisterArithmetic(m)
 	builtin.RegisterLanguageFacility(m)
+	builtin.RegisterArithmetic(m)
+	builtin.RegisterIO(m)
 
 	for {
 		fmt.Printf(">>> ")
