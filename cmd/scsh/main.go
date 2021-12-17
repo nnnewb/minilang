@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
+	"strings"
 
-	"github.com/c-bata/go-prompt"
 	"github.com/nnnewb/minilang/internal/builtin"
 	"github.com/nnnewb/minilang/internal/compiler"
 	"github.com/nnnewb/minilang/internal/vm"
@@ -12,32 +15,40 @@ import (
 	"github.com/nnnewb/minilang/pkg/bnf/parser"
 )
 
+func mustReadLine(reader *bufio.Reader) string {
+	line, err := reader.ReadString('\n')
+	if err != nil {
+		panic(err)
+	}
+
+	return line
+}
+
 func main() {
 	m := vm.NewMiniVM([]vm.Instruction{})
 	builtin.RegisterArithmetic(m)
 	builtin.RegisterLanguageFacility(m)
 
 	for {
-		input := prompt.Input(">>> ", func(d prompt.Document) []prompt.Suggest {
-			return []prompt.Suggest{}
-		})
-
-		if input == ".quit" {
+		fmt.Printf(">>> ")
+		reader := bufio.NewReader(os.Stdin)
+		line := strings.TrimSpace(mustReadLine(reader))
+		if line == ".quit" {
 			break
 		}
 
-		lexer := lexer.NewLexer([]byte(input))
+		lexer := lexer.NewLexer([]byte(line))
 		parser := parser.NewParser()
 		parseResult, err := parser.Parse(lexer)
 		if err != nil {
-			fmt.Printf("parse error %v\n", err)
+			log.Printf("parse error %v\n", err)
 			continue
 		}
 
 		compiler := compiler.NewCompiler()
 		instructions, err := compiler.Compile(parseResult.(ast.Node))
 		if err != nil {
-			fmt.Printf("compile error %v\n", err)
+			log.Printf("compile error %v\n", err)
 		}
 
 		m.AddInstructions(instructions)
@@ -47,7 +58,7 @@ func main() {
 				if err == vm.ErrNoMoreInstructions {
 					break
 				} else {
-					fmt.Printf("vm error: %v\n", err)
+					log.Printf("vm error: %v\n", err)
 					break
 				}
 			}
