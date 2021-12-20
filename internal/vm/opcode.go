@@ -4,9 +4,12 @@ type OpCode int32
 
 const (
 	RESERVED = iota
-	// CALL <STR>
+	// CALL <UINT>
 	// 压栈下一条指令的地址，跳转到指定位置
 	CALL
+	// CALL_NATIVE
+	// 压栈下一条指令的地址，调用本地函数 (Go)
+	CALL_NATIVE
 	// RET <OBJ>
 	// 取栈顶的对象作为跳转地址，压栈返回值
 	RET
@@ -25,6 +28,7 @@ func (o OpCode) String() string {
 	return []string{
 		"RESERVED",
 		"CALL",
+		"CALL_NATIVE",
 		"RET",
 		"LOAD",
 		"PUSH",

@@ -47,7 +47,7 @@ func main() {
 		}
 
 		compiler := compiler.NewCompiler()
-		instructions, err := compiler.Compile(parseResult.(ast.Node))
+		instructions, err := compiler.Compile(m, parseResult.(ast.Node))
 		if err != nil {
 			log.Printf("compile error %v\n", err)
 		}

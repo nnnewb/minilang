@@ -43,7 +43,7 @@ func RegisterLanguageFacility(m *vm.MiniVM) {
 			}
 
 			// 然后正向编译到指令合集
-			instructions, err := c.Compile(reversed)
+			instructions, err := c.Compile(m, reversed)
 			if err != nil {
 				return nil, err
 			}

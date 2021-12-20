@@ -67,36 +67,69 @@ func (m *MiniVM) AddInstructions(instructions []Instruction) int {
 	return loc
 }
 
+func (m *MiniVM) instCallNative(inst Instruction) error {
+	if len(inst.Operand) != 1 {
+		return fmt.Errorf("invalid CALL_NATIVE instruction: %s", inst)
+	}
+
+	var (
+		sym  Symbol
+		ok   bool
+		proc *Procedure
+		err  error
+	)
+
+	if sym, ok = inst.Operand[0].(Symbol); !ok {
+		return fmt.Errorf("invalid CALL_NATIVE instruction: %s", inst)
+	}
+
+	if proc, err = m.LookupProc(string(sym)); err != nil {
+		return err
+	}
+
+	if !proc.isBuiltin {
+		return fmt.Errorf("invalid CALL_NATIVE instruction: %s, callee %s is not a builtin function", inst, sym)
+	}
+
+	m.Push(UInt(m.IP + 1))
+	return proc.Builtin(m)
+}
+
 func (m *MiniVM) instCall(inst Instruction) error {
-	if len(inst.Operand) == 0 {
+	if len(inst.Operand) != 1 {
 		return fmt.Errorf("invalid CALL instruction: %s", inst)
 	}
 
-	if sym, ok := inst.Operand[0].(Symbol); ok {
-		if proc, err := m.LookupProc(string(sym)); err != nil {
-			return err
-		} else {
-			if proc.isBuiltin {
-				m.Push(UInt(m.IP + 1))
-				return proc.Builtin(m)
-			} else if proc.Location != 0 {
-				m.Push(UInt(m.IP + 1))
-				m.IP = UInt(proc.Location)
-			} else {
-				log.Fatalf("invalid callable object")
-				return nil
-			}
-		}
+	var (
+		sym  Symbol
+		ok   bool
+		proc *Procedure
+		err  error
+	)
 
-		return nil
+	if sym, ok = inst.Operand[0].(Symbol); ok {
+		return fmt.Errorf("invalid CALL instruction: %s", inst)
 	}
 
-	log.Fatalf("invalid CALL instruction operand %v", inst.Operand)
+	if proc, err = m.LookupProc(string(sym)); err != nil {
+		return err
+	}
+
+	if proc.isBuiltin {
+		return fmt.Errorf("invalid CALL instruction: %s, callee %s is builtin function", inst, sym)
+	}
+
+	if proc.Location == 0 {
+		return fmt.Errorf("invalid CALL instruction: %s, callee %s not registered", inst, sym)
+	}
+
+	m.Push(UInt(m.IP + 1))
+	m.IP = UInt(proc.Location)
 	return nil
 }
 
 func (m *MiniVM) instRet(inst Instruction) error {
-	if len(inst.Operand) == 0 {
+	if len(inst.Operand) != 0 {
 		return fmt.Errorf("invalid RET instruction: %s", inst)
 	}
 
@@ -107,7 +140,7 @@ func (m *MiniVM) instRet(inst Instruction) error {
 }
 
 func (m *MiniVM) instPush(inst Instruction) error {
-	if len(inst.Operand) == 0 || len(inst.Operand) > 1 {
+	if len(inst.Operand) != 1 {
 		return fmt.Errorf("invalid PUSH instruction: %s", inst)
 	}
 
@@ -116,7 +149,7 @@ func (m *MiniVM) instPush(inst Instruction) error {
 }
 
 func (m *MiniVM) instPop(inst Instruction) error {
-	if len(inst.Operand) == 0 || len(inst.Operand) > 1 {
+	if len(inst.Operand) != 1 {
 		return fmt.Errorf("invalid POP instruction: %s", inst)
 	}
 
@@ -125,7 +158,7 @@ func (m *MiniVM) instPop(inst Instruction) error {
 }
 
 func (m *MiniVM) instLoad(inst Instruction) error {
-	if len(inst.Operand) == 0 || len(inst.Operand) > 1 {
+	if len(inst.Operand) != 1 {
 		return fmt.Errorf("invalid LOAD instruction: %s", inst)
 	}
 
@@ -150,6 +183,8 @@ func (m *MiniVM) ExecNextInstruction() error {
 	switch inst.OpCode {
 	case CALL:
 		return m.instCall(inst)
+	case CALL_NATIVE:
+		return m.instCallNative(inst)
 	case RET:
 		m.instRet(inst)
 	case PUSH:
