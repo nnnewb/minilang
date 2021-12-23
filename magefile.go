@@ -24,30 +24,16 @@ func Run() error {
 	return syscall.Exec(binaryOutput, []string{}, os.Environ())
 }
 
-func Gen() error {
-	return sh.Run("go", "generate", "./...")
-}
-
 func Build() error {
-	var err error
-
-	err = sh.Run("go", "mod", "download")
-	if err != nil {
+	if err := sh.Run("gocc", "-o", "pkg/bnf", "-p", "github.com/nnnewb/minilang/pkg/bnf", "spec.bnf"); err != nil {
 		return err
 	}
 
-	err = sh.Run("go", "mod", "tidy")
-	if err != nil {
+	if err := sh.Run("go", "mod", "tidy"); err != nil {
 		return err
 	}
 
-	err = Gen()
-	if err != nil {
-		return err
-	}
-
-	err = sh.Run("go", "build", "-o", binaryOutput, "cmd/scsh/main.go")
-	if err != nil {
+	if err := sh.Run("go", "build", "-o", binaryOutput, "cmd/scsh/main.go"); err != nil {
 		return err
 	}
 
