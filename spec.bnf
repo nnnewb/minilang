@@ -1,18 +1,52 @@
 !whitespace: ' ' | '\t' | '\r' | '\n';
 !comment: ';' {.} '\n';
 
-//
-// identifier
-//
-_letter : 'a'-'z' | 'A'-'Z';
-_initial: _letter;
-_digit  : '0'-'9' ;
-_special_subsequent : '.' | '+' | '-' | '!' | '?';
-_subsequent: _initial | _digit | _special_subsequent;
-_peculiar_identifier: '+' | '-' | '.' '.' '.';
-_identifier : _initial { _subsequent } | _peculiar_identifier;
-identifier: _identifier;
-quoted_identifier: '#' _identifier;
+_letter
+    : 'a'-'z'
+    | 'A'-'Z'
+;
+_initial
+    : _letter
+    | _special_initial
+;
+_special_initial
+    : '!'
+    | '$'
+    | '%'
+    | '&'
+    | '*'
+    | '/'
+    | ':'
+    | '<'
+    | '='
+    | '?'
+    | '^'
+    | '_'
+    | '~'
+;
+_digit
+    : '0'-'9'
+;
+_special_subsequent
+    : '.' | '+' | '-' | '!' | '?'
+;
+_subsequent
+    : _initial
+    | _digit
+    | _special_subsequent
+;
+_peculiar_identifier
+    : '+'
+    | '-'
+    | '.' '.' '.'
+;
+_identifier
+    : _initial { _subsequent }
+    | _peculiar_identifier
+;
+identifier
+    : _identifier
+;
 
 //
 // boolean
@@ -49,30 +83,47 @@ import (
 )
 >>
 
-//
-// value
-//
-Value
-    : identifier            << ast.Identifier(string($0.(*token.Token).Lit)), nil >>
-    | quoted_identifier     << ast.Symbol(ast.Identifier(string($0.(*token.Token).Lit[1:]))), nil >>
-    | boolean_t             << ast.Boolean(true), nil >>
+Program
+    : Define Program        << $0.(*ast.Define), nil >>
+    | Combination Program   << $0.(*ast.Combination), nil >>
+    | empty
+;
+
+Define
+    : "(" "define" Identifier Combination ")" << ast.NewDefine($2.(ast.Identifier), $3.(*ast.Combination)), nil >>
+;
+
+Combination
+    : "(" "lambda" "(" Formals ")" Combination ")"  << ast.NewCombinationWithOperands(ast.Identifier("lambda"), append([]ast.Node{}, ast.NewFormals($3.([]ast.Identifier)), $5.(*ast.Combination))), nil >>
+    | "(" Identifier Operand ")"                    << ast.NewCombinationWithOperands($1.(ast.Identifier), $2.([]ast.Node)), nil >>
+    | "(" Identifier ")"                            << ast.NewCombination($1.(ast.Identifier)), nil >>
+;
+
+Formals
+    : Formals Identifier     << append($0.([]ast.Identifier), $1.(ast.Identifier)), nil >>
+    | Identifier            << []ast.Identifier{$0.(ast.Identifier)}, nil >>
+;
+
+Operand
+    : Value            << []ast.Node{$0.(ast.Node)}, nil >>
+    | Operand Value    << append($0.([]ast.Node), $1.(ast.Node)), nil >>
+;
+
+
+BooleanLit
+    : boolean_t             << ast.Boolean(true), nil >>
     | boolean_f             << ast.Boolean(false), nil >>
+;
+
+Identifier
+    : identifier << ast.Identifier(string($0.(*token.Token).Lit)), nil >>
+;
+
+Value
+    : Identifier            << $0.(ast.Identifier), nil >>
+    | BooleanLit            << $0.(ast.Boolean), nil >>
     | float                 << ast.NewFloat(string($0.(*token.Token).Lit)) >>
     | uint                  << ast.NewUInt(string($0.(*token.Token).Lit)) >>
     | string                << ast.String(string($0.(*token.Token).Lit)), nil >>
-    | List                  << $0, nil >>
-;
-
-//
-// list
-//
-ListElements
-    : Value                 << ast.NewListWithInitial($0.(ast.Node)), nil >>
-    | ListElements Value    << $0.(*ast.List).Append($1.(ast.Node)), nil >>
-;
-List
-    : "(" ListElements ")"  << $1, nil >>
-    | "(" ")"               << ast.NewList(), nil >>
-    | "#(" ListElements ")" << ast.NewQuoted($1.(*ast.List)), nil >>
-    | "#(" ")"              << ast.NewQuoted(nil), nil >>
+    | Combination           << $0, nil >>
 ;

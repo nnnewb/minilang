@@ -3,25 +3,19 @@
 package main
 
 import (
-	"os"
 	"runtime"
-	"syscall"
 
 	"github.com/magefile/mage/sh"
 )
 
 var (
-	binaryOutput string = "build/bin/scsh"
+	sccBinaryOutput string = "build/bin/scc"
 )
 
 func init() {
 	if runtime.GOOS == "windows" {
-		binaryOutput += ".exe"
+		sccBinaryOutput += ".exe"
 	}
-}
-
-func Run() error {
-	return syscall.Exec(binaryOutput, []string{}, os.Environ())
 }
 
 func Build() error {
@@ -33,7 +27,7 @@ func Build() error {
 		return err
 	}
 
-	if err := sh.Run("go", "build", "-o", binaryOutput, "cmd/scsh/main.go"); err != nil {
+	if err := sh.Run("go", "build", "-o", sccBinaryOutput, "cmd/scc/main.go"); err != nil {
 		return err
 	}
 

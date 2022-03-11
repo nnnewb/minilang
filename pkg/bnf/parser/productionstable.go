@@ -23,7 +23,7 @@ type (
 
 var productionsTable = ProdTab{
 	ProdTabEntry{
-		String: `S' : Value	<<  >>`,
+		String: `S' : Program	<<  >>`,
 		Id:         "S'",
 		NTType:     0,
 		Index:      0,
@@ -33,50 +33,170 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Value : identifier	<< ast.Identifier(string(X[0].(*token.Token).Lit)), nil >>`,
-		Id:         "Value",
+		String: `Program : Define Program	<< X[0].(*ast.Define), nil >>`,
+		Id:         "Program",
 		NTType:     1,
 		Index:      1,
-		NumSymbols: 1,
+		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.Identifier(string(X[0].(*token.Token).Lit)), nil
+			return X[0].(*ast.Define), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Value : quoted_identifier	<< ast.Symbol(ast.Identifier(string(X[0].(*token.Token).Lit[1:]))), nil >>`,
-		Id:         "Value",
+		String: `Program : Combination Program	<< X[0].(*ast.Combination), nil >>`,
+		Id:         "Program",
 		NTType:     1,
 		Index:      2,
-		NumSymbols: 1,
+		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.Symbol(ast.Identifier(string(X[0].(*token.Token).Lit[1:]))), nil
+			return X[0].(*ast.Combination), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Value : boolean_t	<< ast.Boolean(true), nil >>`,
-		Id:         "Value",
+		String: `Program : empty	<<  >>`,
+		Id:         "Program",
 		NTType:     1,
 		Index:      3,
+		NumSymbols: 0,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return nil, nil
+		},
+	},
+	ProdTabEntry{
+		String: `Define : "(" "define" Identifier Combination ")"	<< ast.NewDefine(X[2].(ast.Identifier), X[3].(*ast.Combination)), nil >>`,
+		Id:         "Define",
+		NTType:     2,
+		Index:      4,
+		NumSymbols: 5,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.NewDefine(X[2].(ast.Identifier), X[3].(*ast.Combination)), nil
+		},
+	},
+	ProdTabEntry{
+		String: `Combination : "(" "lambda" "(" Formals ")" Combination ")"	<< ast.NewCombinationWithOperands(ast.Identifier("lambda"), append([]ast.Node{}, ast.NewFormals(X[3].([]ast.Identifier)), X[5].(*ast.Combination))), nil >>`,
+		Id:         "Combination",
+		NTType:     3,
+		Index:      5,
+		NumSymbols: 7,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.NewCombinationWithOperands(ast.Identifier("lambda"), append([]ast.Node{}, ast.NewFormals(X[3].([]ast.Identifier)), X[5].(*ast.Combination))), nil
+		},
+	},
+	ProdTabEntry{
+		String: `Combination : "(" Identifier Operand ")"	<< ast.NewCombinationWithOperands(X[1].(ast.Identifier), X[2].([]ast.Node)), nil >>`,
+		Id:         "Combination",
+		NTType:     3,
+		Index:      6,
+		NumSymbols: 4,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.NewCombinationWithOperands(X[1].(ast.Identifier), X[2].([]ast.Node)), nil
+		},
+	},
+	ProdTabEntry{
+		String: `Combination : "(" Identifier ")"	<< ast.NewCombination(X[1].(ast.Identifier)), nil >>`,
+		Id:         "Combination",
+		NTType:     3,
+		Index:      7,
+		NumSymbols: 3,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.NewCombination(X[1].(ast.Identifier)), nil
+		},
+	},
+	ProdTabEntry{
+		String: `Formals : Formals Identifier	<< append(X[0].([]ast.Identifier), X[1].(ast.Identifier)), nil >>`,
+		Id:         "Formals",
+		NTType:     4,
+		Index:      8,
+		NumSymbols: 2,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return append(X[0].([]ast.Identifier), X[1].(ast.Identifier)), nil
+		},
+	},
+	ProdTabEntry{
+		String: `Formals : Identifier	<< []ast.Identifier{X[0].(ast.Identifier)}, nil >>`,
+		Id:         "Formals",
+		NTType:     4,
+		Index:      9,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return []ast.Identifier{X[0].(ast.Identifier)}, nil
+		},
+	},
+	ProdTabEntry{
+		String: `Operand : Value	<< []ast.Node{X[0].(ast.Node)}, nil >>`,
+		Id:         "Operand",
+		NTType:     5,
+		Index:      10,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return []ast.Node{X[0].(ast.Node)}, nil
+		},
+	},
+	ProdTabEntry{
+		String: `Operand : Operand Value	<< append(X[0].([]ast.Node), X[1].(ast.Node)), nil >>`,
+		Id:         "Operand",
+		NTType:     5,
+		Index:      11,
+		NumSymbols: 2,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return append(X[0].([]ast.Node), X[1].(ast.Node)), nil
+		},
+	},
+	ProdTabEntry{
+		String: `BooleanLit : boolean_t	<< ast.Boolean(true), nil >>`,
+		Id:         "BooleanLit",
+		NTType:     6,
+		Index:      12,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.Boolean(true), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Value : boolean_f	<< ast.Boolean(false), nil >>`,
-		Id:         "Value",
-		NTType:     1,
-		Index:      4,
+		String: `BooleanLit : boolean_f	<< ast.Boolean(false), nil >>`,
+		Id:         "BooleanLit",
+		NTType:     6,
+		Index:      13,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.Boolean(false), nil
 		},
 	},
 	ProdTabEntry{
+		String: `Identifier : identifier	<< ast.Identifier(string(X[0].(*token.Token).Lit)), nil >>`,
+		Id:         "Identifier",
+		NTType:     7,
+		Index:      14,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return ast.Identifier(string(X[0].(*token.Token).Lit)), nil
+		},
+	},
+	ProdTabEntry{
+		String: `Value : Identifier	<< X[0].(ast.Identifier), nil >>`,
+		Id:         "Value",
+		NTType:     8,
+		Index:      15,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0].(ast.Identifier), nil
+		},
+	},
+	ProdTabEntry{
+		String: `Value : BooleanLit	<< X[0].(ast.Boolean), nil >>`,
+		Id:         "Value",
+		NTType:     8,
+		Index:      16,
+		NumSymbols: 1,
+		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
+			return X[0].(ast.Boolean), nil
+		},
+	},
+	ProdTabEntry{
 		String: `Value : float	<< ast.NewFloat(string(X[0].(*token.Token).Lit)) >>`,
 		Id:         "Value",
-		NTType:     1,
-		Index:      5,
+		NTType:     8,
+		Index:      17,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewFloat(string(X[0].(*token.Token).Lit))
@@ -85,8 +205,8 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Value : uint	<< ast.NewUInt(string(X[0].(*token.Token).Lit)) >>`,
 		Id:         "Value",
-		NTType:     1,
-		Index:      6,
+		NTType:     8,
+		Index:      18,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.NewUInt(string(X[0].(*token.Token).Lit))
@@ -95,81 +215,21 @@ var productionsTable = ProdTab{
 	ProdTabEntry{
 		String: `Value : string	<< ast.String(string(X[0].(*token.Token).Lit)), nil >>`,
 		Id:         "Value",
-		NTType:     1,
-		Index:      7,
+		NTType:     8,
+		Index:      19,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return ast.String(string(X[0].(*token.Token).Lit)), nil
 		},
 	},
 	ProdTabEntry{
-		String: `Value : List	<< X[0], nil >>`,
+		String: `Value : Combination	<< X[0], nil >>`,
 		Id:         "Value",
-		NTType:     1,
-		Index:      8,
+		NTType:     8,
+		Index:      20,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
 			return X[0], nil
-		},
-	},
-	ProdTabEntry{
-		String: `ListElements : Value	<< ast.NewListWithInitial(X[0].(ast.Node)), nil >>`,
-		Id:         "ListElements",
-		NTType:     2,
-		Index:      9,
-		NumSymbols: 1,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewListWithInitial(X[0].(ast.Node)), nil
-		},
-	},
-	ProdTabEntry{
-		String: `ListElements : ListElements Value	<< X[0].(*ast.List).Append(X[1].(ast.Node)), nil >>`,
-		Id:         "ListElements",
-		NTType:     2,
-		Index:      10,
-		NumSymbols: 2,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return X[0].(*ast.List).Append(X[1].(ast.Node)), nil
-		},
-	},
-	ProdTabEntry{
-		String: `List : "(" ListElements ")"	<< X[1], nil >>`,
-		Id:         "List",
-		NTType:     3,
-		Index:      11,
-		NumSymbols: 3,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return X[1], nil
-		},
-	},
-	ProdTabEntry{
-		String: `List : "(" ")"	<< ast.NewList(), nil >>`,
-		Id:         "List",
-		NTType:     3,
-		Index:      12,
-		NumSymbols: 2,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewList(), nil
-		},
-	},
-	ProdTabEntry{
-		String: `List : "#(" ListElements ")"	<< ast.NewQuoted(X[1].(*ast.List)), nil >>`,
-		Id:         "List",
-		NTType:     3,
-		Index:      13,
-		NumSymbols: 3,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewQuoted(X[1].(*ast.List)), nil
-		},
-	},
-	ProdTabEntry{
-		String: `List : "#(" ")"	<< ast.NewQuoted(nil), nil >>`,
-		Id:         "List",
-		NTType:     3,
-		Index:      14,
-		NumSymbols: 2,
-		ReduceFunc: func(X []Attrib, C interface{}) (Attrib, error) {
-			return ast.NewQuoted(nil), nil
 		},
 	},
 }

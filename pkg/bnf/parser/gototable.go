@@ -2,7 +2,7 @@
 
 package parser
 
-const numNTSymbols = 4
+const numNTSymbols = 9
 
 type (
 	gotoTable [numStates]gotoRow
@@ -12,218 +12,640 @@ type (
 var gotoTab = gotoTable{
 	gotoRow{ // S0
 		-1, // S'
-		1,  // Value
-		-1, // ListElements
-		9,  // List
+		1,  // Program
+		2,  // Define
+		3,  // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
 	},
 	gotoRow{ // S1
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S2
 		-1, // S'
+		5,  // Program
+		2,  // Define
+		3,  // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S3
 		-1, // S'
+		6,  // Program
+		2,  // Define
+		3,  // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S4
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		8,  // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S5
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S6
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S7
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		11, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S8
 		-1, // S'
-		-1, // Value
-		-1, // ListElements
-		-1, // List
+		-1, // Program
+		-1, // Define
+		13, // Combination
+		-1, // Formals
+		17, // Operand
+		19, // BooleanLit
+		15, // Identifier
+		18, // Value
 	},
 	gotoRow{ // S9
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S10
 		-1, // S'
-		12, // Value
-		21, // ListElements
-		20, // List
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
 	},
 	gotoRow{ // S11
 		-1, // S'
-		12, // Value
-		25, // ListElements
-		20, // List
+		-1, // Program
+		-1, // Define
+		26, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
 	},
 	gotoRow{ // S12
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S13
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S14
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		28, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S15
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S16
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S17
 		-1, // S'
-		-1, // Value
-		-1, // ListElements
-		-1, // List
+		-1, // Program
+		-1, // Define
+		13, // Combination
+		-1, // Formals
+		-1, // Operand
+		19, // BooleanLit
+		15, // Identifier
+		31, // Value
 	},
 	gotoRow{ // S18
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S19
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S20
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S21
 		-1, // S'
-		27, // Value
-		-1, // ListElements
-		20, // List
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
 	},
 	gotoRow{ // S22
 		-1, // S'
-		12, // Value
-		29, // ListElements
-		20, // List
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
 	},
 	gotoRow{ // S23
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S24
 		-1, // S'
-		12, // Value
-		31, // ListElements
-		20, // List
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
 	},
 	gotoRow{ // S25
 		-1, // S'
-		27, // Value
-		-1, // ListElements
-		20, // List
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		33, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		32, // Identifier
+		-1, // Value
 	},
 	gotoRow{ // S26
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S27
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		36, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S28
 		-1, // S'
-		-1, // Value
-		-1, // ListElements
-		-1, // List
+		-1, // Program
+		-1, // Define
+		13, // Combination
+		-1, // Formals
+		39, // Operand
+		19, // BooleanLit
+		15, // Identifier
+		18, // Value
 	},
 	gotoRow{ // S29
 		-1, // S'
-		27, // Value
-		-1, // ListElements
-		20, // List
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
 	},
 	gotoRow{ // S30
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S31
 		-1, // S'
-		27, // Value
-		-1, // ListElements
-		20, // List
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
 	},
 	gotoRow{ // S32
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S33
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		41, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S34
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
 	},
 	gotoRow{ // S35
 		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
 		-1, // Value
-		-1, // ListElements
-		-1, // List
+	},
+	gotoRow{ // S36
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		13, // Combination
+		-1, // Formals
+		44, // Operand
+		19, // BooleanLit
+		15, // Identifier
+		18, // Value
+	},
+	gotoRow{ // S37
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S38
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S39
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		13, // Combination
+		-1, // Formals
+		-1, // Operand
+		19, // BooleanLit
+		15, // Identifier
+		31, // Value
+	},
+	gotoRow{ // S40
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		47, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		32, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S41
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S42
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		48, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S43
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S44
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		13, // Combination
+		-1, // Formals
+		-1, // Operand
+		19, // BooleanLit
+		15, // Identifier
+		31, // Value
+	},
+	gotoRow{ // S45
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		50, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		32, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S46
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S47
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		41, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S48
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S49
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S50
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		41, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S51
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		54, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S52
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S53
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		55, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S54
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S55
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S56
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S57
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		-1, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		-1, // Identifier
+		-1, // Value
 	},
 }
