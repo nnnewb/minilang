@@ -1,11 +1,11 @@
 define i32 @main() {
 0:
-	%1 = fadd float 2.0, 3.0
-	%2 = fsub float 3.0, 2.0
-	%3 = fsub float %2, 1.0
-	%4 = fadd float 1.0, %1
-	%5 = fadd float %4, %3
-	%6 = fmul float %5, 100.0
-	%7 = fdiv float %6, 100.0
+	%1 = add i32 2, 3
+	%2 = sub i32 3, 2
+	%3 = sub i32 %2, 1
+	%4 = add i32 1, %1
+	%5 = add i32 %4, %3
+	%6 = mul i32 %5, 100
+	%7 = sdiv i32 %6, 100
 	ret i32 0
 }

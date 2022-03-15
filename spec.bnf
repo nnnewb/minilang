@@ -68,8 +68,6 @@ string: _string;
 //
 _sign: '+' | '-';
 _uint10: _digit { _digit };
-_float : [_sign] ['.'] _uint10 | [_sign] _uint10 '.' _digit {_digit};
-float: _float;
 uint: _uint10;
 
 //
@@ -84,9 +82,10 @@ import (
 >>
 
 Program
-    : Define Program        << $0.(*ast.Define), nil >>
-    | Combination Program   << $0.(*ast.Combination), nil >>
-    | empty
+    : Program Define       << $0.(*ast.Program).AddDefine($1.(*ast.Define)), nil >>
+    | Program Combination  << $0.(*ast.Program).AddCombination($1.(*ast.Combination)), nil >>
+    | Define               << ast.NewProgram().AddDefine($0.(*ast.Define)), nil >>
+    | Combination          << ast.NewProgram().AddCombination($0.(*ast.Combination)), nil >>
 ;
 
 Define
@@ -122,7 +121,6 @@ Identifier
 Value
     : Identifier            << $0.(ast.Identifier), nil >>
     | BooleanLit            << $0.(ast.Boolean), nil >>
-    | float                 << ast.NewFloat(string($0.(*token.Token).Lit)) >>
     | uint                  << ast.NewUInt(string($0.(*token.Token).Lit)) >>
     | string                << ast.String(string($0.(*token.Token).Lit)), nil >>
     | Combination           << $0, nil >>

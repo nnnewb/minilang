@@ -13,12 +13,14 @@ import (
 )
 
 type Compiler struct {
-	m *ir.Module
+	currentModule *ir.Module
+	currentFunc   *ir.Func
+	currentBlock  *ir.Block
 }
 
 func NewCompiler() *Compiler {
 	return &Compiler{
-		m: ir.NewModule(),
+		currentModule: ir.NewModule(),
 	}
 }
 
@@ -30,15 +32,18 @@ func (c *Compiler) CompileString(source string) (*ir.Module, error) {
 		panic(err)
 	}
 
-	fn := c.m.NewFunc("main", types.I32)
-	blk := fn.NewBlock("")
 	err = Traversal(res.(ast.Node), func(n ast.Node) (bool, error) {
 		switch node := n.(type) {
+		case *ast.Program:
+			c.currentModule = ir.NewModule()
+			c.currentFunc = c.currentModule.NewFunc("main", types.I32)
+			c.currentBlock = c.currentFunc.NewBlock("")
+			return true, nil
 		case *ast.Define:
 			// TODO:
 			return false, nil
 		case *ast.Combination:
-			c.compileCombination(blk, node.Operator, node.Operands)
+			c.compileCombination(node.Operator, node.Operands)
 			return false, nil
 		default:
 			return false, nil
@@ -48,14 +53,14 @@ func (c *Compiler) CompileString(source string) (*ir.Module, error) {
 		return nil, err
 	}
 
-	blk.NewRet(constant.NewInt(types.I32, 0))
-	return c.m, nil
+	c.currentBlock.NewRet(constant.NewInt(types.I32, 0))
+	return c.currentModule, nil
 }
 
-func (c *Compiler) compileCombination(blk *ir.Block, operator ast.Identifier, operands []ast.Node) (value.Value, error) {
+func (c *Compiler) compileCombination(operator ast.Identifier, operands []ast.Node) (value.Value, error) {
 	evaluatedOperands := []value.Value{}
 	for _, operand := range operands {
-		evaluatedID, err := c.compileEvaluateOperand(blk, operand)
+		evaluatedID, err := c.compileEvaluateOperand(operand)
 		if err != nil {
 			return nil, err
 		}
@@ -73,7 +78,7 @@ func (c *Compiler) compileCombination(blk *ir.Block, operator ast.Identifier, op
 				accumulator = val
 				continue
 			}
-			accumulator = blk.NewFAdd(accumulator, val)
+			accumulator = c.currentBlock.NewAdd(accumulator, val)
 		}
 		return accumulator, nil
 	case "*":
@@ -83,7 +88,7 @@ func (c *Compiler) compileCombination(blk *ir.Block, operator ast.Identifier, op
 				accumulator = val
 				continue
 			}
-			accumulator = blk.NewFMul(accumulator, val)
+			accumulator = c.currentBlock.NewMul(accumulator, val)
 		}
 		return accumulator, nil
 	case "/":
@@ -93,12 +98,12 @@ func (c *Compiler) compileCombination(blk *ir.Block, operator ast.Identifier, op
 				accumulator = val
 				continue
 			}
-			accumulator = blk.NewFDiv(accumulator, val)
+			accumulator = c.currentBlock.NewSDiv(accumulator, val)
 		}
 		return accumulator, nil
 	case "-":
 		if len(evaluatedOperands) == 1 {
-			return blk.NewFNeg(evaluatedOperands[0]), nil
+			return c.currentBlock.NewFNeg(evaluatedOperands[0]), nil
 		}
 		var accumulator value.Value = nil
 		for _, val := range evaluatedOperands {
@@ -106,7 +111,7 @@ func (c *Compiler) compileCombination(blk *ir.Block, operator ast.Identifier, op
 				accumulator = val
 				continue
 			}
-			accumulator = blk.NewFSub(accumulator, val)
+			accumulator = c.currentBlock.NewSub(accumulator, val)
 		}
 		return accumulator, nil
 	default:
@@ -116,20 +121,20 @@ func (c *Compiler) compileCombination(blk *ir.Block, operator ast.Identifier, op
 	}
 }
 
-func (c *Compiler) compileEvaluateOperand(blk *ir.Block, operand ast.Node) (value.Value, error) {
+func (c *Compiler) compileEvaluateOperand(operand ast.Node) (value.Value, error) {
 	switch operand.NodeType() {
 	case ast.NTCombination:
 		comb := operand.(*ast.Combination)
-		evaluated, err := c.compileCombination(blk, comb.Operator, comb.Operands)
+		evaluated, err := c.compileCombination(comb.Operator, comb.Operands)
 		if err != nil {
 			return nil, err
 		}
 		return evaluated, nil
 	case ast.NTString:
-		g := c.m.NewGlobalDef("", constant.NewCharArray([]byte(operand.(ast.String))))
+		g := c.currentModule.NewGlobalDef("", constant.NewCharArray([]byte(operand.(ast.String))))
 		return g, nil
-	case ast.NTBoolean, ast.NTUInt, ast.NTFloat:
-		return operand.(ast.LLVMLiteral).AsLLVM(), nil
+	case ast.NTUInt:
+		return (operand.(ast.UInt).AsLLVM()), nil
 	default:
 		return nil, fmt.Errorf("identifier operand not implemented")
 	}

@@ -24,8 +24,8 @@ var gotoTab = gotoTable{
 	gotoRow{ // S1
 		-1, // S'
 		-1, // Program
-		-1, // Define
-		-1, // Combination
+		5,  // Define
+		6,  // Combination
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
@@ -34,9 +34,9 @@ var gotoTab = gotoTable{
 	},
 	gotoRow{ // S2
 		-1, // S'
-		5,  // Program
-		2,  // Define
-		3,  // Combination
+		-1, // Program
+		-1, // Define
+		-1, // Combination
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
@@ -45,9 +45,9 @@ var gotoTab = gotoTable{
 	},
 	gotoRow{ // S3
 		-1, // S'
-		6,  // Program
-		2,  // Define
-		3,  // Combination
+		-1, // Program
+		-1, // Define
+		-1, // Combination
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
@@ -135,7 +135,7 @@ var gotoTab = gotoTable{
 		-1, // S'
 		-1, // Program
 		-1, // Define
-		26, // Combination
+		25, // Combination
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
@@ -172,7 +172,7 @@ var gotoTab = gotoTable{
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
-		28, // Identifier
+		27, // Identifier
 		-1, // Value
 	},
 	gotoRow{ // S15
@@ -206,7 +206,7 @@ var gotoTab = gotoTable{
 		-1, // Operand
 		19, // BooleanLit
 		15, // Identifier
-		31, // Value
+		30, // Value
 	},
 	gotoRow{ // S18
 		-1, // S'
@@ -279,10 +279,10 @@ var gotoTab = gotoTable{
 		-1, // Program
 		-1, // Define
 		-1, // Combination
-		-1, // Formals
+		32, // Formals
 		-1, // Operand
 		-1, // BooleanLit
-		-1, // Identifier
+		31, // Identifier
 		-1, // Value
 	},
 	gotoRow{ // S25
@@ -290,10 +290,10 @@ var gotoTab = gotoTable{
 		-1, // Program
 		-1, // Define
 		-1, // Combination
-		33, // Formals
+		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
-		32, // Identifier
+		-1, // Identifier
 		-1, // Value
 	},
 	gotoRow{ // S26
@@ -304,10 +304,21 @@ var gotoTab = gotoTable{
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
-		-1, // Identifier
+		35, // Identifier
 		-1, // Value
 	},
 	gotoRow{ // S27
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		13, // Combination
+		-1, // Formals
+		38, // Operand
+		19, // BooleanLit
+		15, // Identifier
+		18, // Value
+	},
+	gotoRow{ // S28
 		-1, // S'
 		-1, // Program
 		-1, // Define
@@ -315,19 +326,8 @@ var gotoTab = gotoTable{
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
-		36, // Identifier
+		-1, // Identifier
 		-1, // Value
-	},
-	gotoRow{ // S28
-		-1, // S'
-		-1, // Program
-		-1, // Define
-		13, // Combination
-		-1, // Formals
-		39, // Operand
-		19, // BooleanLit
-		15, // Identifier
-		18, // Value
 	},
 	gotoRow{ // S29
 		-1, // S'
@@ -370,7 +370,7 @@ var gotoTab = gotoTable{
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
-		-1, // Identifier
+		40, // Identifier
 		-1, // Value
 	},
 	gotoRow{ // S33
@@ -381,7 +381,7 @@ var gotoTab = gotoTable{
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
-		41, // Identifier
+		-1, // Identifier
 		-1, // Value
 	},
 	gotoRow{ // S34
@@ -399,23 +399,23 @@ var gotoTab = gotoTable{
 		-1, // S'
 		-1, // Program
 		-1, // Define
+		13, // Combination
+		-1, // Formals
+		43, // Operand
+		19, // BooleanLit
+		15, // Identifier
+		18, // Value
+	},
+	gotoRow{ // S36
+		-1, // S'
+		-1, // Program
+		-1, // Define
 		-1, // Combination
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
 		-1, // Identifier
 		-1, // Value
-	},
-	gotoRow{ // S36
-		-1, // S'
-		-1, // Program
-		-1, // Define
-		13, // Combination
-		-1, // Formals
-		44, // Operand
-		19, // BooleanLit
-		15, // Identifier
-		18, // Value
 	},
 	gotoRow{ // S37
 		-1, // S'
@@ -432,6 +432,28 @@ var gotoTab = gotoTable{
 		-1, // S'
 		-1, // Program
 		-1, // Define
+		13, // Combination
+		-1, // Formals
+		-1, // Operand
+		19, // BooleanLit
+		15, // Identifier
+		30, // Value
+	},
+	gotoRow{ // S39
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		46, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		31, // Identifier
+		-1, // Value
+	},
+	gotoRow{ // S40
+		-1, // S'
+		-1, // Program
+		-1, // Define
 		-1, // Combination
 		-1, // Formals
 		-1, // Operand
@@ -439,33 +461,11 @@ var gotoTab = gotoTable{
 		-1, // Identifier
 		-1, // Value
 	},
-	gotoRow{ // S39
-		-1, // S'
-		-1, // Program
-		-1, // Define
-		13, // Combination
-		-1, // Formals
-		-1, // Operand
-		19, // BooleanLit
-		15, // Identifier
-		31, // Value
-	},
-	gotoRow{ // S40
-		-1, // S'
-		-1, // Program
-		-1, // Define
-		-1, // Combination
-		47, // Formals
-		-1, // Operand
-		-1, // BooleanLit
-		32, // Identifier
-		-1, // Value
-	},
 	gotoRow{ // S41
 		-1, // S'
 		-1, // Program
 		-1, // Define
-		-1, // Combination
+		47, // Combination
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
@@ -476,7 +476,7 @@ var gotoTab = gotoTable{
 		-1, // S'
 		-1, // Program
 		-1, // Define
-		48, // Combination
+		-1, // Combination
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
@@ -487,33 +487,33 @@ var gotoTab = gotoTable{
 		-1, // S'
 		-1, // Program
 		-1, // Define
-		-1, // Combination
-		-1, // Formals
-		-1, // Operand
-		-1, // BooleanLit
-		-1, // Identifier
-		-1, // Value
-	},
-	gotoRow{ // S44
-		-1, // S'
-		-1, // Program
-		-1, // Define
 		13, // Combination
 		-1, // Formals
 		-1, // Operand
 		19, // BooleanLit
 		15, // Identifier
-		31, // Value
+		30, // Value
+	},
+	gotoRow{ // S44
+		-1, // S'
+		-1, // Program
+		-1, // Define
+		-1, // Combination
+		49, // Formals
+		-1, // Operand
+		-1, // BooleanLit
+		31, // Identifier
+		-1, // Value
 	},
 	gotoRow{ // S45
 		-1, // S'
 		-1, // Program
 		-1, // Define
 		-1, // Combination
-		50, // Formals
+		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
-		32, // Identifier
+		-1, // Identifier
 		-1, // Value
 	},
 	gotoRow{ // S46
@@ -524,7 +524,7 @@ var gotoTab = gotoTable{
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
-		-1, // Identifier
+		40, // Identifier
 		-1, // Value
 	},
 	gotoRow{ // S47
@@ -535,7 +535,7 @@ var gotoTab = gotoTable{
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
-		41, // Identifier
+		-1, // Identifier
 		-1, // Value
 	},
 	gotoRow{ // S48
@@ -557,25 +557,25 @@ var gotoTab = gotoTable{
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
-		-1, // Identifier
+		40, // Identifier
 		-1, // Value
 	},
 	gotoRow{ // S50
 		-1, // S'
 		-1, // Program
 		-1, // Define
-		-1, // Combination
+		53, // Combination
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
-		41, // Identifier
+		-1, // Identifier
 		-1, // Value
 	},
 	gotoRow{ // S51
 		-1, // S'
 		-1, // Program
 		-1, // Define
-		54, // Combination
+		-1, // Combination
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
@@ -586,7 +586,7 @@ var gotoTab = gotoTable{
 		-1, // S'
 		-1, // Program
 		-1, // Define
-		-1, // Combination
+		54, // Combination
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
@@ -597,7 +597,7 @@ var gotoTab = gotoTable{
 		-1, // S'
 		-1, // Program
 		-1, // Define
-		55, // Combination
+		-1, // Combination
 		-1, // Formals
 		-1, // Operand
 		-1, // BooleanLit
@@ -627,17 +627,6 @@ var gotoTab = gotoTable{
 		-1, // Value
 	},
 	gotoRow{ // S56
-		-1, // S'
-		-1, // Program
-		-1, // Define
-		-1, // Combination
-		-1, // Formals
-		-1, // Operand
-		-1, // BooleanLit
-		-1, // Identifier
-		-1, // Value
-	},
-	gotoRow{ // S57
 		-1, // S'
 		-1, // Program
 		-1, // Define
