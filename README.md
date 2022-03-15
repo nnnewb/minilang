@@ -2,17 +2,29 @@
 
 simple s-exp evaluator just for fun.
 
-## roadmap
+## features
 
-- [x] REPL
-- [x] builtin data type (literal)
-    - [x] numeric type (uint/float)
-    - [x] string type
-    - [x] symbol type
-    - [x] compound type (quoted list)
-- [ ] refactor VM
-- [ ] implement control flow
-- [ ] implement procedure
+- support `+`,`-`,`*`,`/`,`printf` operator
+
+## example
+
+```scm
+(printf
+    "1+2*3=%d"
+    (+ 1
+        (* 2 3)))
+```
+
+save previous content as `a.scm`, then build compiler and compile code we wrote above:
+
+```bash
+mage build
+build/bin/scc a.scm
+clang a.scm.ll
+./a.out
+```
+
+done!
 
 ## dependencies
 
